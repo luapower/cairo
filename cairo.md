@@ -1,7 +1,7 @@
 ---
 project:     cairo
 tagline:     cairo ffi binding
-version:     1.0
+category:    2D Graphics
 ---
 
 v1.0 | LuaJIT 2
