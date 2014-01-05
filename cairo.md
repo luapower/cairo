@@ -4,8 +4,6 @@ tagline:     cairo ffi binding
 category:    2D Graphics
 ---
 
-v1.0 | LuaJIT 2
-
 ## `local cairo = require'cairo'`
 
 A lightweight ffi binding of the [cairo graphics] library with the following features:
