@@ -1,7 +1,7 @@
 #TODO: suppress the "__visibility__ attribute ignored" warning
 echo "#define CAIRO_FEATURES_H" > src/cairo-features.h
 
-args=(gcc -shared -o../../../bin/linux32/libcairo.so -O3 -s
+args=(gcc $CFLAGS -shared -o../../../bin/linux32/libcairo.so
 
 	-I.
 	-I../../pixman

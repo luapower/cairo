@@ -1,7 +1,7 @@
 
 echo "#define CAIRO_FEATURES_H" > src/cairo-features.h
 
-args=(gcc -shared -o../../../bin/mingw32/cairo.dll -O3 -s -Wl,--enable-stdcall-fixup -static-libgcc
+args=(gcc $CFLAGS -shared -o../../../bin/mingw32/cairo.dll -Wl,--enable-stdcall-fixup -static-libgcc
 
 	-I.
 	-I../../pixman
