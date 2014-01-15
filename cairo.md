@@ -1,7 +1,6 @@
 ---
 project:     cairo
 tagline:     cairo ffi binding
-category:    2D Graphics
 ---
 
 ## `local cairo = require'cairo'`
