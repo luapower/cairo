@@ -1,6 +1,6 @@
 ---
-project:     cairo
-tagline:     cairo ffi binding
+project: cairo
+tagline: cairo graphics engine
 ---
 
 ## `local cairo = require'cairo'`
