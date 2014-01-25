@@ -1,0 +1,12 @@
+*
+!/bin/
+!/csrc/
+!/bin/mingw32/
+!/bin/linux32/
+!/media/
+
+!/cairo*
+!/bin/mingw32/cairo*
+!/bin/linux32/libcairo*
+!/csrc/cairo/
+!/csrc/cairo/**
