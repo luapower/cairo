@@ -11,6 +11,10 @@ require'cairo_h'
 local C = ffi.load'cairo'
 local M = setmetatable({C = C}, {__index = C})
 
+local function if_exists(name) --return a C function only if exists in the underlying library
+    return pcall(function() local _ = C[name]; end) and M[name] or nil
+end
+
 -- garbage collector / ref'counting integration
 -- note: free() and destroy() do not return a value as to enable the idiom self.obj = self.obj:free().
 
@@ -830,11 +834,11 @@ ffi.metatype('cairo_font_options_t', {__index = {
 	get_hint_style = M.cairo_font_options_get_hint_style,
 	set_hint_metrics = M.cairo_font_options_set_hint_metrics,
 	get_hint_metrics = M.cairo_font_options_get_hint_metrics,
-	--private
-	set_lcd_filter = M._cairo_font_options_set_lcd_filter,
-	get_lcd_filter = M._cairo_font_options_get_lcd_filter,
-	set_round_glyph_positions = M._cairo_font_options_set_round_glyph_positions,
-	get_round_glyph_positions = M._cairo_font_options_get_round_glyph_positions,
+	--private functions, only available in our custom build
+	set_lcd_filter = if_exists'_cairo_font_options_set_lcd_filter',
+	get_lcd_filter = if_exists'_cairo_font_options_get_lcd_filter',
+	set_round_glyph_positions = if_exists'_cairo_font_options_set_round_glyph_positions',
+	get_round_glyph_positions = if_exists'_cairo_font_options_get_round_glyph_positions',
 }})
 
 ffi.metatype('cairo_region_t', {__index = {
