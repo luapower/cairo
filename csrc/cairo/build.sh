@@ -170,6 +170,7 @@ cairo-pdf-shading.c
 -DCAIRO_HAS_FT_FONT=1
 cairo-ft-font.c
 -I../../freetype/include
+-lfreetype
 "
 
 cd src
@@ -177,12 +178,13 @@ cd src
 # cairo wants for putting CAIRO_HAS_* defines but we don't use that
 echo "#define CAIRO_FEATURES_H" > cairo-features.h
 
-gcc -O2 -s -static-libgcc $CFLAGS -shared -o ../../../bin/$PLATFORM/$LIBNAME -I. -I../../zlib \
+gcc -O2 -s -static-libgcc $CFLAGS -shared -o ../../../bin/$PLATFORM/$LIBNAME -I. \
 	-DHAVE_STDINT_H=1 \
 	-DHAVE_UINT64_T=1 \
 	$files $image_surface $png_functions $recording_surface $svg_surface \
 	$win32_surface $ps_surface $pdf_surface $ft_font \
-	-L../../../bin/$PLATFORM 
+	-L../../../bin/$PLATFORM \
+	-I../../zlib -lz
 
 
 
