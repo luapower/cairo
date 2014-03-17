@@ -1,3 +1,4 @@
+CC=gcc \
 PLATFORM=linux64 \
 LIBNAME=libcairo.so \
 CFLAGS="-Wno-attributes -fPIC -DCAIRO_HAS_PTHREAD=1 -pthread -DHAVE_INT128_T" \

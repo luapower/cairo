@@ -175,10 +175,10 @@ cairo-ft-font.c
 
 cd src
 
-# cairo wants for putting CAIRO_HAS_* defines but we don't use that
+# cairo expects CAIRO_HAS_* defines in cairo-features.h, but we specify those on the command line instead
 echo "#define CAIRO_FEATURES_H" > cairo-features.h
 
-gcc -O2 -s -static-libgcc $CFLAGS -shared -o ../../../bin/$PLATFORM/$LIBNAME -I. \
+$CC -O2 -s -static-libgcc $CFLAGS -shared -o ../../../bin/$PLATFORM/$LIBNAME -I. \
 	-DHAVE_STDINT_H=1 \
 	-DHAVE_UINT64_T=1 \
 	$files $image_surface $png_functions $recording_surface $svg_surface \
