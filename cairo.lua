@@ -11,8 +11,9 @@ require'cairo_h'
 local C = ffi.load'cairo'
 local M = setmetatable({C = C}, {__index = C})
 
-local function if_exists(name) --return a C function only if exists in the underlying library
-    return pcall(function() local _ = C[name]; end) and M[name] or nil
+local function sym(name) return C[name] end
+local function if_exists(name) --return M[name] only if C[name] exists in the C library
+    return pcall(sym, name) and M[name] or nil
 end
 
 -- garbage collector / ref'counting integration
@@ -260,6 +261,24 @@ end
 local function status_string(self)
 	return M.cairo_status_to_string(self:status())
 end
+
+-- int return -> bool return
+
+local function returns_bool(f)
+	return f and function(...)
+		return f(...) ~= 0
+	end
+end
+
+M.cairo_in_stroke = returns_bool(M.cairo_in_stroke)
+M.cairo_in_fill = returns_bool(M.cairo_in_fill)
+M.cairo_in_clip = returns_bool(M.cairo_in_clip)
+M.cairo_has_current_point = returns_bool(M.cairo_has_current_point)
+M.cairo_surface_has_show_text_glyphs = returns_bool(M.cairo_surface_has_show_text_glyphs)
+M.cairo_font_options_equal = returns_bool(M.cairo_font_options_equal)
+M.cairo_region_equal = returns_bool(M.cairo_region_equal)
+M.cairo_region_is_empty = returns_bool(M.cairo_region_is_empty)
+M.cairo_region_contains_point = returns_bool(M.cairo_region_contains_point)
 
 -- return multiple values instead of passing output buffers
 
@@ -560,12 +579,6 @@ end
 
 -- metamethods
 
-local function returns_bool(f)
-	return f and function(...)
-		return f(...) ~= 0
-	end
-end
-
 ffi.metatype('cairo_t', {__index = {
 	reference = M.cairo_reference,
 	destroy = M.cairo_destroy,
@@ -635,9 +648,9 @@ ffi.metatype('cairo_t', {__index = {
 	fill_preserve = M.cairo_fill_preserve,
 	copy_page = M.cairo_copy_page,
 	show_page = M.cairo_show_page,
-	in_stroke = returns_bool(M.cairo_in_stroke),
-	in_fill = returns_bool(M.cairo_in_fill),
-	in_clip = returns_bool(M.cairo_in_clip),
+	in_stroke = M.cairo_in_stroke,
+	in_fill = M.cairo_in_fill,
+	in_clip = M.cairo_in_clip,
 	stroke_extents = M.cairo_stroke_extents,
 	fill_extents = M.cairo_fill_extents,
 	reset_clip = M.cairo_reset_clip,
@@ -667,7 +680,7 @@ ffi.metatype('cairo_t', {__index = {
 	get_source = M.cairo_get_source,
 	get_tolerance = M.cairo_get_tolerance,
 	get_antialias = M.cairo_get_antialias,
-	has_current_point = returns_bool(M.cairo_has_current_point),
+	has_current_point = M.cairo_has_current_point,
 	get_current_point = M.cairo_get_current_point,
 	get_fill_rule = M.cairo_get_fill_rule,
 	get_line_width = M.cairo_get_line_width,
@@ -716,7 +729,7 @@ ffi.metatype('cairo_surface_t', {__index = {
 	get_fallback_resolution = M.cairo_surface_get_fallback_resolution,
 	copy_page = M.cairo_surface_copy_page,
 	show_page = M.cairo_surface_show_page,
-	has_show_text_glyphs = returns_bool(M.cairo_surface_has_show_text_glyphs),
+	has_show_text_glyphs = M.cairo_surface_has_show_text_glyphs,
 	create_pattern = M.cairo_pattern_create_for_surface,
 	apply_alpha = M.cairo_surface_apply_alpha,
 
@@ -824,7 +837,7 @@ ffi.metatype('cairo_font_options_t', {__index = {
 	status = M.cairo_font_options_status,
 	status_string = status_string,
 	merge = M.cairo_font_options_merge,
-	equal = returns_bool(M.cairo_font_options_equal),
+	equal = M.cairo_font_options_equal,
 	hash = M.cairo_font_options_hash,
 	set_antialias = M.cairo_font_options_set_antialias,
 	get_antialias = M.cairo_font_options_get_antialias,
@@ -849,15 +862,15 @@ ffi.metatype('cairo_region_t', {__index = {
 	reference = M.cairo_region_reference,
 	destroy = M.cairo_region_destroy,
 	free = free_ref_counted,
-	equal = returns_bool(M.cairo_region_equal),
+	equal = M.cairo_region_equal,
 	status = M.cairo_region_status,
 	status_string = status_string,
 	get_extents = M.cairo_region_get_extents,
 	num_rectangles = M.cairo_region_num_rectangles,
 	get_rectangle = M.cairo_region_get_rectangle,
-	is_empty = returns_bool(M.cairo_region_is_empty),
+	is_empty = M.cairo_region_is_empty,
 	contains_rectangle = M.cairo_region_contains_rectangle,
-	contains_point = returns_bool(M.cairo_region_contains_point),
+	contains_point = M.cairo_region_contains_point,
 	translate = M.cairo_region_translate,
 	subtract = M.cairo_region_subtract,
 	subtract_rectangle = M.cairo_region_subtract_rectangle,
