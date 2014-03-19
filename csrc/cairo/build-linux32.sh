@@ -1,7 +1,7 @@
 CC=gcc \
 PLATFORM=linux32 \
 LIBNAME=libcairo.so \
-CFLAGS="-Wno-attributes -DCAIRO_HAS_PTHREAD=1 -pthread -DHAVE_INT128_T" \
+CFLAGS="-s -static-libgcc -Wno-attributes -DCAIRO_HAS_PTHREAD=1 -pthread -DHAVE_INT128_T" \
 IMAGE_SURFACE=1 \
 PNG_FUNCTIONS=1 \
 RECORDING_SURFACE=1 \

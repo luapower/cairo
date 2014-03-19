@@ -1,7 +1,7 @@
 CC=gcc \
 PLATFORM=mingw32 \
 LIBNAME=cairo.dll \
-CFLAGS="-Wl,--enable-stdcall-fixup" \
+CFLAGS="-s -static-libgcc -Wl,--enable-stdcall-fixup" \
 IMAGE_SURFACE=1 \
 PNG_FUNCTIONS=1 \
 RECORDING_SURFACE=1 \
