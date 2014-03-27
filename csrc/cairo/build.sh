@@ -154,6 +154,16 @@ win32/cairo-win32-font.c
 -L$WINDIR/system32 -lgdi32 -lkernel32 -lmsimg32
 "
 
+[ "$QUARTZ_SURFACE" ] && quartz_surface="
+-DCAIRO_HAS_QUARTZ_SURFACE=1
+-DCAIRO_HAS_QUARTZ_IMAGE_SURFACE=1
+-DCAIRO_HAS_QUARTZ_FONT=1
+cairo-quartz-font.c
+cairo-quartz-image-surface.c
+cairo-quartz-surface.c
+-framework ApplicationServices
+"
+
 [ "$PS_SURFACE" ] && ps_surface="
 -DCAIRO_HAS_PS_SURFACE=1
 cairo-ps-surface.c
@@ -182,7 +192,7 @@ $CC -O2 $CFLAGS -shared -o ../../../bin/$PLATFORM/$LIBNAME -I. \
 	-DHAVE_STDINT_H=1 \
 	-DHAVE_UINT64_T=1 \
 	$files $image_surface $png_functions $recording_surface $svg_surface \
-	$win32_surface $ps_surface $pdf_surface $ft_font \
+	$win32_surface $quartz_surface $ps_surface $pdf_surface $ft_font \
 	-L../../../bin/$PLATFORM \
 	-I../../zlib -lz
 
