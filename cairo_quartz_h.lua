@@ -1,13 +1,8 @@
 --result of `cpp cairo-quartz.h` from cairo 1.12.16
 local ffi = require'ffi'
 require'cairo_h'
-
-local objc = require'objc'
-local bs = require("objc.BridgeSupport")
-bs.loadFramework("Foundation")
-bs.loadFramework("AppKit")
-bs.loadFramework("ApplicationServices")
-bs.loadFramework("CoreGraphics")
+local bs = require'objc.BridgeSupport'
+bs.loadFramework'CoreGraphics' --for CG* typedefs
 
 ffi.cdef[[
 typedef uint32_t ATSUFontID;
