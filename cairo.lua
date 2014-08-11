@@ -1,10 +1,11 @@
---lightweight ffi binding for the cairo graphics library by Cosmin Apreutesei (public domain).
+--lightweight ffi binding for the cairo graphics library (Cosmin Apreutesei, public domain).
 
 --supports garbage collection, metatype methods, accepting and returning strings, returning multiple values
 --instead of passing output buffers, and API additions for completeness (drawing quad curves, getting
 --and setting pixel values etc).
---note that methods of specific backends and extensions are not added and cannot be added after loading this
---module due to constraints of ffi.metatype(). still looking for a nice way to solve this.
+--note that methods from specific backends and extensions are not added and cannot be added after loading this
+--module due to limitations of ffi.metatype(). an exception is made for the pixman backend (image surface)
+--so that must be present in the cairo binary. still looking for a nice way to solve this.
 
 local ffi = require'ffi'
 require'cairo_h'

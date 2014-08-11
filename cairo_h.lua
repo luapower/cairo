@@ -73,10 +73,10 @@ typedef enum _cairo_format {
     CAIRO_FORMAT_RGB30 = 5
 } cairo_format_t;
 typedef cairo_status_t (*cairo_write_func_t) (void *closure,
-           const unsigned char *data,
+           const void *data,
            unsigned int length);
 typedef cairo_status_t (*cairo_read_func_t) (void *closure,
-          unsigned char *data,
+          void *data,
           unsigned int length);
 typedef struct _cairo_rectangle_int {
     int x, y;
@@ -863,12 +863,12 @@ cairo_surface_set_user_data (cairo_surface_t *surface,
  void
 cairo_surface_get_mime_data (cairo_surface_t *surface,
                              const char *mime_type,
-                             const unsigned char **data,
+                             const void **data,
                              unsigned long *length);
  cairo_status_t
 cairo_surface_set_mime_data (cairo_surface_t *surface,
                              const char *mime_type,
-                             const unsigned char *data,
+                             const void *data,
                              unsigned long length,
         cairo_destroy_func_t destroy,
         void *closure);
@@ -918,12 +918,12 @@ cairo_image_surface_create (cairo_format_t format,
 cairo_format_stride_for_width (cairo_format_t format,
           int width);
  cairo_surface_t *
-cairo_image_surface_create_for_data (unsigned char *data,
+cairo_image_surface_create_for_data (void *data,
          cairo_format_t format,
          int width,
          int height,
          int stride);
- unsigned char *
+ void *
 cairo_image_surface_get_data (cairo_surface_t *surface);
  cairo_format_t
 cairo_image_surface_get_format (cairo_surface_t *surface);
