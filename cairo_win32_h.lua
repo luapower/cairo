@@ -1,7 +1,7 @@
 --result of `cpp cairo-win32.h` from cairo 1.12.3
 local ffi = require'ffi'
 require'cairo_h'
-require'winapi.winusertypes' --HDC, HFONT
+require'winapi.types' --HDC, HFONT
 require'winapi.logfonttype' --LOGFONTW
 
 ffi.cdef[[
