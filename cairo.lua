@@ -501,6 +501,7 @@ function M.cairo_image_surface_get_pixel_function(surface)
 	local h      = surface:get_image_height()
 	local stride = surface:get_image_stride()
 	local getpixel
+	data = ffi.cast('uint8_t*', data)
 	if format == C.CAIRO_FORMAT_ARGB32 then
 		if ffi.abi'le' then
 			error'NYI'
@@ -543,6 +544,7 @@ function M.cairo_image_surface_set_pixel_function(surface)
 	local w      = surface:get_image_width()
 	local h      = surface:get_image_height()
 	local stride = surface:get_image_stride()
+	data = ffi.cast('uint8_t*', data)
 	local setpixel
 	if format == C.CAIRO_FORMAT_ARGB32 then
 		if ffi.abi'le' then
