@@ -12,7 +12,7 @@ P=osx32 C="
 	-DCAIRO_HAS_PTHREAD=1 -DHAVE_INT128_T" \
 L="
 	-arch i386 -mmacosx-version-min=10.6
-	-install_name @loader_path/libcairo.dylib
+	-install_name @rpath/libcairo.dylib
 	-Wno-enum-conversion
 	-Wno-attributes
 " D=libcairo.dylib A=libcairo.a ./build.sh
