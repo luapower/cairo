@@ -1,4 +1,4 @@
-cairo 1.12.16 from http://cairographics.org/releases/ (LGPL license)
+cairo 1.12.16 from http://cairographics.org/releases/ (MPL/LGPL license)
 requires: pixman, freetype, zlib, libpng
 
 NOTE: modified cairo-compiler-private.h and changed #define cairo_private_no_warn
