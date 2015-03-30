@@ -172,7 +172,7 @@ L="$L -lz"
 		win32/cairo-win32-system.c
 		win32/cairo-win32-font.c
 	"
-	L="$L -L$WINDIR/system32 -lgdi32 -lkernel32 -lmsimg32"
+	L="$L -lgdi32 -lkernel32 -lmsimg32"
 }
 
 [ "$QUARTZ_SURFACE" ] && {
@@ -250,8 +250,7 @@ L="$L -lz"
 
 COMMENT
 
-
 gcc -c -O2 $C
-gcc *.o -shared -o ../../../bin/$P/$D -L../../../bin/$P $L
+gcc *.o -shared -o ../../../bin/$P/$D -L../../../bin/$P $L 
 ar rcs ../../../bin/$P/$A *.o
 rm *.o
