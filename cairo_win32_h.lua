@@ -1,5 +1,8 @@
 --result of `cpp cairo-win32.h` from cairo 1.12.3
 local ffi = require'ffi'
+
+assert(ffi.os == 'Windows', 'platform not Windows')
+
 require'cairo_h'
 require'winapi.types' --HDC, HFONT
 require'winapi.logfonttype' --LOGFONTW

@@ -1,5 +1,8 @@
 --result of `cpp cairo-quartz.h` from cairo 1.12.16
 local ffi = require'ffi'
+
+assert(ffi.os == 'OSX', 'platform not OSX')
+
 require'cairo_h'
 local objc = require'objc'
 objc.load'CoreGraphics' --for CG* typedefs
