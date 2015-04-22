@@ -34,9 +34,6 @@ Additional wrappers are provided for completeness:
 `surface:apply_alpha(alpha)`                 make surface transparent
 -------------------------------------------- ------------------------------------------------
 
-See also: [sg_cairo], [cplayer]
-
-
 [cairo graphics]:   http://cairographics.org/
 [cairo manual]:     http://cairographics.org/manual/
 
