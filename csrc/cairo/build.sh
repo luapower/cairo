@@ -250,7 +250,8 @@ L="$L -lz"
 
 COMMENT
 
+rm -f *.o
 gcc -c -O2 $C
-gcc *.o -shared -o ../../../bin/$P/$D -L../../../bin/$P $L 
+gcc *.o -shared -o ../../../bin/$P/$D -L../../../bin/$P $L
 ar rcs ../../../bin/$P/$A *.o
 rm *.o
