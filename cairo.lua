@@ -1,11 +1,15 @@
---lightweight ffi binding for the cairo graphics library (Cosmin Apreutesei, public domain).
 
---supports garbage collection, metatype methods, accepting and returning strings, returning multiple values
---instead of passing output buffers, and API additions for completeness (drawing quad curves, getting
---and setting pixel values etc).
---note that methods from specific backends and extensions are not added and cannot be added after loading this
---module due to limitations of ffi.metatype(). an exception is made for the pixman backend (image surface)
---so that must be present in the cairo binary. still looking for a nice way to solve this.
+-- cairo graphics library ffi binding.
+-- Written by Cosmin Apreutesei. Public Domain.
+
+-- Supports garbage collection, metatype methods, accepting and returning
+-- strings, returning multiple values instead of passing output buffers,
+-- and API additions for completeness (drawing quad curves, getting and
+-- setting pixel values, etc.). Note that methods from specific backends and
+-- extensions are not added and cannot be added after loading this module
+-- due to limitations of ffi.metatype(). An exception is made for the pixman
+-- backend because it's a required dependency on all platforms.
+-- Still looking for a nice way to solve this.
 
 local ffi = require'ffi'
 require'cairo_h'
@@ -18,7 +22,8 @@ local function if_exists(name) --return M[name] only if C[name] exists in the C 
 end
 
 -- garbage collector / ref'counting integration
--- note: free() and destroy() do not return a value as to enable the idiom self.obj = self.obj:free().
+-- NOTE: free() and destroy() do not return a value to enable the idiom
+-- self.obj = self.obj:free().
 
 local function free_ref_counted(o)
 	local n = o:get_reference_count() - 1
