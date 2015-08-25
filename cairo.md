@@ -1,5 +1,4 @@
 ---
-project: cairo
 tagline: cairo graphics engine
 ---
 
