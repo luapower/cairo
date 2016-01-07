@@ -54,6 +54,7 @@ of the supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
 [cairo manual]:     http://cairographics.org/manual/
 
 
+
 ## API
 
 --------------------------------------- -----------------------------------------------------
