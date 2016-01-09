@@ -62,56 +62,60 @@ __drawing contexts__
 `sr:create_context()`                       [create a context on a surface][cairo_create]
 `cr:save()`                                 [save state (push to stack)][cairo_save]
 `cr:restore()`                              [restore state (pop from stack)][cairo_restore]
-`cr:push_group()`                           [ref][cairo_push_group]
-`cr:push_group_with_content()`              [ref][cairo_push_group_with_content]
-`cr:pop_group()`                            [ref][cairo_pop_group]
-`cr:pop_group_to_source()`                  [ref][cairo_pop_group_to_source]
-`cr:set_operator()`                         [ref][cairo_set_operator]
-`cr:set_source()`                           [ref][cairo_set_source]
-`cr:set_source_rgb()`                       [ref][cairo_set_source_rgb]
-`cr:set_source_rgba()`                      [ref][cairo_set_source_rgba]
-`cr:set_source_surface()`                   [ref][cairo_set_source_surface]
-`cr:set_tolerance()`                        [ref][cairo_set_tolerance]
-`cr:set_antialias()`                        [ref][cairo_set_antialias]
-`cr:set_fill_rule()`                        [ref][cairo_set_fill_rule]
-`cr:set_line_width()`                       [ref][cairo_set_line_width]
-`cr:set_line_cap()`                         [ref][cairo_set_line_cap]
-`cr:set_line_join()`                        [ref][cairo_set_line_join]
-`cr:set_dash()`                             [ref][cairo_set_dash]
-`cr:set_miter_limit()`                      [ref][cairo_set_miter_limit]
-`cr:translate()`                            [ref][cairo_translate]
-`cr:scale()`                                [ref][cairo_scale]
-`cr:rotate()`                               [ref][cairo_rotate]
-`cr:rotate_around()`                        [ref][cairo_rotate_around]
-`cr:scale_around()`                         [ref][cairo_scale_around]
-`cr:transform()`                            [ref][cairo_transform]
-`cr:safe_transform()`                       [ref][cairo_safe_transform]
-`cr:set_matrix()`                           [ref][cairo_set_matrix]
-`cr:identity_matrix()`                      [ref][cairo_identity_matrix]
-`cr:skew()`                                 [ref][cairo_skew]
-`cr:user_to_device()`                       [ref][cairo_user_to_device]
-`cr:user_to_device_distance()`              [ref][cairo_user_to_device_distance]
-`cr:device_to_user()`                       [ref][cairo_device_to_user]
-`cr:device_to_user_distance()`              [ref][cairo_device_to_user_distance]
-`cr:new_path()`                             [ref][cairo_new_path]
-`cr:move_to()`                              [ref][cairo_move_to]
-`cr:new_sub_path()`                         [ref][cairo_new_sub_path]
-`cr:line_to()`                              [ref][cairo_line_to]
-`cr:curve_to()`                             [ref][cairo_curve_to]
-`cr:quad_curve_to()`                        [ref][cairo_quad_curve_to]
-`cr:arc()`                                  [ref][cairo_arc]
-`cr:arc_negative()`                         [ref][cairo_arc_negative]
-`cr:circle()`                               [ref][cairo_circle]
-`cr:ellipse()`                              [ref][cairo_ellipse]
-`cr:rel_move_to()`                          [ref][cairo_rel_move_to]
-`cr:rel_line_to()`                          [ref][cairo_rel_line_to]
-`cr:rel_curve_to()`                         [ref][cairo_rel_curve_to]
-`cr:rel_quad_curve_to()`                    [ref][cairo_rel_quad_curve_to]
-`cr:rectangle()`                            [ref][cairo_rectangle]
-`cr:close_path()`                           [ref][cairo_close_path]
-`cr:path_extents()`                         [ref][cairo_path_extents]
+`cr:push_group()`                           [redirect drawing to an intermediate surface][cairo_push_group]
+`cr:push_group_with_content(content)`       [redirect drawing to an intermediate surface][cairo_push_group_with_content]
+`cr:pop_group() -> patt`                    [terminate the redirection and return it as pattern][cairo_pop_group]
+`cr:pop_group_to_source()`                  [terminate the redirection and install it as pattern][cairo_pop_group_to_source]
+`cr:set_operator(operator)`                 [set operator][cairo_set_operator]
+`cr:set_source(patt)`                       [set pattern as source][cairo_set_source]
+`cr:set_source_rgb(r, g, b)`                [set color as source][cairo_set_source_rgb]
+`cr:set_source_rgba(r, g, b, a)`            [set color as source][cairo_set_source_rgba]
+`cr:set_source_surface(sr, x, y)`           [set surface as source][cairo_set_source_surface]
+`cr:set_tolerance(n)`                       [set the tolerance for converting paths into trapezoids][cairo_set_tolerance]
+`cr:set_antialias(antialias)`               [set the antialiasing mode][cairo_set_antialias]
+`cr:set_fill_rule(fill_rule)`               [set the fill rule][cairo_set_fill_rule]
+`cr:set_line_width(width)`                  [set the current line width][cairo_set_line_width]
+`cr:set_line_cap(line_cap)`                 [set the current line cap][cairo_set_line_cap]
+`cr:set_line_join(line_join)`               [set the current line join][cairo_set_line_join]
+`cr:set_dash(dashes, offset)`               [set the dash pattern for cairo_stroke()][cairo_set_dash]
+`cr:set_miter_limit(limit)`                 [set the current miter limit][cairo_set_miter_limit]
+__transformations__
+`cr:translate(x, y)`                        [translate the user-space origin][cairo_translate]
+`cr:scale(sx, sy)`                          [scale the user-space][cairo_scale]
+`cr:rotate(angle)`                          [rotate the user-space][cairo_rotate]
+`cr:rotate_around(cx, cy, angle)`           rotate the user-space around a point
+`cr:scale_around(cx, cy, sx, sy)`           scale the user-space arount a point
+`cr:transform(mat)`                         [transform the user-space][cairo_transform]
+`cr:safe_transform(mat)`                    transform the user-space if the matrix is invertible
+`cr:set_matrix(mat)`                        [set the CTM][cairo_set_matrix]
+`cr:identity_matrix()`                      [reset the CTM][cairo_identity_matrix]
+`cr:skew(ax, ay)`                           skew the user-space
+__device-space__
+`cr:user_to_device(x, y) -> x, y`           [user to device (point)][cairo_user_to_device]
+`cr:user_to_device_distance(x, y) -> x, y`  [user to device (distance)][cairo_user_to_device_distance]
+`cr:device_to_user(x, y) -> x, y`           [device to user (point)][cairo_device_to_user]
+`cr:device_to_user_distance(x, y) -> x, y`  [device to user (distance)][cairo_device_to_user_distance]
+__paths__
+`cr:new_path()`                             [create path][cairo_new_path]
+`cr:new_sub_path()`                         [create sub-path][cairo_new_sub_path]
+`cr:move_to(x, y)`                          [move the current point][cairo_move_to]
+`cr:line_to(x, y)`                          [draw a line][cairo_line_to]
+`cr:curve_to(x1, y1, x2, y2, x3, y3)`       [draw a cubic bezier][cairo_curve_to]
+`cr:quad_curve_to(x1,y1,x2,y2,x3,y3,x4,y4)` [draw a quad bezier][cairo_quad_curve_to]
+`cr:arc(cx, cy, radius, a1, a2)`            [draw an arc][cairo_arc]
+`cr:arc_negative(cx, cy, r, a1, a2)`        [draw a negative arc][cairo_arc_negative]
+`cr:circle(cx, cy, r)`                      [draw a circle][cairo_circle]
+`cr:ellipse(cx, cy, rx, ry, rotation)`      [draw an ellipse][cairo_ellipse]
+`cr:rel_move_to(x, y)`                      [move the current point][cairo_rel_move_to]
+`cr:rel_line_to(x, y)`                      [draw a line][cairo_rel_line_to]
+`cr:rel_curve_to(x1, y1, x2, y2, x3, y3)`   [draw a cubic bezier][cairo_rel_curve_to]
+`cr:rel_quad_curve_to(x1,y1,x2,y2,x3,y3,x4,y4)`  [draw a quad bezier][cairo_rel_quad_curve_to]
+`cr:rectangle(x, y, w, h)`                  [draw a rectangle][cairo_rectangle]
+`cr:close_path()`                           [close current path][cairo_close_path]
+`cr:path_extents() -> x1, y1, x2, y2`       [path bouding box][cairo_path_extents]
+__filling and stroking__
 `cr:paint()`                                [ref][cairo_paint]
-`cr:paint_with_alpha()`                     [ref][cairo_paint_with_alpha]
+`cr:paint_with_alpha(alpha)`                [ref][cairo_paint_with_alpha]
 `cr:mask()`                                 [ref][cairo_mask]
 `cr:mask_surface()`                         [ref][cairo_mask_surface]
 `cr:stroke()`                               [ref][cairo_stroke]
@@ -392,16 +396,16 @@ __integer rectangles__
 [cairo_set_line_join]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join
 [cairo_set_dash]:                          http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
 [cairo_set_miter_limit]:                   http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit
-[cairo_translate]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-translate
-[cairo_scale]:                             http://cairographics.org/manual/cairo-cairo-t.html#cairo-scale
-[cairo_rotate]:                            http://cairographics.org/manual/cairo-cairo-t.html#cairo-rotate
-[cairo_rotate_around]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-rotate-around
-[cairo_scale_around]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-scale-around
-[cairo_transform]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-transform
-[cairo_safe_transform]:                    http://cairographics.org/manual/cairo-cairo-t.html#cairo-safe-transform
-[cairo_set_matrix]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-matrix
-[cairo_identity_matrix]:                   http://cairographics.org/manual/cairo-cairo-t.html#cairo-identity-matrix
-[cairo_skew]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-skew
+[cairo_translate]:                         http://cairographics.org/manual/cairo-Transformations.html#cairo-translate
+[cairo_scale]:                             http://cairographics.org/manual/cairo-Transformations.html#cairo-scale
+[cairo_rotate]:                            http://cairographics.org/manual/cairo-Transformations.html#cairo-rotate
+[cairo_rotate_around]:                     http://cairographics.org/manual/cairo-Transformations.html#cairo-rotate-around
+[cairo_scale_around]:                      http://cairographics.org/manual/cairo-Transformations.html#cairo-scale-around
+[cairo_transform]:                         http://cairographics.org/manual/cairo-Transformations.html#cairo-transform
+[cairo_safe_transform]:                    http://cairographics.org/manual/cairo-Transformations.html#cairo-safe-transform
+[cairo_set_matrix]:                        http://cairographics.org/manual/cairo-Transformations.html#cairo-set-matrix
+[cairo_identity_matrix]:                   http://cairographics.org/manual/cairo-Transformations.html#cairo-identity-matrix
+[cairo_skew]:                              http://cairographics.org/manual/cairo-Transformations.html#cairo-skew
 [cairo_user_to_device]:                    http://cairographics.org/manual/cairo-cairo-t.html#cairo-user-to-device
 [cairo_user_to_device_distance]:           http://cairographics.org/manual/cairo-cairo-t.html#cairo-user-to-device-distance
 [cairo_device_to_user]:                    http://cairographics.org/manual/cairo-cairo-t.html#cairo-device-to-user
