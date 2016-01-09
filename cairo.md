@@ -15,9 +15,9 @@ A lightweight ffi binding of the [cairo graphics] library.
 __image surfaces__
 `cairo.cairo_image_surface_create(fmt, w, h) -> sr`                 [create a pixman surface][cairo_image_surface_create]
 `cairo.cairo_image_surface_create _for_data(data,fmt,w,h,strd)->sr` [create a pixman surface given a buffer][cairo_image_surface_create_for_data]
-`cairo.cairo_image_surface_create _from_bitmap(bmp) -> sr`          create a surface from a [bitmap]
+`cairo.cairo_image_surface_create_from_bitmap(bmp) -> sr`           create a surface from a [bitmap]
 __recording surfaces__
-`cairo.cairo_recording_surface_create(...)`
+`cairo.cairo_recording_surface_create(...)`                         [create a recording surface][cairo_recording_surface_create]
 __png support__
 `cairo.cairo_image_surface_create _from_png(filename) -> sr`        [create a pixman surface from a png file][cairo_image_surface_create_from_png]
 `cairo.cairo_image_surface_create _from_png_stream(read, ptr)->sr`  [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
@@ -440,6 +440,8 @@ __user data__
 [cairo_image_surface_create_for_data]:           http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create-for-data
 [cairo_image_surface_create_from_png]:           http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create-from-png
 [cairo_image_surface_create_from_png_stream]:    http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create-from-png-stream
+
+[cairo_recording_surface_create]:          http://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-create
 
 [cairo_surface_create_similar]:            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar
 [cairo_surface_create_similar_image]:      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar-image
