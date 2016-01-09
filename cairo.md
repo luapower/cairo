@@ -417,6 +417,8 @@ __user data__
 [cairo_path_extents]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-extents
 [cairo_path_destroy]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-destroy
 
+[cairo_set_user_data]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-user-data
+[cairo_get_user_data]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-user-data
 [cairo_status]:                            http://cairographics.org/manual/cairo-cairo-t.html#cairo-status
 [cairo_status_string]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-status-string
 [cairo_reference]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-reference
