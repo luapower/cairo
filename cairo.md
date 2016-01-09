@@ -59,6 +59,7 @@ of the supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
 
 ------------------------------------------- -----------------------------------------------------
 __drawing contexts__
+`sr:create_context()`                       [create a context on a surface][cairo_create]
 `cr:save()`                                 [save state (push to stack)][cairo_save]
 `cr:restore()`                              [restore state (pop from stack)][cairo_restore]
 `cr:push_group()`                           [ref][cairo_push_group]
@@ -175,7 +176,6 @@ __drawing contexts__
 `cr:destroy()`                              [ref][cairo_destroy]
 `cr:free()`                                 free (error if ref count > 0)
 __surfaces__
-`sr:create_context()`                       [ref][cairo_surface_create_context]
 `sr:create_similar()`                       [ref][cairo_surface_create_similar]
 `sr:create_for_rectangle()`                 [ref][cairo_surface_create_for_rectangle]
 `sr:finish()`                               [ref][cairo_surface_finish]
@@ -372,7 +372,7 @@ __integer rectangles__
 ------------------------------------------- ---------------------------------------
 </div>
 
-
+[cairo_create]:                            http://cairographics.org/manual/cairo-t.html#cairo-create
 [cairo_save]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-save
 [cairo_restore]:                           http://cairographics.org/manual/cairo-cairo-t.html#cairo-restore
 [cairo_push_group]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-push-group
@@ -489,46 +489,45 @@ __integer rectangles__
 [cairo_destroy]:                           http://cairographics.org/manual/cairo-cairo-t.html#cairo-destroy
 [cairo_free]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-free
 
-[cairo_surface_create_context]:                    http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-context
-[cairo_surface_create_similar]:                    http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar
-[cairo_surface_create_for_rectangle]:              http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-for-rectangle
-[cairo_surface_finish]:                            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-finish
-[cairo_surface_get_device]:                        http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device
-[cairo_surface_status]:                            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-status
-[cairo_surface_status_string]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-status-string
-[cairo_surface_get_type]:                          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-type
-[cairo_surface_get_content]:                       http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-content
-[cairo_surface_write_to_png]:                      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-write-to-png
-[cairo_surface_write_to_png_stream]:               http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-write-to-png-stream
-[cairo_surface_get_user_data]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-user-data
-[cairo_surface_set_user_data]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-user-data
-[cairo_surface_get_mime_data]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-mime-data
-[cairo_surface_set_mime_data]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-mime-data
-[cairo_surface_get_font_options]:                  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-font-options
-[cairo_surface_flush]:                             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-flush
-[cairo_surface_mark_dirty]:                        http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-mark-dirty
-[cairo_surface_mark_dirty_rectangle]:              http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-mark-dirty-rectangle
-[cairo_surface_set_device_offset]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-device-offset
-[cairo_surface_get_device_offset]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-offset
-[cairo_surface_set_fallback_resolution]:           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-fallback-resolution
-[cairo_surface_get_fallback_resolution]:           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-fallback-resolution
-[cairo_surface_copy_page]:                         http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-copy-page
-[cairo_surface_show_page]:                         http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-show-page
-[cairo_surface_has_show_text_glyphs]:              http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-has-show-text-glyphs
-[cairo_surface_create_pattern]:                    http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-pattern
-[cairo_surface_apply_alpha]:                       http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-apply-alpha
-[cairo_surface_reference]:                         http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-reference
-[cairo_surface_get_reference_count]:               http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-reference-count
-[cairo_surface_destroy]:                           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-destroy
-[cairo_surface_free]:                              http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-free
-[cairo_surface_get_image_data]:                    http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-data
-[cairo_surface_get_image_format]:                  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-format
-[cairo_surface_get_image_width]:                   http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-width
-[cairo_surface_get_image_height]:                  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-height
-[cairo_surface_get_image_stride]:                  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-stride
-[cairo_surface_get_image_bpp]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-bpp
-[cairo_surface_get_image_pixel_function]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-pixel-function
-[cairo_surface_set_image_pixel_function]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-image-pixel-function
+[cairo_surface_create_similar]:            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar
+[cairo_surface_create_for_rectangle]:      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-for-rectangle
+[cairo_surface_finish]:                    http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-finish
+[cairo_surface_get_device]:                http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device
+[cairo_surface_status]:                    http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-status
+[cairo_surface_status_string]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-status-string
+[cairo_surface_get_type]:                  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-type
+[cairo_surface_get_content]:               http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-content
+[cairo_surface_write_to_png]:              http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-write-to-png
+[cairo_surface_write_to_png_stream]:       http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-write-to-png-stream
+[cairo_surface_get_user_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-user-data
+[cairo_surface_set_user_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-user-data
+[cairo_surface_get_mime_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-mime-data
+[cairo_surface_set_mime_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-mime-data
+[cairo_surface_get_font_options]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-font-options
+[cairo_surface_flush]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-flush
+[cairo_surface_mark_dirty]:                http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-mark-dirty
+[cairo_surface_mark_dirty_rectangle]:      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-mark-dirty-rectangle
+[cairo_surface_set_device_offset]:         http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-device-offset
+[cairo_surface_get_device_offset]:         http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-offset
+[cairo_surface_set_fallback_resolution]:   http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-fallback-resolution
+[cairo_surface_get_fallback_resolution]:   http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-fallback-resolution
+[cairo_surface_copy_page]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-copy-page
+[cairo_surface_show_page]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-show-page
+[cairo_surface_has_show_text_glyphs]:      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-has-show-text-glyphs
+[cairo_surface_create_pattern]:            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-pattern
+[cairo_surface_apply_alpha]:               http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-apply-alpha
+[cairo_surface_reference]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-reference
+[cairo_surface_get_reference_count]:       http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-reference-count
+[cairo_surface_destroy]:                   http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-destroy
+[cairo_surface_free]:                      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-free
+[cairo_surface_get_image_data]:            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-data
+[cairo_surface_get_image_format]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-format
+[cairo_surface_get_image_width]:           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-width
+[cairo_surface_get_image_height]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-height
+[cairo_surface_get_image_stride]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-stride
+[cairo_surface_get_image_bpp]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-bpp
+[cairo_surface_get_image_pixel_function]:  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-pixel-function
+[cairo_surface_set_image_pixel_function]:  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-image-pixel-function
 
 [cairo_get_type]:                          http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-type
 [cairo_status]:                            http://cairographics.org/manual/cairo-cairo-t.html#cairo-status
