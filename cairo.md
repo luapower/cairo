@@ -14,8 +14,8 @@ A lightweight ffi binding of the [cairo graphics] library.
 ------------------------------------------------------------------- -------------------------------------------------------------------
 __image surfaces__
 `cairo.cairo_image_surface_create(fmt, w, h) -> sr`                 [create a pixman surface][cairo_image_surface_create]
-`cairo.cairo_image_surface_create_for_data (data,fmt,w,h,strd)->sr` [create a pixman surface given a buffer][cairo_image_surface_create_for_data]
-`cairo.cairo_image_surface_create_from_bitmap(bmp) -> sr`           create a surface from a [bitmap]
+`cairo.cairo_image_surface_create _for_data(data,fmt,w,h,strd)->sr` [create a pixman surface given a buffer][cairo_image_surface_create_for_data]
+`cairo.cairo_image_surface_create _from_bitmap(bmp) -> sr`          create a surface from a [bitmap]
 __recording surfaces__
 `cairo.cairo_recording_surface_create(...)`
 __png support__
