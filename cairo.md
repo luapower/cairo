@@ -30,6 +30,7 @@ style is available for them.
 
 Additional wrappers are provided for completeness:
 
+<div class="small">
 -------------------------------------------- ------------------------------------------------
 `cr:quad_curve_to(x1, y1, x2, y2)`           add a quad bezier to the current path
 `cr:rel_quad_curve_to(x1, y1, x2, y2)`       add a relative quad bezier to the current path
@@ -369,6 +370,7 @@ __matrices__
 __integer rectangles__
 `irect:create_region()`                     [ref][cairo_create_region]
 ------------------------------------------- ---------------------------------------
+</div>
 
 
 [cairo_save]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-save
