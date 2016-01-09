@@ -6,54 +6,11 @@ tagline: cairo graphics engine
 
 A lightweight ffi binding of the [cairo graphics] library.
 
-
-## Features
-
-  * cairo types have associated methods, so you can use `context:paint()`
-  instead of `cairo.cairo_paint(context)`.
-  * pointers to objects for which cairo holds no references are bound to
-  Lua's garbage collector to prevent leaks.
-  * ref-counted objects have a free() method that checks ref. count and a
-  destroy() method that doesn't.
-  * functions that work with `char*` are made to accept/return Lua strings.
-  * enums can be passed in as strings, in lowercase and without prefix.
-  * output buffers can be allocated internally or passed in as arguments.
-  * the included binary is built with support for in-memory surfaces,
-  recording surfaces, ps surfaces, pdf surfaces, svg surfaces, win32 surfaces,
-  win32 fonts and freetype fonts.
-
-See the [cairo manual] for the function list, remembering that method call
-style is available for them.
-
-Additional wrappers are provided for completeness:
-
-<div class="small">
--------------------------------------------- ------------------------------------------------
-`cr:quad_curve_to(x1, y1, x2, y2)`           add a quad bezier to the current path
-`cr:rel_quad_curve_to(x1, y1, x2, y2)`       add a relative quad bezier to the current path
-`cr:circle(cx, cy, r)`                       add a circle to the current path
-`cr:ellipse(cx, cy, rx, ry)`                 add an ellipse to the current path
-`cr:skew(ax, ay)`                            skew current matrix
-`cr:rotate_around(cx, cy, angle)`            rotate current matrix around point
-`cr:safe_transform(mt)`                      transform current matrix if possible
-`mt:transform(with_mt) -> mt`                transform matrix with other matrix
-`mt:invertible() -> true|false`              is matrix invertible?
-`mt:safe_transform(with_mt)`                 transform matrix if possible
-`mt:skew(ax, ay)`                            skew matrix
-`mt:rotate_around(cx, cy, angle)`            rotate matrix around point
-`surface:apply_alpha(alpha)`                 make surface transparent
--------------------------------------------- ------------------------------------------------
-
-Also, `cairo.cairo_image_surface_create_from_bitmap(bmp) -> surface`
-creates a cairo image surface from a [bitmap] object if it's in one
-of the supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
-
 [cairo graphics]:   http://cairographics.org/
-[cairo manual]:     http://cairographics.org/manual/
-
 
 ## API
 
+<div class="small">
 ------------------------------------------------- -------------------------------------------------
 __drawing contexts__
 `sr:create_context()`                             [create a context on a surface][cairo_create]
@@ -619,3 +576,43 @@ __user data__
 [cairo_multiply]:                          http://cairographics.org/manual/cairo-cairo-t.html#cairo-multiply
 [cairo_transform_distance]:                http://cairographics.org/manual/cairo-cairo-t.html#cairo-transform-distance
 [cairo_transform_point]:                   http://cairographics.org/manual/cairo-cairo-t.html#cairo-transform-point
+
+
+## Luaization
+
+  * cairo types have associated methods, so you can use `context:paint()`
+  instead of `cairo.cairo_paint(context)`.
+  * pointers to objects for which cairo holds no references are bound to
+  Lua's garbage collector to prevent leaks.
+  * ref-counted objects have a free() method that checks ref. count and a
+  destroy() method that doesn't.
+  * functions that work with `char*` are made to accept/return Lua strings.
+  * enums can be passed in as strings, in lowercase and without prefix.
+  * output buffers can be allocated internally or passed in as arguments.
+  * the included binary is built with support for in-memory surfaces,
+  recording surfaces, ps surfaces, pdf surfaces, svg surfaces, win32 surfaces,
+  win32 fonts and freetype fonts.
+
+Additional wrappers are provided for completeness:
+
+<div class="small">
+-------------------------------------------- ------------------------------------------------
+`cr:quad_curve_to(x1, y1, x2, y2)`           add a quad bezier to the current path
+`cr:rel_quad_curve_to(x1, y1, x2, y2)`       add a relative quad bezier to the current path
+`cr:circle(cx, cy, r)`                       add a circle to the current path
+`cr:ellipse(cx, cy, rx, ry)`                 add an ellipse to the current path
+`cr:skew(ax, ay)`                            skew current matrix
+`cr:rotate_around(cx, cy, angle)`            rotate current matrix around point
+`cr:safe_transform(mt)`                      transform current matrix if possible
+`mt:transform(with_mt) -> mt`                transform matrix with other matrix
+`mt:invertible() -> true|false`              is matrix invertible?
+`mt:safe_transform(with_mt)`                 transform matrix if possible
+`mt:skew(ax, ay)`                            skew matrix
+`mt:rotate_around(cx, cy, angle)`            rotate matrix around point
+`surface:apply_alpha(alpha)`                 make surface transparent
+-------------------------------------------- ------------------------------------------------
+</div>
+
+Also, `cairo.cairo_image_surface_create_from_bitmap(bmp) -> surface`
+creates a cairo image surface from a [bitmap] object if it's in one
+of the supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
