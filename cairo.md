@@ -10,17 +10,14 @@ A lightweight ffi binding of the [cairo graphics] library.
 ## Features
 
   * cairo types have associated methods, so you can use `context:paint()`
-  instead of `cairo.cairo_paint(context)`
+  instead of `cairo.cairo_paint(context)`.
   * pointers to objects for which cairo holds no references are bound to
-  Lua's garbage collector to prevent leaks
+  Lua's garbage collector to prevent leaks.
   * ref-counted objects have a free() method that checks ref. count and a
   destroy() method that doesn't.
   * functions that work with `char*` are made to accept/return Lua strings.
-  * output buffers are optional - if not passed on as arguments, temporary
-  buffers are allocated instead; the values in the buffers are then returned
-  as multiple return values, such as in
-  `context:clip_extents([dx1][,dy1][,dx2[,dy2]) -> x1, y1, x2, y2`,
-  where dx1 etc. are `double[1]` buffers.
+  * enums can be passed in as strings, in lowercase and without prefix.
+  * output buffers can be allocated internally or passed in as arguments.
   * the included binary is built with support for in-memory surfaces,
   recording surfaces, ps surfaces, pdf surfaces, svg surfaces, win32 surfaces,
   win32 fonts and freetype fonts.
@@ -179,14 +176,6 @@ __rasterization options__
 `cr:get_miter_limit() -> limit`             [get the current miter limit][cairo_get_miter_limit]
 `cr:get_target() -> sr`                     [get the ultimate destination surface][cairo_get_target]
 `cr:get_group_target() -> sr`               [get the current destination surface][cairo_get_group_target]
-__user data__
-`cr:get_user_data(key) -> val`              [ref][cairo_get_user_data]
-`cr:set_user_data(key, val[, destroy])`     [ref][cairo_set_user_data]
-__freeing__
-`cr:reference()`                            [ref][cairo_reference]
-`cr:get_reference_count()`                  [ref][cairo_get_reference_count]
-`cr:destroy()`                              [ref][cairo_destroy]
-`cr:free()`                                 free (error if ref count > 0)
 __surfaces__
 `sr:create_similar()`                       [ref][cairo_surface_create_similar]
 `sr:create_for_rectangle()`                 [ref][cairo_surface_create_for_rectangle]
@@ -198,8 +187,6 @@ __surfaces__
 `sr:get_content()`                          [ref][cairo_surface_get_content]
 `sr:write_to_png()`                         [ref][cairo_surface_write_to_png]
 `sr:write_to_png_stream()`                  [ref][cairo_surface_write_to_png_stream]
-`sr:get_user_data()`                        [ref][cairo_surface_get_user_data]
-`sr:set_user_data()`                        [ref][cairo_surface_set_user_data]
 `sr:get_mime_data()`                        [ref][cairo_surface_get_mime_data]
 `sr:set_mime_data()`                        [ref][cairo_surface_set_mime_data]
 `sr:get_font_options()`                     [ref][cairo_surface_get_font_options]
@@ -220,13 +207,9 @@ __surfaces__
 `sr:get_image_width()`                      [ref][cairo_surface_get_image_width]
 `sr:get_image_height()`                     [ref][cairo_surface_get_image_height]
 `sr:get_image_stride()`                     [ref][cairo_surface_get_image_stride]
-`sr:get_image_bpp()`                        [ref][cairo_surface_get_image_bpp]
+`sr:get_image_bpp()`                        get the bits-per-pixel
 `sr:get_image_pixel_function()`             [ref][cairo_surface_get_image_pixel_function]
 `sr:set_image_pixel_function()`             [ref][cairo_surface_set_image_pixel_function]
-`sr:reference()`                            [ref][cairo_surface_reference]
-`sr:get_reference_count()`                  [ref][cairo_surface_get_reference_count]
-`sr:destroy()`                              [ref][cairo_surface_destroy]
-`sr:free()`                                 free (error if ref count > 0)
 __devices__
 `dev:get_type()`                            [ref][cairo_get_type]
 `dev:status()`                              [ref][cairo_status]
@@ -235,17 +218,9 @@ __devices__
 `dev:release()`                             [ref][cairo_release]
 `dev:flush()`                               [ref][cairo_flush]
 `dev:finish()`                              [ref][cairo_finish]
-`dev:get_user_data()`                       [ref][cairo_get_user_data]
-`dev:set_user_data()`                       [ref][cairo_set_user_data]
-`dev:reference()`                           [ref][cairo_reference]
-`dev:get_reference_count()`                 [ref][cairo_get_reference_count]
-`dev:destroy()`                             [ref][cairo_destroy]
-`dev:free()`                                free (error if ref count > 0)
 __patterns__
 `patt:status()`                             [ref][cairo_status]
 `patt:status_string()`                      [ref][cairo_status_string]
-`patt:get_user_data()`                      [ref][cairo_get_user_data]
-`patt:set_user_data()`                      [ref][cairo_set_user_data]
 `patt:get_type()`                           [ref][cairo_get_type]
 `patt:add_color_stop_rgb()`                 [ref][cairo_add_color_stop_rgb]
 `patt:add_color_stop_rgba()`                [ref][cairo_add_color_stop_rgba]
@@ -261,16 +236,10 @@ __patterns__
 `patt:get_color_stop_count()`               [ref][cairo_get_color_stop_count]
 `patt:get_linear_points()`                  [ref][cairo_get_linear_points]
 `patt:get_radial_circles()`                 [ref][cairo_get_radial_circles]
-`patt:reference()`                          [ref][cairo_reference]
-`patt:get_reference_count()`                [ref][cairo_get_reference_count]
-`patt:destroy()`                            [ref][cairo_destroy]
-`patt:free()`                               free (error if ref count > 0)
 __scaled fonts__
 `sfont:status()`                            [ref][cairo_status]
 `sfont:status_string()`                     [ref][cairo_status_string]
 `sfont:get_type()`                          [ref][cairo_get_type]
-`sfont:get_user_data()`                     [ref][cairo_get_user_data]
-`sfont:set_user_data()`                     [ref][cairo_set_user_data]
 `sfont:extents()`                           [ref][cairo_extents]
 `sfont:text_extents()`                      [ref][cairo_text_extents]
 `sfont:glyph_extents()`                     [ref][cairo_glyph_extents]
@@ -280,16 +249,10 @@ __scaled fonts__
 `sfont:get_ctm()`                           [ref][cairo_get_ctm]
 `sfont:get_scale_matrix()`                  [ref][cairo_get_scale_matrix]
 `sfont:get_font_options()`                  [ref][cairo_get_font_options]
-`sfont:reference()`                         [ref][cairo_reference]
-`sfont:get_reference_count()`               [ref][cairo_get_reference_count]
-`sfont:destroy()`                           [ref][cairo_destroy]
-`sfont:free()`                              free (error if ref count > 0)
 __font faces__
 `font:status()`                             [ref][cairo_status]
 `font:status_string()`                      [ref][cairo_status_string]
 `font:get_type()`                           [ref][cairo_get_type]
-`font:get_user_data()`                      [ref][cairo_get_user_data]
-`font:set_user_data()`                      [ref][cairo_set_user_data]
 `font:create_scaled_font()`                 [ref][cairo_create_scaled_font]
 `font:toy_get_family()`                     [ref][cairo_toy_get_family]
 `font:toy_get_slant()`                      [ref][cairo_toy_get_slant]
@@ -302,10 +265,6 @@ __font faces__
 `font:user_get_render_glyph_func()`         [ref][cairo_user_get_render_glyph_func]
 `font:user_get_text_to_glyphs_func()`       [ref][cairo_user_get_text_to_glyphs_func]
 `font:user_get_unicode_to_glyph_func()`     [ref][cairo_user_get_unicode_to_glyph_func]
-`font:reference()`                          [ref][cairo_reference]
-`font:get_reference_count()`                [ref][cairo_get_reference_count]
-`font:destroy()`                            [ref][cairo_destroy]
-`font:free()`                               free (error if ref count > 0)
 __font options__
 `fopt:copy()`                               [ref][cairo_copy]
 `fopt:free()`                               [ref][cairo_free]
@@ -349,9 +308,6 @@ __regions__
 `rgn:union_rectangle()`                     [ref][cairo_union_rectangle]
 `rgn:xor()`                                 [ref][cairo_xor]
 `rgn:xor_rectangle()`                       [ref][cairo_xor_rectangle]
-`rgn:reference()`                           [ref][cairo_reference]
-`rgn:destroy()`                             [ref][cairo_destroy]
-`rgn:free()`                                free (error if ref count > 0)
 __rectangles__
 `rect:free()`                               [ref][cairo_free]
 __glyphs__
@@ -362,23 +318,31 @@ __matrices__
 `mat:init_translate()`                      [ref][cairo_init_translate]
 `mat:init_scale()`                          [ref][cairo_init_scale]
 `mat:init_rotate()`                         [ref][cairo_init_rotate]
-`mat:translate()`                           [ref][cairo_translate]
-`mat:scale()`                               [ref][cairo_scale]
-`mat:rotate()`                              [ref][cairo_rotate]
-`mat:rotate_around()`                       [ref][cairo_rotate_around]
-`mat:scale_around()`                        [ref][cairo_scale_around]
+`mat:translate(x, y)`                       [ref][cairo_translate]
+`mat:scale(sx, sy)`                         [ref][cairo_scale]
+`mat:rotate(angle)`                         [ref][cairo_rotate]
+`mat:rotate_around(cx, cy, angle)`          [ref][cairo_rotate_around]
+`mat:scale_around(cx, cy, sx, sy)`          [ref][cairo_scale_around]
 `mat:invert()`                              [ref][cairo_invert]
 `mat:multiply()`                            [ref][cairo_multiply]
-`mat:transform_distance()`                  [ref][cairo_transform_distance]
-`mat:transform_point()`                     [ref][cairo_transform_point]
-`mat:transform()`
-`mat:invertible()`
-`mat:safe_transform()`
-`mat:skew()`
-`mat:copy()`
-`mat:init_matrix()`
+`mat:transform_point(x, y) -> x, y`         [ref][cairo_transform_point]
+`mat:transform_distance(x, y) -> x, y`      [ref][cairo_transform_distance]
+`mat:transform(mat)`
+`mat:invertible() -> true | false`
+`mat:safe_transform(mat)`
+`mat:skew(ay, ay)`
+`mat:copy() -> mat`                         copy matrix
+`mat:init_matrix(mat)`                      init with a matrix
 __integer rectangles__
 `irect:create_region()`                     [ref][cairo_create_region]
+__ref-counting__
+`cr/sr/dev/patt/sfont/font/rgn:reference()`                       [increase ref count][cairo_reference]
+`cr/sr/dev/patt/sfont/font/rgn:destroy()`                         [decrease ref count][cairo_destroy]
+`cr/sr/dev/patt/sfont/font/rgn:get_reference_count() -> refcount` [get ref count][cairo_get_reference_count]
+`cr/sr/dev/patt/sfont/font/rgn:free()`                            free (error if ref count > 0)
+__user data__
+`cr/sr/dev/patt/sfont/font:get_user_data(key)`                    [ref][cairo_get_user_data]
+`cr/sr/dev/patt/sfont/font:set_user_data(key, val[, destroy])`    [ref][cairo_set_user_data]
 ------------------------------------------- ---------------------------------------
 </div>
 
@@ -535,7 +499,6 @@ __integer rectangles__
 [cairo_surface_get_image_width]:           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-width
 [cairo_surface_get_image_height]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-height
 [cairo_surface_get_image_stride]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-stride
-[cairo_surface_get_image_bpp]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-bpp
 [cairo_surface_get_image_pixel_function]:  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-pixel-function
 [cairo_surface_set_image_pixel_function]:  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-image-pixel-function
 
@@ -559,6 +522,7 @@ __integer rectangles__
 [cairo_get_type]:                          http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-type
 [cairo_add_color_stop_rgb]:                http://cairographics.org/manual/cairo-cairo-t.html#cairo-add-color-stop-rgb
 [cairo_add_color_stop_rgba]:               http://cairographics.org/manual/cairo-cairo-t.html#cairo-add-color-stop-rgba
+
 [cairo_set_matrix]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-matrix
 [cairo_get_matrix]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-matrix
 [cairo_set_extend]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-extend
