@@ -293,7 +293,7 @@ __matrices__
 __integer rectangles__
 `irect:create_region()`                           [ref][cairo_create_region]
 __ref-counting__
-`obj:get_reference_count() -> refcount`           [get ref count][cairo_get_reference_count]
+`obj:get_reference_count() -> refcount`           [get ref count (*)][cairo_get_reference_count]
 `obj:reference()`                                 [increase ref count][cairo_reference]
 `obj:destroy()`                                   [decrease ref count and free when 0][cairo_destroy]
 `obj:free()`                                      free (error if ref count > 0)
@@ -303,7 +303,7 @@ __user data__
 ------------------------------------------------- -------------------------------------------------
 </div>
 
-> `obj` above means `cr`, `sr`, `dev`, `patt`, `sfont`, `font` or `rgn`.
+> (*) `obj` above means `cr`, `sr`, `dev`, `patt`, `sfont`, `font` or `rgn`.
 
 [cairo_create]:                            http://cairographics.org/manual/cairo-t.html#cairo-create
 [cairo_save]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-save
