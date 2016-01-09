@@ -19,8 +19,8 @@ __image surfaces__
 __recording surfaces__
 `cairo.cairo_recording_surface_create(...)`
 __png support__
-`cairo.cairo_image_surface_create_from_png(filename) -> sr`         [create a pixman surface from a png file][cairo_image_surface_create_from_png]
-`cairo.cairo_image_surface_create_from_png_stream(read, ptr) -> sr` [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
+`cairo.cairo_image_surface_create _from_png(filename) -> sr`        [create a pixman surface from a png file][cairo_image_surface_create_from_png]
+`cairo.cairo_image_surface_create _from_png_stream(read, ptr)->sr`  [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
 __surfaces__
 `sr:create_similar(content, w, h) -> sr`                            [create a similar surface][cairo_surface_create_similar]
 `sr:create_similar_image(format, w, h) -> sr`                       [create a similar image surface][cairo_surface_create_similar_image]
