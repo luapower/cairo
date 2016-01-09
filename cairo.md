@@ -54,7 +54,7 @@ of the supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
 
 ## API
 
-------------------------------------------------- -----------------------------------------------------
+------------------------------------------------- -------------------------------------------------
 __drawing contexts__
 `sr:create_context()`                             [create a context on a surface][cairo_create]
 `cr:save()`                                       [save state (push to stack)][cairo_save]
@@ -343,11 +343,10 @@ __ref-counting__
 __user data__
 `obj:set_user_data(key, val[, destroy])`          [set a user data pointer][cairo_set_user_data]
 `obj:get_user_data(key) -> val`                   [get a user data pointer][cairo_get_user_data]
-------------------------------------------------- ---------------------------------------
+------------------------------------------------- -------------------------------------------------
 </div>
 
 > `obj` above means `cr`, `sr`, `dev`, `patt`, `sfont`, `font` or `rgn`.
-
 
 [cairo_create]:                            http://cairographics.org/manual/cairo-t.html#cairo-create
 [cairo_save]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-save
