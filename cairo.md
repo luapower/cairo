@@ -383,23 +383,7 @@ __user data__
 [cairo_user_to_device_distance]:           http://cairographics.org/manual/cairo-cairo-t.html#cairo-user-to-device-distance
 [cairo_device_to_user]:                    http://cairographics.org/manual/cairo-cairo-t.html#cairo-device-to-user
 [cairo_device_to_user_distance]:           http://cairographics.org/manual/cairo-cairo-t.html#cairo-device-to-user-distance
-[cairo_new_path]:                          http://cairographics.org/manual/cairo-cairo-t.html#cairo-new-path
-[cairo_move_to]:                           http://cairographics.org/manual/cairo-cairo-t.html#cairo-move-to
-[cairo_new_sub_path]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-new-sub-path
-[cairo_line_to]:                           http://cairographics.org/manual/cairo-cairo-t.html#cairo-line-to
-[cairo_curve_to]:                          http://cairographics.org/manual/cairo-cairo-t.html#cairo-curve-to
-[cairo_quad_curve_to]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-quad-curve-to
-[cairo_arc]:                               http://cairographics.org/manual/cairo-cairo-t.html#cairo-arc
-[cairo_arc_negative]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-arc-negative
-[cairo_circle]:                            http://cairographics.org/manual/cairo-cairo-t.html#cairo-circle
-[cairo_ellipse]:                           http://cairographics.org/manual/cairo-cairo-t.html#cairo-ellipse
-[cairo_rel_move_to]:                       http://cairographics.org/manual/cairo-cairo-t.html#cairo-rel-move-to
-[cairo_rel_line_to]:                       http://cairographics.org/manual/cairo-cairo-t.html#cairo-rel-line-to
-[cairo_rel_curve_to]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-rel-curve-to
-[cairo_rel_quad_curve_to]:                 http://cairographics.org/manual/cairo-cairo-t.html#cairo-rel-quad-curve-to
-[cairo_rectangle]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-rectangle
-[cairo_close_path]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-close-path
-[cairo_path_extents]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-path-extents
+
 [cairo_paint]:                             http://cairographics.org/manual/cairo-cairo-t.html#cairo-paint
 [cairo_paint_with_alpha]:                  http://cairographics.org/manual/cairo-cairo-t.html#cairo-paint-with-alpha
 [cairo_mask]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-mask
@@ -454,10 +438,28 @@ __user data__
 [cairo_get_matrix]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-matrix
 [cairo_get_target]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-target
 [cairo_get_group_target]:                  http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-group-target
-[cairo_copy_path]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-copy-path
-[cairo_copy_path_flat]:                    http://cairographics.org/manual/cairo-cairo-t.html#cairo-copy-path-flat
-[cairo_append_path]:                       http://cairographics.org/manual/cairo-cairo-t.html#cairo-append-path
-[cairo_path_destroy]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-path-destroy
+
+[cairo_new_path]:                          http://cairographics.org/manual/cairo-Paths.html#cairo-new-path
+[cairo_new_sub_path]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-new-sub-path
+[cairo_move_to]:                           http://cairographics.org/manual/cairo-Paths.html#cairo-move-to
+[cairo_line_to]:                           http://cairographics.org/manual/cairo-Paths.html#cairo-line-to
+[cairo_curve_to]:                          http://cairographics.org/manual/cairo-Paths.html#cairo-curve-to
+[cairo_quad_curve_to]:                     http://cairographics.org/manual/cairo-Paths.html#cairo-quad-curve-to
+[cairo_arc]:                               http://cairographics.org/manual/cairo-Paths.html#cairo-arc
+[cairo_arc_negative]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-arc-negative
+[cairo_circle]:                            http://cairographics.org/manual/cairo-Paths.html#cairo-circle
+[cairo_ellipse]:                           http://cairographics.org/manual/cairo-Paths.html#cairo-ellipse
+[cairo_rel_move_to]:                       http://cairographics.org/manual/cairo-Paths.html#cairo-rel-move-to
+[cairo_rel_line_to]:                       http://cairographics.org/manual/cairo-Paths.html#cairo-rel-line-to
+[cairo_rel_curve_to]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-rel-curve-to
+[cairo_rel_quad_curve_to]:                 http://cairographics.org/manual/cairo-Paths.html#cairo-rel-quad-curve-to
+[cairo_rectangle]:                         http://cairographics.org/manual/cairo-Paths.html#cairo-rectangle
+[cairo_close_path]:                        http://cairographics.org/manual/cairo-Paths.html#cairo-close-path
+[cairo_copy_path]:                         http://cairographics.org/manual/cairo-Paths.html#cairo-copy-path
+[cairo_copy_path_flat]:                    http://cairographics.org/manual/cairo-Paths.html#cairo-copy-path-flat
+[cairo_append_path]:                       http://cairographics.org/manual/cairo-Paths.html#cairo-append-path
+[cairo_path_extents]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-extents
+[cairo_path_destroy]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-destroy
 
 [cairo_status]:                            http://cairographics.org/manual/cairo-cairo-t.html#cairo-status
 [cairo_status_string]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-status-string
