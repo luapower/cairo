@@ -1265,6 +1265,5 @@ void _cairo_font_options_set_lcd_filter (cairo_font_options_t   *options, cairo_
 cairo_lcd_filter_t _cairo_font_options_get_lcd_filter (const cairo_font_options_t *options);
 void _cairo_font_options_set_round_glyph_positions (cairo_font_options_t *options, cairo_round_glyph_positions_t  round);
 cairo_round_glyph_positions_t _cairo_font_options_get_round_glyph_positions (const cairo_font_options_t *options);
-
 ]]
 
