@@ -1418,4 +1418,3 @@ ffi.metatype('cairo_matrix_t', {__index = mt, __tostring = mt.tostring})
 ffi.metatype('cairo_region_t', {__index = rgn, __eq = rgn.equal})
 
 return M
-
