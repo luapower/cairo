@@ -7,14 +7,21 @@
 -- and API additions for completeness (drawing quad curves, getting and
 -- setting pixel values, etc.).
 
--- NOTE: the declaration order follows the header file almost exactly
--- so you know where to add new declarations when upgrading the library.
+-- TODO: check_status vs return nil,err,status vs return status
 
 local ffi = require'ffi'
+local bit = require'bit'
 local reflect = require'ffi_reflect'
 require'cairo_h'
 local C = ffi.load'cairo'
 local M = {C = C}
+
+local function pargs(func)
+	return function(...)
+		print(func, ...)
+		return func(...)
+	end
+end
 
 --binding automation ---------------------------------------------------------
 
@@ -39,7 +46,7 @@ end
 
 --'foo' -> C.CAIRO_<PREFIX>_FOO and C.CAIRO_<PREFIX>_FOO -> 'foo' conversions
 local function X(prefix, val)
-	return enums[prefix][val]
+	return (assert(enums[prefix][val], 'invalid enum value'))
 end
 
 --create a gc-tying constructor
@@ -50,10 +57,10 @@ local function ref_func(create, destroy)
 	end
 end
 
---free() method for reference-counted objects: crash if there are still references.
+--method for freeing reference-counted objects: crash if there are still references.
 local function free(self)
 	local n = self:refcount() - 1
-	self:destroy()
+	self:unref()
 	if n ~= 0  then
 		error(string.format('refcount of %s is %d, should be 0', tostring(self), n))
 	end
@@ -77,30 +84,31 @@ end
 --create a flag getter
 local function getflag_func(get, prefix)
 	return get and function(self)
-		return X(prefix, get(self))
+		return X(prefix, tonumber(get(self)))
 	end
 end
 
 --create a get/set function that disambiguates get() from set() actions
 --by the second argument being nil or not.
 local function getset_func(get, set, prefix)
+	if not (get and set) then return end
 	if prefix then
-		local get = getflag_func(get, prefix)
-		local set = setflag_func(set, prefix)
-		return getset_func(get, set)
+		get = getflag_func(get, prefix)
+		set = setflag_func(set, prefix)
 	end
-	return (get or set) and function(self, val, ...)
-		if val == nil then --get val
-			return get(self, val, ...)
+	return function(self, ...)
+		if type((...)) == 'nil' then --get val
+			return get(self, ...)
 		else --set val
-			set(self, val, ...)
+			set(self, ...)
+			return self --for method chaining
 		end
 	end
 end
 
 --scratch out-vars
 local d1 = ffi.new'double[1]'
-local d1 = ffi.new'double[1]'
+local d2 = ffi.new'double[1]'
 local d3 = ffi.new'double[1]'
 local d4 = ffi.new'double[1]'
 local d5 = ffi.new'double[1]'
@@ -131,37 +139,39 @@ local function d4out_func(func)
 	end
 end
 
--- int -> bool
+-- wrap a function that returns a boolean
 local function bool_func(f)
 	return f and function(...)
 		return f(...) == 1
 	end
 end
 
---return a wrapping function that returns a struct
+--factory for creating wrappers for functions that have a struct output arg
 local function structout_func(ctype)
 	ctype = ffi.typeof(ctype)
 	return function(func)
 		return func and function(self, out)
 			out = out or ffi.new(ctype)
-			func(cr, out)
+			func(self, out)
 			return out
 		end
 	end
 end
 local mtout_func = structout_func'cairo_matrix_t'
 
+--factory for creating wrappers for functions that have a constructed output arg
 local function consout_func(cons)
 	return function(func)
 		return func and function(self, out)
 			out = out or cons()
-			func(cr, out)
+			func(self, out)
 			return out
 		end
 	end
 end
 local foptout_func = consout_func(ref_func(C.cairo_font_options_create, C.cairo_font_options_destroy))
 
+--wrap a function that has a cairo_text_extents_t as output arg 2 after self
 local function texout2_func(func)
 	local ctype = ffi.typeof'cairo_text_extents_t'
 	return func and function(self, arg1, out)
@@ -171,6 +181,7 @@ local function texout2_func(func)
 	end
 end
 
+--wrap a function that has a cairo_text_extents_t as output arg 3 after self
 local function texout3_func(func)
 	local ctype = ffi.typeof'cairo_text_extents_t'
 	return func and function(self, arg1, arg2, out)
@@ -180,6 +191,7 @@ local function texout3_func(func)
 	end
 end
 
+--wrap a function that has a cairo_font_extents_t as output arg 1 after self
 local function fexout_func(func)
 	local ctype = ffi.typeof'cairo_font_extents_t'
 	return func and function(self, out)
@@ -189,21 +201,22 @@ local function fexout_func(func)
 	end
 end
 
+--wrap a function that returns a string
 local function str_func(func)
 	return func and function(...)
 		return ffi.string(func(...))
 	end
 end
 
---convert an outfunc into a getter to be used with getset_func.
+--convert a function with an output arg into a getter to be used with getset_func.
+--all we're doing is shifting the out arg from arg#1 to arg#2 after self so that
+--disambiguation between get and set actions can continue to work yet we can still
+--be able to give an output buffer in arg#2 for the get action.
 local function getter(outfunc)
-	return function(func)
-		return func and function(self, _, out)
-			return outfunc(self, out)
-		end
+	return function(self, _, out)
+		return outfunc(self, out)
 	end
 end
-
 mtout_getfunc = getter(mtout_func)
 foptout_getfunc = getter(foptout_func)
 
@@ -213,36 +226,29 @@ local function check_status(status)
 	end
 end
 
-local function check_surface(sr)
-	check_status(sr:status())
-	return sr
+local function ptr(p) --convert NULL to nil
+	if p == nil then return nil end
+	return p
 end
 
-local function sr_func(func)
-	return func and function(...)
-		return check_surface(func(...))
-	end
-end
-
+--wrap a pointer-returning function so that NULL is converted to nil
 local function ptr_func(func)
 	return func and function(...)
-		local p = func(...)
-		if p == nil then return nil end
-		return p
+		return ptr(func(...))
 	end
 end
 
+--method to get status as a string, for any object which has a status() method.
 local function status_string(self)
 	return M.status_to_string(self:status())
 end
 
 --binding --------------------------------------------------------------------
 
-M.version = C.cairo_version
+M.NULL = ffi.cast('void*', 0) --to force set action eg. cr:source(cairo.NULL)
 
-function M.version_string()
-	return ffi.string(C.cairo_version_string())
-end
+M.version = C.cairo_version
+M.version_string = str_func(C.cairo_version_string)
 
 map('CAIRO_STATUS_', {
 	'SUCCESS',
@@ -305,13 +311,21 @@ map('CAIRO_FORMAT_', {
 local cr = {}
 
 cr.ref = ref_func(C.cairo_reference, C.cairo_destroy)
-cr.destroy = destroy_func(C.cairo_destroy)
+cr.unref = destroy_func(C.cairo_destroy)
 cr.free = free
 cr.refcount = C.cairo_get_reference_count
+
 cr.save = C.cairo_save
 cr.restore = C.cairo_restore
-cr.push_group = C.cairo_push_group
-cr.push_group_with_content = setflag_func(C.cairo_push_group_with_content, 'CAIRO_CONTENT_')
+
+local push_group_with_content = setflag_func(C.cairo_push_group_with_content, 'CAIRO_CONTENT_')
+cr.push_group = function(cr, content)
+	if content then
+		push_group_with_content(cr, content)
+	else
+		C.cairo_push_group(cr)
+	end
+end
 cr.pop_group = ref_func(C.cairo_pop_group, C.cairo_pattern_destroy)
 cr.pop_group_to_source = C.cairo_pop_group_to_source
 
@@ -351,7 +365,9 @@ cr.operator = getset_func(C.cairo_get_operator, C.cairo_set_operator, 'CAIRO_OPE
 cr.source = getset_func(C.cairo_get_source, C.cairo_set_source)
 cr.source_rgb = C.cairo_set_source_rgb
 cr.source_rgba = C.cairo_set_source_rgba
-cr.source_surface = C.cairo_set_source_surface
+cr.source_surface = function(cr, sr, x, y)
+	C.cairo_set_source_surface(cr, sr, x or 0, y or 0)
+end
 cr.tolerance = getset_func(C.cairo_get_tolerance, C.cairo_set_tolerance)
 
 map('CAIRO_ANTIALIAS_', {
@@ -393,8 +409,9 @@ cr.line_join = getset_func(C.cairo_get_line_join, C.cairo_set_line_join, 'CAIRO_
 
 local function set_dash(cr, dashes, num_dashes, offset)
 	if type(dashes) == 'table' then
-		offset = num_dashes
-		dashes = ffi.new('double[?]', #dashes, dashes)
+		offset = num_dashes or 0
+		num_dashes = #dashes
+		dashes = ffi.new('double[?]', num_dashes, dashes)
 	end
 	C.cairo_set_dash(cr, dashes, num_dashes, offset)
 end
@@ -405,7 +422,7 @@ local function get_dash(cr, _, dashes) -- _ is for disambiguation with set_dash(
 		C.cairo_get_dash(cr, dashes, obuf)
 		return dashes, obuf[0]
 	else
-		local n = M.get_dash_count(cr)
+		local n = C.cairo_get_dash_count(cr)
 		dashes = ffi.new('double[?]', n)
 		C.cairo_get_dash(cr, dashes, obuf)
 		local t = {}
@@ -417,6 +434,7 @@ local function get_dash(cr, _, dashes) -- _ is for disambiguation with set_dash(
 end
 
 cr.dash = getset_func(get_dash, set_dash)
+cr.dash_count = C.cairo_get_dash_count
 
 cr.miter_limit = getset_func(C.cairo_get_miter_limit, C.cairo_set_miter_limit)
 
@@ -472,15 +490,15 @@ cr.copy_clip_rectangle_list = ref_func(C.cairo_copy_clip_rectangle_list, C.cairo
 
 local rl = {}
 
-rl.destroy = destroy_func(C.cairo_rectangle_list_destroy)
+rl.free = destroy_func(C.cairo_rectangle_list_destroy)
 
-M.glyph_allocate = ref_func(C.cairo_glyph_allocate, C.cairo_glyph_free)
+M.allocate_glyphs = ref_func(C.cairo_glyph_allocate, C.cairo_glyph_free)
 
 local glyph = {}
 
 glyph.free = destroy_func(C.cairo_glyph_free)
 
-M.text_cluster_allocate = ref_func(C.cairo_text_cluster_allocate, C.cairo_text_cluster_free)
+M.allocate_text_clusters = ref_func(C.cairo_text_cluster_allocate, C.cairo_text_cluster_free)
 
 local cluster = {}
 
@@ -523,12 +541,12 @@ map('CAIRO_HINT_METRICS_', {
 	'ON',
 })
 
-M.font_options_create = ref_func(C.cairo_font_options_create, C.cairo_font_options_destroy)
+M.create_font_options = ref_func(C.cairo_font_options_create, C.cairo_font_options_destroy)
 
 local fopt = {}
 
 fopt.copy = ref_func(C.cairo_font_options_copy, C.cairo_font_options_destroy)
-fopt.destroy = destroy_func(C.cairo_font_options_destroy)
+fopt.free = destroy_func(C.cairo_font_options_destroy)
 fopt.status = C.cairo_font_options_status
 fopt.status_string = status_string
 fopt.merge = C.cairo_font_options_merge
@@ -553,7 +571,7 @@ cr.scaled_font = getset_func(C.cairo_get_scaled_font, C.cairo_set_scaled_font) -
 cr.show_text = C.cairo_show_text
 cr.show_glyphs = C.cairo_show_glyphs
 cr.show_text_glyphs = function(cr, s, slen, glyphs, num_glyphs, clusters, num_clusters, cluster_flags)
-	C.cairo_show_text_glyphs(cr, s, slen, glyphs, num_glyphs, clusters, num_clusters, X('CAIRO_TEXT_CLUSTER_FLAG_', cluster_flags or 0))
+	C.cairo_show_text_glyphs(cr, s, slen, glyphs, num_glyphs, clusters, num_clusters, cluster_flags and X('CAIRO_TEXT_CLUSTER_FLAG_', cluster_flags) or 0)
 end
 cr.text_path = C.cairo_text_path
 cr.glpyh_path = C.cairo_glyph_path
@@ -564,7 +582,7 @@ cr.font_extents = fexout_func(C.cairo_font_extents)
 local face = {}
 
 face.ref = ref_func(C.cairo_font_face_reference)
-face.destroy = destroy_func(C.cairo_font_face_destroy)
+face.unref = destroy_func(C.cairo_font_face_destroy)
 face.free = free
 face.refcount = C.cairo_font_face_get_reference_count
 face.status = C.cairo_font_face_status
@@ -579,12 +597,12 @@ map('CAIRO_FONT_TYPE_', {
 })
 
 face.type = getflag_func(C.cairo_font_face_get_type, 'CAIRO_FONT_TYPE_')
-face.scaled_font_create = ref_func(C.cairo_scaled_font_create, C.cairo_scaled_font_destroy)
+face.create_scaled_font = ref_func(C.cairo_scaled_font_create, C.cairo_scaled_font_destroy)
 
 local sfont = {}
 
 sfont.ref = ref_func(C.cairo_scaled_font_reference, C.cairo_scaled_font_destroy)
-sfont.destroy = destroy_func(C.cairo_scaled_font_destroy)
+sfont.unref = destroy_func(C.cairo_scaled_font_destroy)
 sfont.free = free
 sfont.refcount = C.cairo_scaled_font_get_reference_count
 sfont.status = C.cairo_scaled_font_status
@@ -625,7 +643,7 @@ sfont.ctm = mtout_func(C.cairo_scaled_font_get_ctm)
 sfont.scale_matrix = mtout_func(C.cairo_scaled_font_get_scale_matrix)
 sfont.font_options = foptout_func(C.cairo_scaled_font_get_font_options)
 
-function M.toy_font_face_create(family, slant, weight)
+function M.create_toy_font_face(family, slant, weight)
 	return ffi.gc(
 		C.cairo_toy_font_face_create(family,
 			X('CAIRO_FONT_SLANT_', slant),
@@ -637,7 +655,7 @@ face.family = str_func(C.cairo_toy_font_face_get_family)
 face.slang = getflag_func(C.cairo_toy_font_face_get_slant, 'CAIRO_FONT_SLANT_')
 face.weight = getflag_func(C.cairo_toy_font_face_get_weight, 'CAIRO_FONT_WEIGHT_')
 
-M.user_font_face_create = ref_func(C.cairo_user_font_face_create, C.cairo_font_face_destroy)
+M.create_user_font_face = ref_func(C.cairo_user_font_face_create, C.cairo_font_face_destroy)
 
 face.init_func = getset_func(
 	C.cairo_user_font_face_get_init_func,
@@ -673,7 +691,7 @@ cr.append_path = C.cairo_append_path
 
 local path = {}
 
-path.destroy = destroy_func(C.cairo_path_destroy)
+path.free = destroy_func(C.cairo_path_destroy)
 path.status = C.cairo_status
 path.status_string = status_string
 
@@ -702,7 +720,7 @@ dev.acquire = C.cairo_device_acquire
 dev.release = C.cairo_device_release
 dev.flush = C.cairo_device_flush
 dev.finish = C.cairo_device_finish
-dev.destroy = destroy_func(C.cairo_device_destroy)
+dev.unref = destroy_func(C.cairo_device_destroy)
 dev.free = free
 dev.refcount = C.cairo_device_get_reference_count
 
@@ -710,16 +728,16 @@ local sr = {}
 
 sr.create_context = ref_func(C.cairo_create, C.cairo_destroy)
 
-sr.create_similar = ref_func(function(sr, content, w, h)
+sr.create_similar_surface = ref_func(function(sr, content, w, h)
 	return C.cairo_surface_create_similar(sr, X('CAIRO_CONTENT_', content), w, h)
 end, C.cairo_surface_destroy)
 
-sr.create_similar_image = ref_func(function(sr, format, w, h)
+sr.create_similar_image_surface = ref_func(function(sr, format, w, h)
 	return C.cairo_surface_create_similar(sr, X('CAIRO_FORMAT_', format), w, h)
 end, C.cairo_surface_destroy)
 
 sr.map_to_image = function(sr, x, y, w, h)
-	local isr = check_surface(C.cairo_surface_map_to_image(sr, set_int_rect(x, y, w, h)))
+	local isr = C.cairo_surface_map_to_image(sr, set_int_rect(x, y, w, h))
 	ffi.gc(isr, function(isr)
 		C.cairo_surface_unmap_image(sr, isr)
 	end)
@@ -730,16 +748,16 @@ sr.unmap_image = function(sr, isr)
 	C.cairo_surface_unmap_image(sr, isr)
 end
 
-sr.create_for_rectangle = ref_func(sr_func(C.cairo_surface_create_for_rectangle), C.cairo_surface_destroy)
+sr.create_subsurface = ref_func(C.cairo_surface_create_for_rectangle, C.cairo_surface_destroy)
 
 map('CAIRO_SURFACE_OBSERVER_', {
 	'NORMAL',
 	'RECORD_OPERATIONS',
 })
 
-sr.create_observer = function(sr, mode)
+sr.create_observer_surface = function(sr, mode)
 	local osr = C.cairo_surface_create_observer(sr, X('CAIRO_SURFACE_OBSERVER_', mode))
-	return ffi.gc(check_surface(osr), C.cairo_surface_destroy)
+	return ffi.gc(osr, C.cairo_surface_destroy)
 end
 
 sr.add_paint_callback = C.cairo_surface_observer_add_paint_callback
@@ -762,7 +780,7 @@ dev.glyphs_elapsed = C.cairo_device_observer_glyphs_elapsed
 
 sr.ref = ref_func(C.cairo_surface_reference, C.cairo_surface_destroy)
 sr.finish = C.cairo_surface_finish
-sr.destroy = destroy_func(C.cairo_surface_destroy)
+sr.unref = destroy_func(C.cairo_surface_destroy)
 sr.free = free
 
 sr.device = ptr_func(C.cairo_surface_get_device) --weak ref
@@ -804,19 +822,17 @@ sr.content = getflag_func(C.cairo_surface_get_content, 'CAIRO_CONTENT_T')
 sr.write_to_png = _C.cairo_surface_write_to_png
 sr.write_to_png_stream = C.cairo_surface_write_to_png_stream
 
---[[ TODO
-sr.cairo_surface_get_mime_data (cairo_surface_t *surface,
-                             const char *mime_type,
-                             const void **data,
-                             unsigned long *length);
- cairo_status_t
-cairo_surface_set_mime_data (cairo_surface_t *surface,
-                             const char *mime_type,
-                             const void *data,
-                             unsigned long length,
-        cairo_destroy_func_t destroy,
-        void *closure);
-]]
+local data_buf = ffi.new'void*[1]'
+local len_buf = ffi.new'unsigned long[1]'
+
+sr.mime_data = function(sr, mime_type, data, len, destroy, closure)
+	if data then
+		return C.cairo_surface_set_mime_data(sr, mime_type, data, len, destroy, closure) --returns status
+	else
+		C.cairo_surface_get_mime_data(sr, mime_type, data_buf, len_buf)
+		return data_buf[0], len_buf[0]
+	end
+end
 
 sr.supports_mime_type = bool_func(C.cairo_surface_supports_mime_type)
 
@@ -845,15 +861,19 @@ local cairo_formats = {
 	g1     = C.CAIRO_FORMAT_A1,
 	rgb565 = C.CAIRO_FORMAT_RGB16_565,
 }
-M.image_surface_create = ref_func(sr_func(function(fmt, w, h)
+M.create_image_surface = function(fmt, w, h)
 	if type(fmt) == 'table' then
 		local bmp = fmt
 		local format = assert(cairo_formats[bmp.format], 'unsupported format')
-		return C.cairo_image_surface_create_for_data(bmp.data, format, bmp.w, bmp.h, bmp.stride)
+		local sr = C.cairo_image_surface_create_for_data(bmp.data, format, bmp.w, bmp.h, bmp.stride)
+		return ffi.gc(sr, function(sr)
+			local _ = bmp.data --pin it
+			C.cairo_surface_destroy(sr)
+		end)
 	else
-		return C.cairo_image_surface_create(fmt, w, h)
+		return ffi.gc(C.cairo_image_surface_create(fmt, w, h), C.cairo_surface_destroy)
 	end
-end), C.cairo_surface_destroy)
+end
 
 M.format_stride_for_width = C.cairo_format_stride_for_width
 
@@ -863,21 +883,21 @@ sr.width = C.cairo_image_surface_get_width
 sr.height = C.cairo_image_surface_get_height
 sr.stride = C.cairo_image_surface_get_stride
 
-sr.create_from_png = ref_func(sr_func(_C.cairo_image_surface_create_from_png), C.cairo_surface_destroy)
-sr.create_from_png_stream = ref_func(sr_func(_C.cairo_image_surface_create_from_png_stream), C.cairo_surface_destroy)
+sr.create_image_surface_from_png = ref_func(_C.cairo_image_surface_create_from_png, C.cairo_surface_destroy)
+sr.create_image_surface_from_png_stream = ref_func(_C.cairo_image_surface_create_from_png_stream, C.cairo_surface_destroy)
 
 local r = ffi.new'cairo_rectangle_t'
-function M.recording_surface_create(content, x, y, w, h)
+function M.create_recording_surface(content, x, y, w, h)
 	if x then
 		r.x = x
 		r.y = y
 		r.width = w
 		r.height = h
 	end
-	return ffi.gc(check_surface(
+	return ffi.gc(
 		C.cairo_recording_surface_create(
 			X('CAIRO_CONTENT_', content),
-			x and r or nil)
+			x and r or nil
 		), M.surface_destroy)
 end
 
@@ -888,7 +908,7 @@ sr.extents = function(sr)
 	end
 end
 
-M.pattern_create_raster_source = function(udata, content, w, h)
+M.create_raster_source_pattern = function(udata, content, w, h)
 	local patt = C.cairo_pattern_create_raster_source(udata, X('CAIRO_CONTENT_', content), w, h)
 	return ffi.gc(patt, C.cairo_pattern_destroy)
 end
@@ -899,17 +919,16 @@ patt.callback_data = getset_func(
 	C.cairo_raster_source_pattern_get_callback_data,
 	C.cairo_raster_source_pattern_set_callback_data)
 
-	--[[ TODO
-patt.acquire = getset_func(
-cairo_raster_source_pattern_set_acquire (cairo_pattern_t *pattern,
-      cairo_raster_source_acquire_func_t acquire,
-      cairo_raster_source_release_func_t release);
- void
-cairo_raster_source_pattern_get_acquire (cairo_pattern_t *pattern,
-      cairo_raster_source_acquire_func_t *acquire,
-      cairo_raster_source_release_func_t *release);
- void
-]]
+local acquire_buf = ffi.new'cairo_raster_source_acquire_func_t[1]'
+local release_buf = ffi.new'cairo_raster_source_release_func_t[1]'
+patt.acquire = function(patt, acquire, release)
+	if acquire then
+		C.cairo_raster_source_pattern_set_acquire(patt, acquire, release)
+	else
+		C.cairo_raster_source_pattern_get_acquire(patt, acquire_buf, release_buf)
+		return ptr(acquire_buf[0]), ptr(release_buf[0])
+	end
+end
 
 patt.snapshot = getset_func(
 	C.cairo_raster_source_pattern_get_snapshot,
@@ -923,15 +942,15 @@ patt.finish = getset_func(
 	C.cairo_raster_source_pattern_get_finish,
 	C.cairo_raster_source_pattern_set_finish)
 
-M.pattern_create_rgb = ref_func(C.cairo_pattern_create_rgb, C.cairo_pattern_destroy)
-M.pattern_create_rgba = ref_func(C.cairo_pattern_create_rgba, C.cairo_pattern_destroy)
-M.pattern_create_for_surface = ref_func(C.cairo_pattern_create_for_surface, C.cairo_pattern_destroy)
-M.pattern_create_linear = ref_func(C.cairo_pattern_create_linear, C.cairo_pattern_destroy)
-M.pattern_create_radial = ref_func(C.cairo_pattern_create_radial, C.cairo_pattern_destroy)
-M.pattern_create_mesh = ref_func(C.cairo_pattern_create_mesh, C.cairo_pattern_destroy)
+M.create_rgb_pattern = ref_func(C.cairo_pattern_create_rgb, C.cairo_pattern_destroy)
+M.create_rgba_pattern = ref_func(C.cairo_pattern_create_rgba, C.cairo_pattern_destroy)
+M.create_pattern_from_surface = ref_func(C.cairo_pattern_create_for_surface, C.cairo_pattern_destroy)
+M.create_linear_pattern = ref_func(C.cairo_pattern_create_linear, C.cairo_pattern_destroy)
+M.create_radial_pattern = ref_func(C.cairo_pattern_create_radial, C.cairo_pattern_destroy)
+M.create_mesh_pattern = ref_func(C.cairo_pattern_create_mesh, C.cairo_pattern_destroy)
 
 patt.ref = ref_func(C.cairo_pattern_reference, C.cairo_pattern_destroy)
-patt.destroy = destroy_func(C.cairo_pattern_destroy)
+patt.unref = destroy_func(C.cairo_pattern_destroy)
 patt.free = free
 patt.refcount = C.cairo_pattern_get_reference_count
 patt.status = C.cairo_pattern_status
@@ -962,8 +981,8 @@ patt.move_to = C.cairo_mesh_pattern_move_to
 patt.set_control_point = C.cairo_mesh_pattern_set_control_point
 patt.set_corner_color_rgb = C.cairo_mesh_pattern_set_corner_color_rgb
 patt.set_corner_color_rgba = C.cairo_mesh_pattern_set_corner_color_rgba
-patt.get_control_point = function(self, patch_num, point_num)
-	local status = C.cairo_mesh_pattern_get_control_point(self, patch_num, point_num, d1, d2)
+patt.get_control_point = function(patt, patch_num, point_num)
+	local status = C.cairo_mesh_pattern_get_control_point(patt, patch_num, point_num, d1, d2)
 	if status == C.CAIRO_STATUS_OK then
 		return d1[0], d2[0]
 	else
@@ -1039,6 +1058,8 @@ end
 
 patt.path = C.cairo_mesh_pattern_get_path --weak ref? doc doesn't say
 
+M.matrix = ffi.typeof'cairo_matrix_t'
+
 local mt = {}
 
 mt.init = C.cairo_matrix_init --TODO: check_status?
@@ -1060,7 +1081,7 @@ map('CAIRO_REGION_OVERLAP_', {
 	'PART',
 })
 
-M.region_create = ref_func(C.cairo_region_create, C.cairo_region_destroy)
+M.create_region = ref_func(C.cairo_region_create, C.cairo_region_destroy)
 
 local ir = ffi.new'cairo_rectangle_int_t'
 local function set_int_rect(x, y, w, h)
@@ -1071,17 +1092,17 @@ local function set_int_rect(x, y, w, h)
 	ir.height = h
 end
 
-M.region_create_rectangle = function(x, y, w, h)
+M.create_region_for_rectangle = function(x, y, w, h)
 	return ffi.gc(C.cairo_region_create_rectangle(set_int_rect(x, y, w, h)), C.cairo_region_destroy)
 end
 
-M.region_create_rectangles = ref_func(C.cairo_region_create_rectangles, C.cairo_region_destroy)
+M.create_region_for_rectangles = ref_func(C.cairo_region_create_rectangles, C.cairo_region_destroy)
 
 local rgn = {}
 
 rgn.copy = ref_func(C.cairo_region_copy, C.cairo_region_destroy)
 rgn.ref = C.cairo_region_reference
-rgn.destroy = destroy_func(C.cairo_region_destroy)
+rgn.unref = destroy_func(C.cairo_region_destroy)
 rgn.free = free
 rgn.equal = bool_func(C.cairo_region_equal)
 rgn.status = C.cairo_region_status
@@ -1185,7 +1206,7 @@ function cr:scale_around(cx, cy, ...)
 	self:translate(-cx, -cy)
 end
 
-local sm = ffi.new'cairo_matrix_t'
+local sm = M.matrix()
 function cr:skew(ax, ay)
 	sm:init_identity()
 	sm.xy = math.tan(ax)
@@ -1220,7 +1241,7 @@ local bitmap_formats = {}
 for k,v in pairs(cairo_formats) do
 	bitmap_formats[v] = k
 end
-function sr:bitmap(self)
+function sr:bitmap()
 	return {
 		data   = self:data(),
 		format = bitmap_formats[self:format()],
@@ -1355,7 +1376,7 @@ function mt:transform(mt)
 end
 
 function mt:invertible(tmt)
-	tmt = tmt or ffi.new'cairo_matrix_t'
+	tmt = tmt or M.matrix()
 	ffi.copy(tmt, self, ffi.sizeof(self))
 	return tmt:invert() == 0
 end
@@ -1367,7 +1388,7 @@ function mt:safe_transform(self, mt)
 end
 
 function mt:skew(ax, ay)
-	local sm = ffi.new'cairo_matrix_t'
+	local sm = M.matrix()
 	sm:init_identity()
 	sm.xy = math.tan(ax)
 	sm.yx = math.tan(ay)
@@ -1387,7 +1408,7 @@ function mt:scale_around(cx, cy, ...)
 end
 
 function mt:copy()
-	local dmt = ffi.new'cairo_matrix_t'
+	local dmt = M.matrix()
 	ffi.copy(dmt, self, ffi.sizeof(self))
 	return dmt
 end
@@ -1401,13 +1422,43 @@ function mt.tostring(mt)
 		mt.xx, mt.yx, mt.xy, mt.yy, mt.x0, mt.y0)
 end
 
+--freetype extension
+
+function M.create_ft_font_face(ft_face, load_flags)
+	local ft = require'freetype'
+	local key = ffi.new'cairo_user_data_key_t[1]'
+	local face = ffi.gc(C.cairo_ft_font_face_create_for_ft_face(ft_face, load_flags or 0), M.cairo_font_face_destroy)
+	local status = C.cairo_font_face_set_user_data(face, key, ft_face, ffi.cast('cairo_destroy_func_t', ft.FT_Done_Face))
+	if status ~= 0 then
+		C.cairo_font_face_destroy(face)
+		ft.FT_Done_Face(ft_face)
+	end
+	return font_face
+end
+
+local function synthesize_flag(bitmask)
+	return function(face, enable)
+		if enable == nil then
+			return bit.band(C.cairo_ft_font_face_get_synthesize(face), bitmask) ~= 0
+		elseif enable then
+			C.cairo_ft_font_face_set_synthesize(face, bitmask)
+		else
+			C.cairo_ft_font_face_unset_synthesize(face, bitmask)
+		end
+	end
+end
+face.synthesize_bold = synthesize_flag(C.CAIRO_FT_SYNTHESIZE_BOLD)
+face.synthesize_oblique = synthesize_flag(C.CAIRO_FT_SYNTHESIZE_OBLIQUE)
+
+sfont.lock_face = ref_func(_C.cairo_ft_scaled_font_lock_face, _C.cairo_ft_scaled_font_unlock_face)
+
 --metatype must come last
 
 ffi.metatype('cairo_t', {__index = cr})
 ffi.metatype('cairo_rectangle_list_t', {__index = rl})
 ffi.metatype('cairo_glyph_t', {__index = glyph})
 ffi.metatype('cairo_text_cluster_t', {__index = cluster})
-ffi.metatype('cairo_font_options_t', {__index = fopt, __eq = fopt.equal})
+ffi.metatype('cairo_font_options_t', {__index = fopt})
 ffi.metatype('cairo_font_face_t', {__index = face})
 ffi.metatype('cairo_scaled_font_t', {__index = sfont})
 ffi.metatype('cairo_path_t', {__index = path})
@@ -1415,6 +1466,16 @@ ffi.metatype('cairo_device_t', {__index = dev})
 ffi.metatype('cairo_surface_t', {__index = sr})
 ffi.metatype('cairo_pattern_t', {__index = patt})
 ffi.metatype('cairo_matrix_t', {__index = mt, __tostring = mt.tostring})
-ffi.metatype('cairo_region_t', {__index = rgn, __eq = rgn.equal})
+ffi.metatype('cairo_region_t', {__index = rgn})
+
+ffi.metatype('cairo_text_extents_t', {__tostring = function(t)
+	return string.format('bearing: (%d, %d), height: %d, advance: (%d, %d)',
+		t.x_bearing, t.y_bearing, t.width, t.height, t.x_advance, t.y_advance)
+end})
+
+ffi.metatype('cairo_font_extents_t', {__tostring = function(t)
+	return string.format('ascent: %d, descent: %d, height: %d, max_advance: (%d, %d)',
+		t.ascent, t.descent, t.height, t.max_x_advance, t.max_y_advance)
+end})
 
 return M

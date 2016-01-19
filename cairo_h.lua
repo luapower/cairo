@@ -1,6 +1,6 @@
 --result of `cpp cairo.h` from cairo 1.12.3 (extensions in separate files)
-local ffi = require'ffi'
-ffi.cdef[[
+
+require'ffi'.cdef[[
 int cairo_version (void);
 const char* cairo_version_string (void);
 typedef int cairo_bool_t;
@@ -1265,5 +1265,21 @@ void _cairo_font_options_set_lcd_filter (cairo_font_options_t   *options, cairo_
 cairo_lcd_filter_t _cairo_font_options_get_lcd_filter (const cairo_font_options_t *options);
 void _cairo_font_options_set_round_glyph_positions (cairo_font_options_t *options, cairo_round_glyph_positions_t  round);
 cairo_round_glyph_positions_t _cairo_font_options_get_round_glyph_positions (const cairo_font_options_t *options);
-]]
 
+
+// cairo-ft.h
+typedef struct FT_Face* FT_Face;
+
+cairo_font_face_t * cairo_ft_font_face_create_for_ft_face (FT_Face face, int load_flags);
+
+typedef enum {
+    CAIRO_FT_SYNTHESIZE_BOLD = 1 << 0,
+    CAIRO_FT_SYNTHESIZE_OBLIQUE = 1 << 1
+} cairo_ft_synthesize_t;
+
+void cairo_ft_font_face_set_synthesize (cairo_font_face_t *font_face, unsigned int synth_flags);
+void cairo_ft_font_face_unset_synthesize (cairo_font_face_t *font_face, unsigned int synth_flags);
+unsigned int cairo_ft_font_face_get_synthesize (cairo_font_face_t *font_face);
+FT_Face cairo_ft_scaled_font_lock_face (cairo_scaled_font_t *scaled_font);
+void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
+]]
