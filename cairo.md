@@ -139,14 +139,14 @@ __raster-source patterns__
 `patt:finish_function([func]) /-> func`                             [get/set the finish function][cairo_raster_source_pattern_set_finish]
 __mesh patterns__
 `cairo.mesh_pattern() -> patt`                                      [create a mesh pattern][cairo_pattern_create_mesh]
-`patt:begin_patch()`                                                [start a patch][cairo_mesh_pattern_begin_patch]
-`patt:end_patch()`                                                  [end a patch][cairo_mesh_pattern_end_patch]
+`patt:begin_patch()`                                                [start a new patch][cairo_mesh_pattern_begin_patch]
+`patt:end_patch()`                                                  [end current patch][cairo_mesh_pattern_end_patch]
 `patt:move_to(x, y)`                                                [move the current point][cairo_mesh_pattern_move_to]
 `patt:line_to(x, y)`                                                [add a line][cairo_mesh_pattern_line_to]
 `patt:curve_to(x1, y1, x2, y2, x3, y3)`                             [add a cubic bezier][cairo_mesh_pattern_curve_to]
-`patt:control_point(point_num, x, y)`                               [set a control point][cairo_mesh_pattern_set_control_point]
+`patt:control_point(point_num, x, y)`                               [set a control point of the current patch][cairo_mesh_pattern_set_control_point]
 `patt:control_point(patch_num, point_num) -> x, y`                  [get a control point][cairo_mesh_pattern_get_control_point]
-`patt:corner_color(corner_num, r, g, b[, a])`                       [set a corner color][cairo_mesh_pattern_set_corner_color_rgb]
+`patt:corner_color(corner_num, r, g, b[, a])`                       [set a corner color of the current patch][cairo_mesh_pattern_set_corner_color_rgb]
 `patt:corner_color(patch_num, corner_num) -> r, g, b, a`            [get a corner color][cairo_mesh_pattern_get_corner_color_rgba]
 __patterns__
 `patt:type() -> type`                                               [get the pattern type][cairo_pattern_get_type]
