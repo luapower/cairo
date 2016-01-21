@@ -413,3 +413,6 @@ win32 fonts and freetype fonts.
 
 [cairo_pattern_create_radial]:             http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-radial
 [cairo_pattern_get_radial_circles]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-radial-circles
+
+[cairo_pattern_create_raster_source]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-raster-source
+[cairo_pattern_create_for_surface]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-for-surface
