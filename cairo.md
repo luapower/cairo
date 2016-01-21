@@ -457,3 +457,5 @@ The binding won't break if extensions are missing in the binary.
 [cairo_text_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-text-extents
 [cairo_glyph_extents]:                     http://cairographics.org/manual/cairo-text.html#cairo-glyph-extents
 [cairo_font_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-font-extents
+
+[cairo_set_font_face]:                     http://cairographics.org/manual/cairo-text.html#cairo-set-font-face
