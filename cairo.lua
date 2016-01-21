@@ -1054,7 +1054,7 @@ patt.add_color_stop = function(patt, offset, r, g, b, a)
 		C.cairo_pattern_add_color_stop_rgba(patt, offset, r, g, b, a)
 	else
 		C.cairo_pattern_add_color_stop_rgb(patt, offset, r, g, b)
-	en
+	end
 end
 
 patt.begin_patch = C.cairo_mesh_pattern_begin_patch
