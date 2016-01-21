@@ -20,7 +20,7 @@ pass 'argb32' for `C.CAIRO_FORMAT_ARGB32` in `cairo.image_surface()`.
 ------------------------------------------------------------------- -------------------------------------------------------------------
 __pixman surfaces__
 `cairo.image_surface(fmt, w, h) -> sr`                              [create a pixman surface][cairo_image_surface_create]
-`cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data] [bitmap] (1)
+`cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data] [bitmap] (+)
 `sr:bitmap() -> bmp`                                                get the image surface as a [bitmap]
 `sr:data() -> data`                                                 [get the image surface pixel buffer][cairo_image_surface_get_data]
 `sr:format() -> fmt`                                                [get the image surface format][cairo_image_surface_get_format]
@@ -297,7 +297,7 @@ __misc.__
 ------------------------------------------------------------------- -------------------------------------------------------------------
 </div>
 
-> (1) supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
+> (+) supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
 
 > (*) for ref-counted objects only: `cr`, `sr`, `dev`, `patt`, `sfont`, `font` and `rgn`.
 
