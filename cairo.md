@@ -455,6 +455,7 @@ The binding won't break if extensions are missing in the binary.
 
 [cairo_select_font_face]:                  http://cairographics.org/manual/cairo-text.html#cairo-select-font-face
 [cairo_show_text]:                         http://cairographics.org/manual/cairo-text.html#cairo-show-text
+[cairo_text_path]:                         http://cairographics.org/manual/cairo-Paths.html#cairo-text-path
 [cairo_text_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-text-extents
 
 [cairo_ft_font_face_create_for_ft_face]:   http://cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-font-face-create-for-ft-face
@@ -463,12 +464,10 @@ The binding won't break if extensions are missing in the binary.
 [cairo_ft_scaled_font_lock_face]:          http://cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-lock-face
 [cairo_ft_scaled_font_unlock_face]:        http://cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-unlock-face
 
-
 [cairo_set_font_size]:                     http://cairographics.org/manual/cairo-text.html#cairo-set-font-size
 [cairo_set_font_matrix]:                   http://cairographics.org/manual/cairo-text.html#cairo-set-font-matrix
 [cairo_show_glyphs]:                       http://cairographics.org/manual/cairo-text.html#cairo-show-glyphs
 [cairo_show_text_glyphs]:                  http://cairographics.org/manual/cairo-text.html#cairo-show-text-glyphs
-[cairo_text_path]:                         http://cairographics.org/manual/cairo-text.html#cairo-text-path
 [cairo_glyph_path]:                        http://cairographics.org/manual/cairo-text.html#cairo-glyph-path
 [cairo_glyph_extents]:                     http://cairographics.org/manual/cairo-text.html#cairo-glyph-extents
 [cairo_font_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-font-extents
