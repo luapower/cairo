@@ -14,8 +14,8 @@ __NOTE:__ In the table below, `foo([val]) /-> val` is a shortcut for saying
 that `foo(val)` sets the value of foo and `foo() -> val` gets it.
 `t|f` means `true|false`.
 
-__NOTE:__ flags can be passed as lowercase strings without prefix
-eg. 'argb32' can be passed for `C.CAIRO_FORMAT_ARGB32`.
+__NOTE:__ flags can be passed as lowercase strings without prefix eg.
+pass 'argb32' for `C.CAIRO_FORMAT_ARGB32` in `cairo.image_surface()`.
 
 <div class="small">
 ------------------------------------------------------------------- -------------------------------------------------------------------
@@ -122,15 +122,15 @@ __clipping__
 `cr:clip_extents() -> x1, y1, x2, y2`                               [get the clip extents][cairo_clip_extents]
 `cr:copy_clip_rectangles() -> rlist`                                [get the clipping rectangles][cairo_copy_clip_rectangle_list]
 __patterns__
-`patt:type() -> type`                                               [get the pattern type][cairo_get_type]
-`patt:matrix([mt]) /-> mt`                                          [get/set the matrix][cairo_set_matrix]
-`patt:extend([extend]) /-> extend`                                  [get/set the extend][cairo_set_extend]
-`patt:filter([filter]) /-> filter`                                  [get/set the filter][cairo_set_filter]
-`patt:surface() -> sr | nil`                                        [get the pattern's surface][cairo_get_surface]
-__color-filled patterns__
+`patt:type() -> type`                                               [get the pattern type][cairo_pattern_get_type]
+`patt:matrix([mt]) /-> mt`                                          [get/set the matrix][cairo_pattern_set_matrix]
+`patt:extend([extend]) /-> extend`                                  [get/set the extend][cairo_pattern_set_extend]
+`patt:filter([filter]) /-> filter`                                  [get/set the filter][cairo_pattern_set_filter]
+`patt:surface() -> sr | nil`                                        [get the pattern's surface][cairo_pattern_get_surface]
+__solid-color patterns__
 `cairo.rgb_pattern(r, g, b) -> patt`                                [create a matte color pattern][cairo_pattern_create_rgb]
 `cairo.rgba_pattern(r, g, b, a) -> patt`                            [create a transparent color pattern][cairo_pattern_create_rgba]
-`patt:rgba() -> r, g, b, a`                                         [get RGBA color][cairo_get_rgba]
+`patt:rgba() -> r, g, b, a`                                         [get color of solid color pattern][cairo_pattern_get_rgba]
 __linear gradient patterns__
 `cairo.linear_pattern(x0, y0, x1, y1) -> patt`                      [create a linear gradient][cairo_pattern_create_linear]
 `patt:add_color_stop_rgb(offset, r, g, b)`                          [add a RGB color stop][cairo_add_color_stop_rgb]
@@ -394,3 +394,13 @@ win32 fonts and freetype fonts.
 [cairo_clip_preserve]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-clip-preserve
 [cairo_clip_extents]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-clip-extents
 [cairo_copy_clip_rectangle_list]:          http://cairographics.org/manual/cairo-cairo-t.html#cairo-copy-clip-rectangle-list
+
+[cairo_pattern_get_type]:                  http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-type
+[cairo_pattern_set_matrix]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-matrix
+[cairo_pattern_set_extend]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-extend
+[cairo_pattern_set_filter]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-filter
+[cairo_pattern_get_surface]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-surface
+
+[cairo_pattern_create_rgb]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgb
+[cairo_pattern_create_rgba]:              http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgba
+[cairo_pattern_get_rgba]:                 http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-rgba
