@@ -435,13 +435,13 @@ The binding won't break if extensions are missing in the binary.
 [cairo_raster_source_pattern_set_copy]:           http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-copy
 [cairo_raster_source_pattern_set_finish]:         http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-finish
 
-[cairo_pattern_create_mesh]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-mesh
-[cairo_mesh_pattern_begin_patch]:
-[cairo_mesh_pattern_end_patch]:
-[cairo_mesh_pattern_move_to]:
-[cairo_mesh_pattern_line_to]:
-[cairo_mesh_pattern_curve_to]:
-[cairo_mesh_pattern_set_control_point]:
-[cairo_mesh_pattern_get_control_point]:
-[cairo_mesh_pattern_set_corner_color_rgb]:
-[cairo_mesh_pattern_get_corner_color_rgba]:
+[cairo_pattern_create_mesh]:                 http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-mesh
+[cairo_mesh_pattern_begin_patch]:            http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-begin-patch
+[cairo_mesh_pattern_end_patch]:              http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-end-patch
+[cairo_mesh_pattern_move_to]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-move-to
+[cairo_mesh_pattern_line_to]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-line-to
+[cairo_mesh_pattern_curve_to]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-curve-to
+[cairo_mesh_pattern_set_control_point]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-set-control-point
+[cairo_mesh_pattern_get_control_point]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-get-control-point
+[cairo_mesh_pattern_set_corner_color_rgb]:   http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-set-corner-color-rgb
+[cairo_mesh_pattern_get_corner_color_rgba]:  http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-get-corner-color-rgba
