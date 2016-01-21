@@ -159,7 +159,7 @@ __fonts and text__
 `cr:font_matrix([mt]) /-> mt`                                       [get/set font matrix][cairo_set_font_matrix]
 `cr:show_text(s)`                                                   [show text][cairo_show_text]
 `cr:show_glyphs(glyphs, #glyphs)`                                   [show glyphs][cairo_show_glyphs]
-`cr:show_text_glyphs(s, #s, gs, #gs, cs, #cs, f)`                   [show text glyphs][cairo_show_text_glyphs]
+`cr:show_text_glyphs(s, [#s], gs, #gs, cs, #cs, f)`                 [show text glyphs][cairo_show_text_glyphs]
 `cr:text_path(s)`                                                   [ref][cairo_text_path]
 `cr:glyph_path(glyphs, #glyphs)`                                    [ref][cairo_glyph_path]
 `cr:text_extents(s) -> cairo_text_extents_t`                        [get text extents][cairo_text_extents]
