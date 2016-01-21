@@ -220,7 +220,7 @@ foptout_getfunc = getter(foptout_func)
 
 local function check_status(status)
 	if status ~= 0 then
-		error(M.status_string(status), 2)
+		error(M.status_message(status), 2)
 	end
 end
 
@@ -228,7 +228,7 @@ local function ret_status(st)
 	if st == 0 then
 		return true
 	else
-		return nil, M.status_string(st), st
+		return nil, M.status_message(st), st
 	end
 end
 local function status_func(func)
@@ -250,15 +250,15 @@ local function ptr_func(func)
 end
 
 --method to get status as a string, for any object which has a status() method.
-local function status_string(self)
-	return M.status_string(self:status())
+local function status_message(self)
+	return M.status_message(self:status())
 end
 
 --method to check the status and raise and error
 local function check(self)
 	local status = self:status()
 	if status ~= 0 then
-		error(self:status_string(), 2)
+		error(self:status_message(), 2)
 	end
 end
 
@@ -270,6 +270,16 @@ local function set_int_rect(x, y, w, h)
 	ir.width = w
 	ir.height = h
 	return ir
+end
+
+local sr_ct = ffi.typeof'cairo_surface_t*'
+local function patt_or_surface_func(patt_func, surface_func)
+	return function (self, patt, x, y)
+	if ffi.istype(patt, sr_ct) then
+		surface_func(cr, patt, x or 0, y or 0)
+	else
+		patt_func(cr, patt)
+	end
 end
 
 --binding --------------------------------------------------------------------
@@ -389,14 +399,7 @@ map('CAIRO_OPERATOR_', {
 })
 
 cr.operator = getset_func(C.cairo_get_operator, C.cairo_set_operator, 'CAIRO_OPERATOR_')
-local sr_ct = ffi.typeof'cairo_surface_t*'
-cr.source = getset_func(C.cairo_get_source, function(cr, patt, x, y)
-	if ffi.istype(patt, sr_ct) then
-		C.cairo_set_source_surface(cr, patt, x or 0, y or 0)
-	else
-		C.cairo_set_source(cr, patt)
-	end
-end)
+cr.source = getset_func(C.cairo_get_source, patt_or_surface_func(C.cairo_set_source, C.cairo_set_source_surface))
 cr.rgb = C.cairo_set_source_rgb
 cr.rgba = C.cairo_set_source_rgba
 cr.tolerance = getset_func(C.cairo_get_tolerance, C.cairo_set_tolerance)
@@ -497,8 +500,7 @@ cr.close_path = C.cairo_close_path
 cr.path_extents = d4out_func(C.cairo_path_extents)
 cr.paint = C.cairo_paint
 cr.paint_with_alpha = C.cairo_paint_with_alpha
-cr.mask = C.cairo_mask
-cr.mask_surface = C.cairo_mask_surface
+cr.mask = patt_or_surface_func(C.cairo_mask, C.cairo_mask_surface)
 cr.stroke = C.cairo_stroke
 cr.stroke_preserve = C.cairo_stroke_preserve
 cr.fill = C.cairo_fill
@@ -579,7 +581,7 @@ local fopt = {}
 fopt.copy = ref_func(C.cairo_font_options_copy, C.cairo_font_options_destroy)
 fopt.free = destroy_func(C.cairo_font_options_destroy)
 fopt.status = C.cairo_font_options_status
-fopt.status_string = status_string
+fopt.status_message = status_message
 fopt.check = check
 fopt.merge = C.cairo_font_options_merge
 fopt.equal = bool_func(C.cairo_font_options_equal)
@@ -627,7 +629,7 @@ face.unref = destroy_func(C.cairo_font_face_destroy)
 face.free = free
 face.refcount = C.cairo_font_face_get_reference_count
 face.status = C.cairo_font_face_status
-face.status_string = status_string
+face.status_message = status_message
 face.check = check
 
 map('CAIRO_FONT_TYPE_', {
@@ -648,7 +650,7 @@ sfont.unref = destroy_func(C.cairo_scaled_font_destroy)
 sfont.free = free
 sfont.refcount = C.cairo_scaled_font_get_reference_count
 sfont.status = C.cairo_scaled_font_status
-sfont.status_string = status_string
+sfont.status_message = status_message
 sfont.check = check
 sfont.type = getflag_func(C.cairo_scaled_font_get_type, 'CAIRO_FONT_TYPE_')
 sfont.extents = fexout_func(C.cairo_scaled_font_extents)
@@ -679,7 +681,7 @@ function sfont.text_to_glyphs(sfont, x, y, s, slen, glyphs, num_glyphs, clusters
 			clusters, num_clusters_buf[0],
 			cluster_flags_buf[0] ~= 0 and X('CAIRO_TEXT_CLUSTER_FLAG_', tonumber(cluster_flags_buf[0])) or nil
 	else
-		return nil, M.status_string(status), status
+		return nil, M.status_message(status), status
 	end
 end
 
@@ -739,10 +741,10 @@ local path = {}
 
 path.free = destroy_func(C.cairo_path_destroy)
 path.status = C.cairo_status
-path.status_string = status_string
+path.status_message = status_message
 path.check = check
 
-M.status_string = str_func(C.cairo_status_to_string)
+M.status_message = str_func(C.cairo_status_to_string)
 
 local dev = {}
 
@@ -762,7 +764,7 @@ map('CAIRO_DEVICE_TYPE_', {
 
 dev.type = getflag_func(C.cairo_device_get_type, 'CAIRO_DEVICE_TYPE_')
 dev.status = C.cairo_device_status
-dev.status_string = status_string
+dev.status_message = status_message
 dev.check = check
 dev.acquire = status_func(C.cairo_device_acquire)
 dev.release = C.cairo_device_release
@@ -834,7 +836,7 @@ sr.free = free
 sr.device = ptr_func(C.cairo_surface_get_device) --weak ref
 sr.refcount = C.cairo_surface_get_reference_count
 sr.status = C.cairo_surface_status
-sr.status_string = status_string
+sr.status_message = status_message
 sr.check = check
 
 map('CAIRO_SURFACE_TYPE_', {
@@ -913,10 +915,26 @@ local cairo_formats = {
 	g1     = 'a1',
 	rgb565 = 'rgb16_565',
 }
+function M.cairo_format(format)
+	return cairo_formats[format]
+end
+
+local bitmap_formats = {
+	argb32    = 'bgra8',
+	rgb24     = 'bgrx8',
+	a8        = 'g8',
+	a1        = 'g1',
+	rgb16_565 = 'rgb565',
+	rgb30     = 'bgr10',
+	invalid   = 'invalid',
+}
+function M.bitmap_format(format)
+	return bitmap_formats[format]
+end
+
 M.image_surface = function(fmt, w, h)
 	if type(fmt) == 'table' then
-		local bmp = fmt
-		local fmt = assert(cairo_formats[bmp.format], 'unsupported format')
+		local bmp, fmt = fmt, M.cairo_format(bmp.format)
 		local sr = C.cairo_image_surface_create_for_data(bmp.data, X('CAIRO_FORMAT_', fmt), bmp.w, bmp.h, bmp.stride)
 		return ffi.gc(sr, function(sr)
 			local _ = bmp.data --pin it
@@ -928,7 +946,7 @@ M.image_surface = function(fmt, w, h)
 end
 
 M.stride = function(fmt, width)
-	return C.cairo_format_stride_for_width(X('CAIRO_FORMAT_', cairo_formats[fmt] or fmt), width)
+	return C.cairo_format_stride_for_width(X('CAIRO_FORMAT_', fmt), width)
 end
 
 sr.data = C.cairo_image_surface_get_data
@@ -1008,7 +1026,7 @@ patt.unref = destroy_func(C.cairo_pattern_destroy)
 patt.free = free
 patt.refcount = C.cairo_pattern_get_reference_count
 patt.status = C.cairo_pattern_status
-patt.status_string = status_string
+patt.status_message = status_message
 patt.check = check
 
 map('CAIRO_PATTERN_TYPE_', {
@@ -1163,7 +1181,7 @@ rgn.unref = destroy_func(C.cairo_region_destroy)
 rgn.free = free
 rgn.equal = bool_func(C.cairo_region_equal)
 rgn.status = C.cairo_region_status
-rgn.status_string = status_string
+rgn.status_message = status_message
 rgn.check = check
 
 local function unpack_int_rect(r)
@@ -1296,17 +1314,8 @@ function sr:bpp()
 end
 
 
-local bitmap_formats = {
-	argb32    = 'bgra8',
-	rgb24     = 'bgrx8',
-	a8        = 'g8',
-	a1        = 'g1',
-	rgb16_565 = 'rgb565',
-	rgb30     = 'bgr10',
-	invalid   = 'invalid',
-}
 function sr:bitmap_format()
-	return bitmap_formats[self:format()]
+	return M.bitmap_format(self:format())
 end
 
 function sr:bitmap()
@@ -1317,91 +1326,6 @@ function sr:bitmap()
 		h      = self:height(),
 		stride = self:stride(),
 	}
-end
-
---return a getpixel function for a surface that returns pixel components based on surface image format:
---for ARGB32: getpixel(x, y) -> r, g, b, a
---for RGB24:  getpixel(x, y) -> r, g, b
---for A8:     getpixel(x, y) -> a
---for A1:     getpixel(x, y) -> a
---for RGB16:  getpixel(x, y) -> r, g, b
---for RGB30:  getpixel(x, y) -> r, g, b
-function sr:getpixel_function()
-	local data   = self:data()
-	local format = self:bitmap_format()
-	local w      = self:width()
-	local h      = self:height()
-	local stride = self:stride()
-	local getpixel
-	data = ffi.cast('uint8_t*', data)
-	if format == 'argb32' then
-		if ffi.abi'le' then
-			error'NYI'
-		else
-			error'NYI'
-		end
-	elseif format == 'rgb24' then
-		function getpixel(x, y)
-			assert(x < w and y < h and x >= 0 and y >= 0, 'out of range')
-			return
-				data[y * stride + x * 4 + 2],
-				data[y * stride + x * 4 + 1],
-				data[y * stride + x * 4 + 0]
-		end
-	elseif format == 'a8' then
-		function getpixel(x, y)
-			assert(x < w and y < h and x >= 0 and y >= 0, 'out of range')
-			return data[y * stride + x]
-		end
-	elseif format == 'a1' then
-		if ffi.abi'le' then
-			error'NYI'
-		else
-			error'NYI'
-		end
-	else
-		error'unsupported image format'
-	end
-	return getpixel
-end
-
---return a setpixel function analog to getpixel above.
-function sr:setpixel_function()
-	local data   = self:data()
-	local format = self:bitmap_format()
-	local w      = self:width()
-	local h      = self:height()
-	local stride = self:stride()
-	data = ffi.cast('uint8_t*', data)
-	local setpixel
-	if format == 'argb32' then
-		if ffi.abi'le' then
-			error'NYI'
-		else
-			error'NYI'
-		end
-	elseif format == 'rgb24' then
-		function setpixel(x, y, r, g, b)
-			assert(x < w and y < h and x >= 0 and y >= 0, 'out of range')
-			data[y * stride + x * 4 + 2] = r
-			data[y * stride + x * 4 + 1] = g
-			data[y * stride + x * 4 + 0] = b
-		end
-	elseif format == 'a8' then
-		function setpixel(x, y, a)
-			assert(x < w and y < h and x >= 0 and y >= 0, 'out of range')
-			data[y * stride + x] = a
-		end
-	elseif format == 'a1' then
-		if ffi.abi'le' then
-			error'NYI'
-		else
-			error'NYI'
-		end
-	else
-		error'unsupported image format'
-	end
-	return setpixel
 end
 
 --additions to paths
@@ -1500,7 +1424,7 @@ function M.ft_font_face(ft_face, load_flags)
 	if status ~= 0 then
 		C.cairo_font_face_destroy(face)
 		ft.FT_Done_Face(ft_face)
-		return nil, M.status_string(status), status
+		return nil, M.status_message(status), status
 	end
 	return font_face
 end
