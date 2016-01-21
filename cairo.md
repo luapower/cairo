@@ -60,13 +60,13 @@ __drawing contexts__
 `cr:save()`                                                         [save state (push to stack)][cairo_save]
 `cr:restore()`                                                      [restore state (pop from stack)][cairo_restore]
 __sources__
-`cr:rgb(r, g, b)`                                                   [set RGB color as source][cairo_set_source_rgb]
-`cr:rgba(r, g, b, a)`                                               [set RGBA color as source][cairo_set_source_rgba]
-`cr:source([patt | sr, [x, y]]) /-> patt`                           [get/set pattern or surface as source][cairo_set_source]
-`cr:operator([operator]) /-> operator`                              [get/set operator][cairo_set_operator]
-`cr:mask(patt | sr[, x, y])`                                        [draw using pattern's (or surface's) alpha as a mask][cairo_mask]
+`cr:rgb(r, g, b)`                                                   [set a RGB color as source][cairo_set_source_rgb]
+`cr:rgba(r, g, b, a)`                                               [set a RGBA color as source][cairo_set_source_rgba]
+`cr:source([patt | sr, [x, y]]) /-> patt`                           [get/set a pattern or surface as source][cairo_set_source]
+`cr:operator([operator]) /-> operator`                              [get/set the compositing operator][cairo_set_operator]
+`cr:mask(patt | sr[, x, y])`                                        [draw using a pattern's (or surface's) alpha channel as a mask][cairo_mask]
 __groups__
-`cr:push_group([content])`                                          [redirect drawing to an intermediate surface][cairo_push_group_with_content]
+`cr:push_group([content])`                                          [redirect drawing to an intermediate surface][cairo_push_group]
 `cr:pop_group() -> patt`                                            [terminate the redirection and return it as pattern][cairo_pop_group]
 `cr:pop_group_to_source()`                                          [terminate the redirection and install it as pattern][cairo_pop_group_to_source]
 __transformations__
@@ -86,15 +86,15 @@ __paths__
 `cr:move_to(x, y)`                                                  [move the current point][cairo_move_to]
 `cr:line_to(x, y)`                                                  [add a line to the current path][cairo_line_to]
 `cr:curve_to(x1, y1, x2, y2, x3, y3)`                               [add a cubic bezier to the current path][cairo_curve_to]
-`cr:quad_curve_to(x1, y1, x2, y2)`                                  [add a quad bezier to the current path][cairo_quad_curve_to]
-`cr:arc(cx, cy, radius, a1, a2)`                                    [add an arc to the current path][cairo_arc]
+`cr:quad_curve_to(x1, y1, x2, y2)`                                  add a quad bezier to the current path
+`cr:arc(cx, cy, r, a1, a2)`                                         [add an arc to the current path][cairo_arc]
 `cr:arc_negative(cx, cy, r, a1, a2)`                                [add a negative arc to the current path][cairo_arc_negative]
-`cr:circle(cx, cy, r)`                                              [add a circle to the current path][cairo_circle]
-`cr:ellipse(cx, cy, rx, ry, rotation)`                              [add an ellipse to the current path][cairo_ellipse]
+`cr:circle(cx, cy, r)`                                              add a circle to the current path
+`cr:ellipse(cx, cy, rx, ry, rotation)`                              add an ellipse to the current path
 `cr:rel_move_to(x, y)`                                              [move the current point][cairo_rel_move_to]
 `cr:rel_line_to(x, y)`                                              [add a line to the current path][cairo_rel_line_to]
 `cr:rel_curve_to(x1, y1, x2, y2, x3, y3)`                           [add a cubic bezier to the current path][cairo_rel_curve_to]
-`cr:rel_quad_curve_to(x1, y1, x2, y2)`                              [add a quad bezier to the current path][cairo_rel_quad_curve_to]
+`cr:rel_quad_curve_to(x1, y1, x2, y2)`                              add a quad bezier to the current path
 `cr:rectangle(x, y, w, h)`                                          [add a rectangle to the current path][cairo_rectangle]
 `cr:close_path()`                                                   [close current path][cairo_close_path]
 `cr:copy_path() -> path`                                            [copy current path to a path object][cairo_copy_path]
@@ -340,7 +340,7 @@ win32 fonts and freetype fonts.
 [cairo_set_operator]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-operator
 [cairo_mask]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-mask
 
-[cairo_push_group_with_content]:           http://cairographics.org/manual/cairo-cairo-t.html#cairo-push-group-with-content
+[cairo_push_group]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-push-group
 [cairo_pop_group]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group
 [cairo_pop_group_to_source]:               http://cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group-to-source
 
@@ -374,8 +374,8 @@ win32 fonts and freetype fonts.
 [cairo_copy_path_flat]:                    http://cairographics.org/manual/cairo-Paths.html#cairo-copy-path-flat
 [cairo_append_path]:                       http://cairographics.org/manual/cairo-Paths.html#cairo-append-path
 [cairo_path_extents]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-extents
-[cairo_has_current_point]:                 http://cairographics.org/manual/cairo-cairo-t.html#cairo-has-current-point
-[cairo_get_current_point]:                 http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-current-point
+[cairo_has_current_point]:                 http://cairographics.org/manual/cairo-Paths.html#cairo-has-current-point
+[cairo_get_current_point]:                 http://cairographics.org/manual/cairo-Paths.html#cairo-get-current-point
 
 [cairo_paint]:                             http://cairographics.org/manual/cairo-cairo-t.html#cairo-paint
 [cairo_paint_with_alpha]:                  http://cairographics.org/manual/cairo-cairo-t.html#cairo-paint-with-alpha
