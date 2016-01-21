@@ -130,16 +130,15 @@ __solid-color patterns__
 `cairo.rgb_pattern(r, g, b) -> patt`                                [create a matte color pattern][cairo_pattern_create_rgb]
 `cairo.rgba_pattern(r, g, b, a) -> patt`                            [create a transparent color pattern][cairo_pattern_create_rgba]
 `patt:rgba() -> r, g, b, a`                                         [get the color of a solid color pattern][cairo_pattern_get_rgba]
-__linear gradient patterns__
+__gradient patterns__
 `cairo.linear_pattern(x0, y0, x1, y1) -> patt`                      [create a linear gradient][cairo_pattern_create_linear]
+`cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
+`patt:linear_points() -> x0, y0, x1, y1`                            [get the endpoints of a linear gradient][cairo_pattern_get_linear_points]
+`patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get the circles of radial gradient][cairo_pattern_get_radial_circles]
 `patt:add_color_stop_rgb(offset, r, g, b)`                          [add a RGB color stop][cairo_pattern_add_color_stop_rgb]
 `patt:add_color_stop_rgba(offset, r, g, b, a)`                      [add a RGBA color stop][cairo_pattern_add_color_stop_rgba]
-`patt:linear_points() -> x0, y0, x1, y1`                            [get the endpoints of a linear gradient][cairo_pattern_get_linear_points]
 `patt:color_stop_count() -> n`                                      [get the number of color stops][cairo_pattern_get_color_stop_count]
 `patt:color_stop_rgba(i) -> offset, r, g, b, a`                     [get a color stop][cairo_pattern_get_color_stop_rgba]
-__radial gradient patterns__
-`cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
-`patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_pattern_get_radial_circles]
 __surface patterns__
 `cairo.surface_pattern(sr) -> patt`                                 [create a surface-type pattern][cairo_pattern_create_for_surface]
 __raster-source patterns__
@@ -428,3 +427,5 @@ win32 fonts and freetype fonts.
 [cairo_raster_source_pattern_set_snapshot]:       http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-snapshot
 [cairo_raster_source_pattern_set_copy]:           http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-copy
 [cairo_raster_source_pattern_set_finish]:         http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-finish
+
+[cairo_pattern_create_mesh]:
