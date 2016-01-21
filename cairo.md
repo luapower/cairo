@@ -156,7 +156,7 @@ __patterns__
 __toy text API__
 `cr:select_font_face(family, slant, weight)`                        [select a font face][cairo_select_font_face]
 `cr:show_text(s)`                                                   [show text][cairo_show_text]
-`cr:text_path(s)`                                                   [add text as path to current path][cairo_text_path]
+`cr:text_path(s)`                                                   [add closed paths for text to the current path][cairo_text_path]
 `cr:text_extents(s) -> cairo_text_extents_t`                        [get text extents][cairo_text_extents]
 __freetype fonts__
 `cairo.ft_font_face(ft_face, load_flags) -> face`                   [create a font face from a freetype handle][cairo_ft_font_face_create_for_ft_face]
