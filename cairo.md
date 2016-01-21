@@ -21,11 +21,11 @@ __pixman surfaces__
 `cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data] [bitmap]
 `sr:bitmap() -> bmp`                                                get the image surface as a [bitmap]
 `sr:data() -> data`                                                 [get the image surface pixel buffer][cairo_image_surface_get_data]
-`sr:format() -> format`                                             [get the image surface format][cairo_surface_get_image_format]
+`sr:format() -> format`                                             [get the image surface format][cairo_image_surface_get_format]
 `sr:bitmap_format() -> fmt`                                         get the image surface [bitmap] format
-`sr:width() -> w`                                                   [get the image surface width][cairo_surface_get_image_width]
-`sr:height() -> h`                                                  [get the image surface height][cairo_surface_get_image_height]
-`sr:stride() -> stride`                                             [get the image surface stride][cairo_surface_get_image_stride]
+`sr:width() -> w`                                                   [get the image surface width][cairo_image_surface_get_width]
+`sr:height() -> h`                                                  [get the image surface height][cairo_image_surface_get_height]
+`sr:stride() -> stride`                                             [get the image surface stride][cairo_image_surface_get_stride]
 `sr:bpp() -> bpp`                                                   get the image surface bits-per-pixel
 __surfaces__
 `sr:sub(x, y, w, h) -> sr`                                          [create a sub-surface][cairo_surface_create_for_rectangle]
