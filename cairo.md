@@ -134,12 +134,12 @@ __linear gradient patterns__
 `cairo.linear_pattern(x0, y0, x1, y1) -> patt`                      [create a linear gradient][cairo_pattern_create_linear]
 `patt:add_color_stop_rgb(offset, r, g, b)`                          [add a RGB color stop][cairo_pattern_add_color_stop_rgb]
 `patt:add_color_stop_rgba(offset, r, g, b, a)`                      [add a RGBA color stop][cairo_pattern_add_color_stop_rgba]
-`patt:linear_points() -> x0, y0, x1, y1`                            [get points of linear gradient][cairo_pattern_get_linear_points]
+`patt:linear_points() -> x0, y0, x1, y1`                            [get the endpoints of a linear gradient][cairo_pattern_get_linear_points]
 `patt:color_stop_count() -> n`                                      [get the number of color stops][cairo_pattern_get_color_stop_count]
 `patt:color_stop_rgba(i) -> offset, r, g, b, a`                     [get a color stop][cairo_pattern_get_color_stop_rgba]
 __radial gradient patterns__
 `cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
-`patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_get_radial_circles]
+`patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_pattern_get_radial_circles]
 __raster patterns__
 `cairo.raster_source(data, content, w, h) -> patt`                  [create a pattern from a raster image][cairo_pattern_create_raster_source]
 `sr:pattern() -> patt`                                              [create a pattern from a surface][cairo_pattern_create_for_surface]
@@ -410,3 +410,6 @@ win32 fonts and freetype fonts.
 [cairo_pattern_get_linear_points]:         http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-linear-points
 [cairo_pattern_get_color_stop_count]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-color-stop-count
 [cairo_pattern_get_color_stop_rgba]:       http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-color-stop-rgba
+
+[cairo_pattern_create_radial]:             http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-radial
+[cairo_pattern_get_radial_circles]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-radial-circles
