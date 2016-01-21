@@ -1025,7 +1025,6 @@ M.color_pattern = ref_func(function(r, g, b, a)
 		return C.cairo_pattern_create_rgb(r, g, b)
 	end
 end, C.cairo_pattern_destroy)
-M.rgba_pattern = ref_func(, C.cairo_pattern_destroy)
 M.surface_pattern = ref_func(C.cairo_pattern_create_for_surface, C.cairo_pattern_destroy)
 M.linear_gradient = ref_func(C.cairo_pattern_create_linear, C.cairo_pattern_destroy)
 M.radial_gradient = ref_func(C.cairo_pattern_create_radial, C.cairo_pattern_destroy)
