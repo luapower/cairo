@@ -441,16 +441,15 @@ __misc.__
 [cairo_image_surface_create]:                    http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create
 [cairo_image_surface_create_for_data]:           http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create-for-data
 [cairo_image_surface_get_data]:                  http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-data
+[cairo_image_surface_get_format]:                http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-format
+[cairo_image_surface_get_width]:                 http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-width
+[cairo_image_surface_get_height]:                http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-height
+[cairo_image_surface_get_stride]:                http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-stride
 
 [cairo_image_surface_create_from_png]:           http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png
 [cairo_image_surface_create_from_png_stream]:    http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png-stream
 [cairo_surface_write_to_png]:                    http://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png
 [cairo_surface_write_to_png_stream]:             http://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png-stream
-
-[cairo_surface_get_image_format]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-format
-[cairo_surface_get_image_width]:           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-width
-[cairo_surface_get_image_height]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-height
-[cairo_surface_get_image_stride]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-stride
 
 [cairo_recording_surface_create]:          http://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-create
 [cairo_recording_surface_ink_extents]:     http://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-ink-extents
