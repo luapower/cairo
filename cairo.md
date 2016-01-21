@@ -48,10 +48,10 @@ __recording surfaces__
 `sr:ink_extents() -> x, y, w, h`                                    [get recording surface ink extents][cairo_recording_surface_ink_extents]
 `sr:recording_extents() -> x, y, w, h | nil`                        [get recording surface extents][cairo_recording_surface_get_extents]
 __png support__
-`cairo.image_surface_from_png()`
-`cairo.image_surface_from_png_stream()`
-`sr:write_to_png()`
-`sr:write_to_png_stream()`
+`cairo.image_surface_from_png(filename) -> sr`                      [create a pixman surface from a png file][cairo_image_surface_create_from_png]
+`cairo.image_surface_from_png_stream(read_func, arg) -> sr`         [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
+`sr:write_to_png(filename) -> true | nil,err,status`                [write surface to png file][cairo_surface_write_to_png]
+`sr:write_to_png_stream(write_func, arg) -> true | nil,err,status`  [write surface to png stream][cairo_surface_write_to_png_stream]
 __drawing contexts__
 `sr:context() -> cr`                                                [create a drawing context on a surface][cairo_create]
 `cr:save()`                                                         [save state (push to stack)][cairo_save]
