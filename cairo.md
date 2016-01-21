@@ -18,9 +18,9 @@ that `foo(val)` sets the value of foo and `foo() -> val` gets it.
 ------------------------------------------------------------------- -------------------------------------------------------------------
 __pixman surfaces__
 `cairo.image_surface(fmt, w, h) -> sr`                              [create a pixman surface][cairo_image_surface_create]
-`cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data][bitmap]
-`sr:bitmap() -> bmp`                                                get the image surface as a bitmap
-`sr:data() -> data`                                                 [get the image surface pixel buffer][cairo_surface_get_image_data]
+`cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data] [bitmap]
+`sr:bitmap() -> bmp`                                                get the image surface as a [bitmap]
+`sr:data() -> data`                                                 [get the image surface pixel buffer][cairo_image_surface_get_data]
 `sr:format() -> format`                                             [get the image surface format][cairo_surface_get_image_format]
 `sr:bitmap_format() -> fmt`                                         get the image surface [bitmap] format
 `sr:width() -> w`                                                   [get the image surface width][cairo_surface_get_image_width]
@@ -431,8 +431,6 @@ __misc.__
 [cairo_path_extents]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-extents
 [cairo_path_destroy]:                      http://cairographics.org/manual/cairo-Paths.html#cairo-path-destroy
 
-[cairo_set_user_data]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-user-data
-[cairo_get_user_data]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-get-user-data
 [cairo_status]:                            http://cairographics.org/manual/cairo-cairo-t.html#cairo-status
 [cairo_status_to_string]:                  http://cairographics.org/manual/cairo-cairo-t.html#cairo-status-to-string
 [cairo_reference]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-reference
@@ -442,13 +440,13 @@ __misc.__
 
 [cairo_image_surface_create]:                    http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create
 [cairo_image_surface_create_for_data]:           http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create-for-data
+[cairo_image_surface_get_data]:                  http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-data
 
 [cairo_image_surface_create_from_png]:           http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png
 [cairo_image_surface_create_from_png_stream]:    http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png-stream
 [cairo_surface_write_to_png]:                    http://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png
 [cairo_surface_write_to_png_stream]:             http://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png-stream
 
-[cairo_surface_get_image_data]:            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-data
 [cairo_surface_get_image_format]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-format
 [cairo_surface_get_image_width]:           http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-width
 [cairo_surface_get_image_height]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-image-height
