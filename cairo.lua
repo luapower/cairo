@@ -522,7 +522,7 @@ cr.reset_clip = C.cairo_reset_clip
 cr.clip = C.cairo_clip
 cr.clip_preserve = C.cairo_clip_preserve
 cr.clip_extents = d4out_func(C.cairo_clip_extents)
-cr.copy_clip_rectangles = ref_func(C.cairo_copy_clip_rectangle_list, C.cairo_rectangle_list_destroy)
+cr.clip_rectangles = ref_func(C.cairo_copy_clip_rectangle_list, C.cairo_rectangle_list_destroy)
 
 local rl = {}
 

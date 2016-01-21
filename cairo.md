@@ -103,8 +103,8 @@ __paths__
 `cr:current_point() -> x, y`                                        [get the current point][cairo_get_current_point]
 `cr:has_current_point() -> t|f`                                     [check if there's a current point][cairo_has_current_point]
 __filling and stroking__
-`cr:paint()`                                                        [paint the source within the current clipping region][cairo_paint]
-`cr:paint_with_alpha(alpha)`                                        [paint the source with transparency][cairo_paint_with_alpha]
+`cr:paint()`                                                        [paint the current source within the current clipping region][cairo_paint]
+`cr:paint_with_alpha(alpha)`                                        [paint the current source with transparency][cairo_paint_with_alpha]
 `cr:stroke()`                                                       [stroke the current path and discard it][cairo_stroke]
 `cr:stroke_preserve()`                                              [stroke and keep the path][cairo_stroke_preserve]
 `cr:fill()`                                                         [fill the current path and discard it][cairo_fill]
@@ -119,7 +119,7 @@ __clipping__
 `cr:clip_preserve()`                                                [clip and keep the current path][cairo_clip_preserve]
 `cr:reset_clip()`                                                   [remove all clipping][cairo_reset_clip]
 `cr:clip_extents() -> x1, y1, x2, y2`                               [get the clip extents][cairo_clip_extents]
-`cr:copy_clip_rectangles() -> rlist`                                [get the clipping rectangles][cairo_copy_clip_rectangle_list]
+`cr:clip_rectangles() -> rlist`                                     [get the clipping rectangles][cairo_copy_clip_rectangle_list]
 __patterns__
 `patt:type() -> type`                                               [get the pattern type][cairo_pattern_get_type]
 `patt:matrix([mt]) /-> mt`                                          [get/set the matrix][cairo_pattern_set_matrix]
@@ -129,14 +129,14 @@ __patterns__
 __solid-color patterns__
 `cairo.rgb_pattern(r, g, b) -> patt`                                [create a matte color pattern][cairo_pattern_create_rgb]
 `cairo.rgba_pattern(r, g, b, a) -> patt`                            [create a transparent color pattern][cairo_pattern_create_rgba]
-`patt:rgba() -> r, g, b, a`                                         [get color of solid color pattern][cairo_pattern_get_rgba]
+`patt:rgba() -> r, g, b, a`                                         [get the color of a solid color pattern][cairo_pattern_get_rgba]
 __linear gradient patterns__
 `cairo.linear_pattern(x0, y0, x1, y1) -> patt`                      [create a linear gradient][cairo_pattern_create_linear]
-`patt:add_color_stop_rgb(offset, r, g, b)`                          [add a RGB color stop][cairo_add_color_stop_rgb]
-`patt:add_color_stop_rgba(offset, r, g, b, a)`                      [add a RGBA color stop][cairo_add_color_stop_rgba]
-`patt:linear_points() -> x0, y0, x1, y1`                            [get points of linear gradient][cairo_get_linear_points]
-`patt:color_stop_count() -> n`                                      [get the number of color stops][cairo_get_color_stop_count]
-`patt:color_stop_rgba(i) -> offset, r, g, b, a`                     [get a color stop][cairo_get_color_stop_rgba]
+`patt:add_color_stop_rgb(offset, r, g, b)`                          [add a RGB color stop][cairo_pattern_add_color_stop_rgb]
+`patt:add_color_stop_rgba(offset, r, g, b, a)`                      [add a RGBA color stop][cairo_pattern_add_color_stop_rgba]
+`patt:linear_points() -> x0, y0, x1, y1`                            [get points of linear gradient][cairo_pattern_get_linear_points]
+`patt:color_stop_count() -> n`                                      [get the number of color stops][cairo_pattern_get_color_stop_count]
+`patt:color_stop_rgba(i) -> offset, r, g, b, a`                     [get a color stop][cairo_pattern_get_color_stop_rgba]
 __radial gradient patterns__
 `cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
 `patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_get_radial_circles]
@@ -400,6 +400,13 @@ win32 fonts and freetype fonts.
 [cairo_pattern_set_filter]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-filter
 [cairo_pattern_get_surface]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-surface
 
-[cairo_pattern_create_rgb]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgb
-[cairo_pattern_create_rgba]:              http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgba
-[cairo_pattern_get_rgba]:                 http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-rgba
+[cairo_pattern_create_rgb]:                http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgb
+[cairo_pattern_create_rgba]:               http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgba
+[cairo_pattern_get_rgba]:                  http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-rgba
+
+[cairo_pattern_create_linear]:             http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-linear
+[cairo_pattern_add_color_stop_rgb]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-add-color-stop-rgb
+[cairo_pattern_add_color_stop_rgba]:       http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-add-color-stop-rgba
+[cairo_pattern_get_linear_points]:         http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-linear-points
+[cairo_pattern_get_color_stop_count]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-color-stop-count
+[cairo_pattern_get_color_stop_rgba]:       http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-color-stop-rgba
