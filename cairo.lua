@@ -95,7 +95,7 @@ local function getset_func(get, set, prefix)
 		set = setflag_func(set, prefix)
 	end
 	return function(self, ...)
-		if (...) == nil then --get val
+		if type((...)) == 'nil' then --get val
 			return get(self, ...)
 		else --set val
 			set(self, ...)
@@ -274,15 +274,18 @@ end
 
 local sr_ct = ffi.typeof'cairo_surface_t*'
 local function patt_or_surface_func(patt_func, surface_func)
-	return function (self, patt, x, y)
-	if ffi.istype(patt, sr_ct) then
-		surface_func(cr, patt, x or 0, y or 0)
-	else
-		patt_func(cr, patt)
+	return function(self, patt, x, y)
+		if ffi.istype(patt, sr_ct) then
+			surface_func(self, patt, x or 0, y or 0)
+		else
+			patt_func(self, patt)
+		end
 	end
 end
 
 --binding --------------------------------------------------------------------
+
+M.NULL = ffi.cast('void*', 0)
 
 M.version = C.cairo_version
 M.version_string = str_func(C.cairo_version_string)
@@ -617,7 +620,7 @@ cr.show_text_glyphs = function(cr, s, slen, glyphs, num_glyphs, clusters, num_cl
 		cluster_flags and X('CAIRO_TEXT_CLUSTER_FLAG_', cluster_flags) or 0)
 end
 cr.text_path = C.cairo_text_path
-cr.glpyh_path = C.cairo_glyph_path
+cr.glyph_path = C.cairo_glyph_path
 cr.text_extents = texout2_func(C.cairo_text_extents)
 cr.glyph_extents = texout3_func(C.cairo_glyph_extents)
 cr.font_extents = fexout_func(C.cairo_font_extents)
@@ -934,7 +937,8 @@ end
 
 M.image_surface = function(fmt, w, h)
 	if type(fmt) == 'table' then
-		local bmp, fmt = fmt, M.cairo_format(bmp.format)
+		local bmp = fmt
+		local fmt = M.cairo_format(bmp.format)
 		local sr = C.cairo_image_surface_create_for_data(bmp.data, X('CAIRO_FORMAT_', fmt), bmp.w, bmp.h, bmp.stride)
 		return ffi.gc(sr, function(sr)
 			local _ = bmp.data --pin it
@@ -1426,7 +1430,7 @@ function M.ft_font_face(ft_face, load_flags)
 		ft.FT_Done_Face(ft_face)
 		return nil, M.status_message(status), status
 	end
-	return font_face
+	return face
 end
 
 local function synthesize_flag(bitmask)
