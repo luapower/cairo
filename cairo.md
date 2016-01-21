@@ -298,6 +298,7 @@ __misc.__
 </div>
 
 > (1) supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
+
 > (*) for ref-counted objects only: `cr`, `sr`, `dev`, `patt`, `sfont`, `font` and `rgn`.
 
 
