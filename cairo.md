@@ -453,6 +453,7 @@ __misc.__
 
 [cairo_recording_surface_create]:          http://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-create
 [cairo_recording_surface_ink_extents]:     http://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-ink-extents
+[cairo_recording_surface_get_extents]:     http://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-get-extents
 
 [cairo_surface_create_similar]:            http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar
 [cairo_surface_create_similar_image]:      http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar-image
