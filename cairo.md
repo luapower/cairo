@@ -141,8 +141,8 @@ __radial gradient patterns__
 `cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
 `patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_pattern_get_radial_circles]
 __raster patterns__
-`cairo.raster_source(data, content, w, h) -> patt`                  [create a pattern from a raster image][cairo_pattern_create_raster_source]
-`sr:pattern() -> patt`                                              [create a pattern from a surface][cairo_pattern_create_for_surface]
+`cairo.raster_source_pattern(data, content, w, h) -> patt`          [create a raster source-type pattern][cairo_pattern_create_raster_source]
+`cairo.surface_pattern(sr) -> patt`                                 [create a surface-type pattern][cairo_pattern_create_for_surface]
 __mesh patterns__
 `cairo.mesh_pattern() -> patt`                                      [create a mesh pattern][cairo_pattern_create_mesh]
 `patt:begin_patch()`                                                [start a patch][cairo_mesh_pattern_begin_patch]
