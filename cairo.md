@@ -38,7 +38,7 @@ __surfaces__
 `sr:fallback_resolution([xppi, yppi]) /-> xppi, yppi`               [get/set fallback resolution][cairo_surface_set_fallback_resolution]
 `sr:has_show_text_glyphs() -> t|f`                                  [check if surface supports cairo_show_text_glyphs() for realz][cairo_surface_has_show_text_glyphs]
 `sr:mime_data(type[, data, len[, destroy[, arg]]]) /-> data, len`   [get/set mime data][cairo_surface_set_mime_data]
-`sr:supports_mime_type(type) -> t|f`
+`sr:supports_mime_type(type) -> t|f`                                [check if the surface supports a mime type][cairo_surface_supports_mime_type]
 `sr:map_to_image([x, y, w, h]) -> image_sr`                         [get an image surface for modifying the backing store][cairo_surface_map_to_image]
 `sr:unmap_image(image_sr)`                                          [upload image to backing store and unmap][cairo_surface_unmap_image]
 `sr:finish()`                                                       [finish the surface][cairo_surface_finish]
@@ -466,10 +466,9 @@ __misc.__
 [cairo_surface_status_message]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-status-string
 [cairo_surface_get_type]:                  http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-type
 [cairo_surface_get_content]:               http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-content
-[cairo_surface_get_user_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-user-data
-[cairo_surface_set_user_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-user-data
 [cairo_surface_get_mime_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-mime-data
 [cairo_surface_set_mime_data]:             http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-mime-data
+[cairo_surface_supports_mime_type]:        http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-supports-mime-type
 [cairo_surface_get_font_options]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-font-options
 [cairo_surface_flush]:                     http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-flush
 [cairo_surface_mark_dirty]:                http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-mark-dirty
