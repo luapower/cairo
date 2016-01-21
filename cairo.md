@@ -446,3 +446,4 @@ The binding won't break if extensions are missing in the binary.
 [cairo_mesh_pattern_set_corner_color_rgb]:   http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-set-corner-color-rgb
 [cairo_mesh_pattern_get_corner_color_rgba]:  http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-get-corner-color-rgba
 
+[cairo_select_font_face]:                  http://cairographics.org/manual/cairo-text.html#cairo-select-font-face
