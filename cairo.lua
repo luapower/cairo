@@ -928,7 +928,7 @@ M.image_surface = function(fmt, w, h)
 end
 
 M.stride = function(fmt, width)
-	return C.cairo_format_stride_for_width(X('CAIRO_FORMAT_', cairo_formats[fmt] or fmt, width)
+	return C.cairo_format_stride_for_width(X('CAIRO_FORMAT_', cairo_formats[fmt] or fmt), width)
 end
 
 sr.data = C.cairo_image_surface_get_data
