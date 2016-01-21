@@ -12,7 +12,6 @@ A lightweight ffi binding of the [cairo graphics] library.
 
 __NOTE:__ In the table below, `foo([val]) /-> val` is a shortcut for saying
 that `foo(val)` sets the value of foo and `foo() -> val` gets it.
-`t|f` means `true|false`.
 
 __NOTE:__ flags can be passed as lowercase strings without prefix eg.
 pass 'argb32' for `C.CAIRO_FORMAT_ARGB32` in `cairo.image_surface()`.
@@ -100,25 +99,25 @@ __paths__
 `cr:copy_path() -> path`                                            [copy current path to a path object][cairo_copy_path]
 `cr:copy_path_flat() -> path`                                       [copy current path flattened][cairo_copy_path_flat]
 `cr:append_path(path)`                                              [append a path to current path][cairo_append_path]
-`cr:path_extents() -> x1, y1, x2, y2`                               [bouding box of current path][cairo_path_extents]
-`cr:current_point() -> x, y`                                        [return the current point][cairo_get_current_point]
+`cr:path_extents() -> x1, y1, x2, y2`                               [get the bouding box of the current path][cairo_path_extents]
+`cr:current_point() -> x, y`                                        [get the current point][cairo_get_current_point]
 `cr:has_current_point() -> t|f`                                     [check if there's a current point][cairo_has_current_point]
 __filling and stroking__
-`cr:paint()`                                                        [paint the source over surface][cairo_paint]
+`cr:paint()`                                                        [paint the source within the current clipping region][cairo_paint]
 `cr:paint_with_alpha(alpha)`                                        [paint the source with transparency][cairo_paint_with_alpha]
-`cr:stroke()`                                                       [stroke and discard the current path][cairo_stroke]
+`cr:stroke()`                                                       [stroke the current path and discard it][cairo_stroke]
 `cr:stroke_preserve()`                                              [stroke and keep the path][cairo_stroke_preserve]
-`cr:fill()`                                                         [fill and discard the current path][cairo_fill]
+`cr:fill()`                                                         [fill the current path and discard it][cairo_fill]
 `cr:fill_preserve()`                                                [fill and keep the path][cairo_fill_preserve]
 `cr:in_stroke(x, y) -> t|f`                                         [hit-test the stroke area][cairo_in_stroke]
 `cr:in_fill(x, y) -> t|f`                                           [hit-test the fill area][cairo_in_fill]
 `cr:in_clip(x, y) -> t|f`                                           [hit-test the clip area][cairo_in_clip]
-`cr:stroke_extents() -> x1, y1, x2, y2`                             [get the stroke extents][cairo_stroke_extents]
-`cr:fill_extents() -> x1, y1, x2, y2`                               [get the fill extents][cairo_fill_extents]
+`cr:stroke_extents() -> x1, y1, x2, y2`                             [get the bounding box of stroking the current path][cairo_stroke_extents]
+`cr:fill_extents() -> x1, y1, x2, y2`                               [get the bounding box of filling the current path][cairo_fill_extents]
 __clipping__
-`cr:reset_clip()`                                                   [remove all clipping][cairo_reset_clip]
-`cr:clip()`                                                         [clip and discard the current path][cairo_clip]
+`cr:clip()`                                                         [intersect the current path to the current clipping region and discard it][cairo_clip]
 `cr:clip_preserve()`                                                [clip and keep the current path][cairo_clip_preserve]
+`cr:reset_clip()`                                                   [remove all clipping][cairo_reset_clip]
 `cr:clip_extents() -> x1, y1, x2, y2`                               [get the clip extents][cairo_clip_extents]
 `cr:copy_clip_rectangles() -> rlist`                                [get the clipping rectangles][cairo_copy_clip_rectangle_list]
 __patterns__
