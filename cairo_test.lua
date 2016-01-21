@@ -8,11 +8,11 @@ print('cairo version string: ', cairo.version_string())
 
 local function bmp_surface(w, h, format)
 	local bmp = bitmap.new(w, h, format or 'bgra8')
-	return cairo.create_image_surface(bmp)
+	return cairo.image_surface(bmp)
 end
 
 local sr = bmp_surface(500, 300)
-local cr = sr:create_context()
+local cr = sr:context()
 
 cr:ref()
 assert(cr:refcount() == 2)
@@ -37,17 +37,17 @@ cr:push_group()
 local patt = cr:pop_group()
 cr:source(patt)
 assert(patt:refcount() == 2)
-cr:source(cairo.NULL)
+cr:rgb(1,1,1)
 patt:unref()
 ]]
 
-cr:source_rgb(1, 1, 1)
-cr:source_rgba(1, 1, 1, 1)
+cr:rgb(1, 1, 1)
+cr:rgba(1, 1, 1, 1)
 
 --[[
 local sr1 = bmp_surface(500, 300)
-cr:source_surface(sr1)
-cr:source(cairo.NULL)
+cr:source(sr1)
+cr:rgb(1,1,1)
 sr1:unref()
 ]]
 
@@ -149,7 +149,7 @@ cr:clip_preserve()
 
 print(cr:clip_extents())
 
-local rl = cr:copy_clip_rectangle_list()
+local rl = cr:copy_clip_rectangles()
 --print(rl:count())
 
 local glyphs = cairo.allocate_glyphs(10)
@@ -158,7 +158,7 @@ glyphs:free()
 local cl = cairo.allocate_text_clusters(10)
 cl:free()
 
-local fopt = cairo.create_font_options()
+local fopt = cairo.font_options()
 fopt:copy():free()
 assert(fopt:status_string():match'no error')
 local fopt1 = fopt:copy()
@@ -192,7 +192,7 @@ cr:font_size(10)
 cr:font_matrix(cairo.matrix(1, 2, 3, 4, 5, 6))
 assert(cr:font_matrix().x0 == 5)
 
-local fopt = cairo.create_font_options()
+local fopt = cairo.font_options()
 fopt:antialias'good'
 cr:font_options(fopt)
 assert(cr:font_options():antialias() == 'good')
@@ -200,12 +200,13 @@ assert(cr:font_options():antialias() == 'good')
 print(cr:font_face()) --TODO: set it
 print(cr:scaled_font()) --TODO: set it
 
-cr:show_text'hello'
 local glyphs = cairo.allocate_glyphs(5)
+local clusters = cairo.allocate_text_clusters(5)
+
+cr:show_text'hello'
 cr:show_glyphs(glyphs, 5)
 
-local clusters = cairo.allocate_text_clusters(5)
-cr:show_text_glyphs('hello', 5, glyphs, 5, clusters, 5)
+cr:show_text_glyphs('hello', nil, glyphs, 5, clusters, 5)
 
 cr:text_path'A'
 cr:glpyh_path(glyphs, 5)
@@ -213,107 +214,60 @@ print(cr:text_extents'hello')
 print(cr:glyph_extents(glyphs, 5))
 print(cr:font_extents())
 
-cr:free()
-sr:free()
+assert(cr:font_face():status() ~= 0) --TODO: why?
 
-local face = cr:font_face()
-face:ref()
-assert(face:refcount() == 2)
-face:unref()
+local face = cairo.toy_font_face('Arial', 'italic', 'bold')
 assert(face:status() == 0)
+assert(face:refcount() == 3) --TODO: why?
 assert(face:type() == 'toy')
 
---[[
-local fopt = ffi.gc(cairo.create_font_options(), nil)
+local fopt = ffi.gc(cairo.font_options(), nil)
 local mt = cairo.matrix()
-local sfont = face:create_scaled_font(mt, mt, fopt)
-sfont:free()
-]]
+local sfont = face:scaled_font(mt, mt, fopt)
+sfont:ref()
+assert(sfont:refcount() == 3) --TODO: why?
+sfont:unref()
+assert(sfont:status() == 0)
+assert(sfont:type() == (ffi.abi'win' and 'win32'))
+print(sfont:extents())
+print(sfont:text_extents'hello')
+print(sfont:glyph_extents(glyphs, 5))
+print(sfont:text_to_glyphs(0, 0, 'hello'))
+print(sfont:font_face())
+assert(sfont:font_matrix().xx == 0)
+assert(sfont:ctm().xx == 0)
+assert(sfont:scale_matrix().xx == 0)
+assert(sfont:font_options():antialias() == 'default')
 
+--sfont:unref()
+
+assert(face:family() == 'Arial')
+assert(face:slant() == 'italic')
+assert(face:weight() == 'bold')
+
+--face:unref()
+
+local face = cairo.user_font_face()
 --[==[
-map('CAIRO_FONT_TYPE_', {
-	'TOY',
-	'FT',
-	'WIN32',
-	'QUARTZ',
-	'USER',
-})
-
-
-local sfont = {}
-
-sfont.ref = ref_func(C.cairo_scaled_font_reference, C.cairo_scaled_font_destroy)
-sfont.destroy = destroy_func(C.cairo_scaled_font_destroy)
-sfont.free = free
-sfont.refcount = C.cairo_scaled_font_get_reference_count
-sfont.status = C.cairo_scaled_font_status
-sfont.status_string = status_string
-sfont.type = getflag_func(C.cairo_scaled_font_get_type, 'CAIRO_FONT_TYPE_')
-sfont.extents = fexout_func(C.cairo_scaled_font_extents)
-sfont.text_extents = texout2_func(C.cairo_scaled_font_text_extents)
-sfont.glyph_extents = texout3_func(C.cairo_scaled_font_glyph_extents)
-
-local glyphs_buf = ffi.new'cairo_glyph_t*[1]'
-local num_glyphs_buf = ffi.new'int[1]'
-local clusters_buf = ffi.new'cairo_text_cluster_t*[1]'
-local num_clusters_buf = ffi.new'int[1]'
-local cluster_flags_buf = ffi.new'cairo_text_cluster_flags_t[1]'
-
-function sfont.text_to_glyphs(sfont, x, y, s, slen, glyphs, num_glyphs, clusters, num_clusters)
-
-sfont.font_face = C.cairo_scaled_font_get_font_face --weak ref
-sfont.font_matrix = mtout_func(C.cairo_scaled_font_get_font_matrix)
-sfont.ctm = mtout_func(C.cairo_scaled_font_get_ctm)
-sfont.scale_matrix = mtout_func(C.cairo_scaled_font_get_scale_matrix)
-sfont.font_options = foptout_func(C.cairo_scaled_font_get_font_options)
-function M.create_toy_font_face(family, slant, weight)
-
-face.family = str_func(C.cairo_toy_font_face_get_family)
-face.slang = getflag_func(C.cairo_toy_font_face_get_slant, 'CAIRO_FONT_SLANT_')
-face.weight = getflag_func(C.cairo_toy_font_face_get_weight, 'CAIRO_FONT_WEIGHT_')
-
-M.create_user_font_face = ref_func(C.cairo_user_font_face_create, C.cairo_font_face_destroy)
-
 face.init_func = getset_func(
 face.render_glyph_func = getset_func(
 face.text_to_glyphs_func = getset_func(
 face.unicode_to_glyph_func = getset_func(
-cr.has_current_point = bool_func(C.cairo_has_current_point)
-cr.current_point = d2out_func(C.cairo_get_current_point)
-cr.target = C.cairo_get_target --weak ref
-cr.group_target = C.cairo_get_group_target --weak ref
+]==]
 
-map('CAIRO_PATH_', {
-	'MOVE_TO',
-	'LINE_TO',
-	'CURVE_TO',
-	'CLOSE_PATH',
-})
+assert(cr:has_current_point() == false)
+assert(cr:current_point() == 0)
 
-cr.copy_path = ref_func(C.cairo_copy_path, C.cairo_path_destroy)
-cr.copy_path_flat = ref_func(C.cairo_copy_path, C.cairo_path_destroy)
-cr.append_path = C.cairo_append_path
+print(cr:target())
+print(cr:group_target())
 
-path.destroy = destroy_func(C.cairo_path_destroy)
-path.status = C.cairo_status
-path.status_string = status_string
+local path = cr:copy_path()
+path:free()
+local path = cr:copy_path_flat()
+cr:append_path(path)
 
-M.status_to_string = str_func(C.cairo_status_to_string)
-
+--[==[
 dev.ref = ref_func(C.cairo_device_reference, C.cairo_device_destroy)
-
-map('CAIRO_DEVICE_TYPE_', {
-	'DRM',
-	'GL',
-	'SCRIPT',
-	'XCB',
-	'XLIB',
-	'XML',
-	'COGL',
-	'WIN32',
-	'INVALID',
-})
-
 dev.type = getflag_func(C.cairo_device_get_type, 'CAIRO_DEVICE_TYPE_')
 dev.status = C.cairo_device_status
 dev.status_string = status_string
@@ -324,23 +278,29 @@ dev.finish = C.cairo_device_finish
 dev.destroy = destroy_func(C.cairo_device_destroy)
 dev.free = free
 dev.refcount = C.cairo_device_get_reference_count
+]==]
 
-sr.create_context = ref_func(C.cairo_create, C.cairo_destroy)
-sr.create_similar_surface = ref_func(function(sr, content, w, h)
-sr.create_similar_image_surface = ref_func(function(sr, format, w, h)
+--[[
+local sr1 = sr:similar_surface('color_alpha', 100, 100)
+sr1:unref()
 
-sr.map_to_image = function(sr, x, y, w, h)
-sr.unmap_image = function(sr, isr)
+local sr1 = sr:similar_image_surface('a8', 100, 100)
+sr1:unref()
+]]
 
-sr.create_subsurface = ref_func(C.cairo_surface_create_for_rectangle, C.cairo_surface_destroy)
+--TODO: crashes
+--local sr1 = sr:map_to_image(10, 10, 100, 100)
+--print(sr1:status_string())
+--sr:unmap_image(sr1)
 
-map('CAIRO_SURFACE_OBSERVER_', {
-	'NORMAL',
-	'RECORD_OPERATIONS',
-})
+local sr1 = sr:subsurface(10, 10, 100, 100)
+assert(sr1:status() == 0)
+sr1:free()
 
-sr.create_observer_surface = function(sr, mode)
+local sr1 = sr:observer_surface'record_operations'
+sr1:free()
 
+--[==[
 sr.add_paint_callback = C.cairo_surface_observer_add_paint_callback
 sr.add_mask_callback = C.cairo_surface_observer_add_mask_callback
 sr.add_fill_callback = C.cairo_surface_observer_add_fill_callback
@@ -350,7 +310,9 @@ sr.add_flush_callback = C.cairo_surface_observer_add_flush_callback
 sr.add_finish_callback = C.cairo_surface_observer_add_finish_callback
 sr.print = C.cairo_surface_observer_print
 sr.elapsed = C.cairo_surface_observer_elapsed
+]==]
 
+--[==[
 dev.print = C.cairo_device_observer_print
 dev.elapsed = C.cairo_device_observer_elapsed
 dev.paint_elapsed = C.cairo_device_observer_paint_elapsed
@@ -358,56 +320,30 @@ dev.mask_elapsed = C.cairo_device_observer_mask_elapsed
 dev.fill_elapsed = C.cairo_device_observer_fill_elapsed
 dev.stroke_elapsed = C.cairo_device_observer_stroke_elapsed
 dev.glyphs_elapsed = C.cairo_device_observer_glyphs_elapsed
+]==]
 
-sr.ref = ref_func(C.cairo_surface_reference, C.cairo_surface_destroy)
-sr.finish = C.cairo_surface_finish
-sr.destroy = destroy_func(C.cairo_surface_destroy)
-sr.free = free
+sr:ref()
+sr:unref()
+sr:finish()
 
-sr.device = ptr_func(C.cairo_surface_get_device) --weak ref
+local dev = sr:device()
+
+--[[
 sr.refcount = C.cairo_surface_get_reference_count
 sr.status = C.cairo_surface_status
 sr.status_string = status_string
+]]
 
-map('CAIRO_SURFACE_TYPE_', {
-	'IMAGE',
-	'PDF',
-	'PS',
-	'XLIB',
-	'XCB',
-	'GLITZ',
-	'QUARTZ',
-	'WIN32',
-	'BEOS',
-	'DIRECTFB',
-	'SVG',
-	'OS2',
-	'WIN32_PRINTING',
-	'QUARTZ_IMAGE',
-	'SCRIPT',
-	'QT',
-	'RECORDING',
-	'VG',
-	'GL',
-	'DRM',
-	'TEE',
-	'XML',
-	'SKIA',
-	'SUBSURFACE',
-	'COGL',
-})
+assert(sr:type() == 'image')
+assert(sr:content() == 'color_alpha')
 
-sr.type = getflag_func(C.cairo_surface_get_type, 'CAIRO_SURFACE_TYPE_')
-sr.content = getflag_func(C.cairo_surface_get_content, 'CAIRO_CONTENT_T')
-
+--[==[
 sr.write_to_png = _C.cairo_surface_write_to_png
 sr.write_to_png_stream = C.cairo_surface_write_to_png_stream
+]==]
 
-local data_buf = ffi.new'void*[1]'
-local len_buf = ffi.new'unsigned long[1]'
-
+--[==[
 sr.mime_data = function(sr, mime_type, data, len, destroy, closure)
-
 sr.supports_mime_type = bool_func(C.cairo_surface_supports_mime_type)
 
 sr.font_options = foptout_func(C.cairo_surface_get_font_options)
@@ -422,7 +358,7 @@ sr.copy_page = C.cairo_surface_copy_page
 sr.show_page = C.cairo_surface_show_page
 sr.has_show_text_glyphs = bool_func(C.cairo_surface_has_show_text_glyphs)
 
-M.create_image_surface = ref_func(function(fmt, w, h)
+M.image_surface = ref_func(function(fmt, w, h)
 
 M.format_stride_for_width = C.cairo_format_stride_for_width
 
@@ -432,15 +368,15 @@ sr.width = C.cairo_image_surface_get_width
 sr.height = C.cairo_image_surface_get_height
 sr.stride = C.cairo_image_surface_get_stride
 
-sr.create_image_surface_from_png = ref_func(_C.cairo_image_surface_create_from_png, C.cairo_surface_destroy)
-sr.create_image_surface_from_png_stream = ref_func(_C.cairo_image_surface_create_from_png_stream, C.cairo_surface_destroy)
+sr.image_surface_from_png = ref_func(_C.cairo_image_surface_create_from_png, C.cairo_surface_destroy)
+sr.image_surface_from_png_stream = ref_func(_C.cairo_image_surface_create_from_png_stream, C.cairo_surface_destroy)
 
-function M.create_recording_surface(content, x, y, w, h)
+function M.recording_surface(content, x, y, w, h)
 
 sr.ink_extents = d4out_func(C.cairo_recording_surface_ink_extents)
 sr.extents = function(sr)
 
-M.create_raster_source_pattern = function(udata, content, w, h)
+M.raster_source_pattern = function(udata, content, w, h)
 
 patt.callback_data = getset_func(
 
@@ -449,12 +385,12 @@ patt.snapshot = getset_func(
 patt.copy = getset_func(
 patt.finish = getset_func(
 
-M.create_rgb_pattern = ref_func(C.cairo_pattern_create_rgb, C.cairo_pattern_destroy)
-M.create_rgba_pattern = ref_func(C.cairo_pattern_create_rgba, C.cairo_pattern_destroy)
-M.create_pattern_from_surface = ref_func(C.cairo_pattern_create_for_surface, C.cairo_pattern_destroy)
-M.create_linear_pattern = ref_func(C.cairo_pattern_create_linear, C.cairo_pattern_destroy)
-M.create_radial_pattern = ref_func(C.cairo_pattern_create_radial, C.cairo_pattern_destroy)
-M.create_mesh_pattern = ref_func(C.cairo_pattern_create_mesh, C.cairo_pattern_destroy)
+M.rgb_pattern = ref_func(C.cairo_pattern_create_rgb, C.cairo_pattern_destroy)
+M.rgba_pattern = ref_func(C.cairo_pattern_create_rgba, C.cairo_pattern_destroy)
+M.pattern_from_surface = ref_func(C.cairo_pattern_create_for_surface, C.cairo_pattern_destroy)
+M.linear_pattern = ref_func(C.cairo_pattern_create_linear, C.cairo_pattern_destroy)
+M.radial_pattern = ref_func(C.cairo_pattern_create_radial, C.cairo_pattern_destroy)
+M.mesh_pattern = ref_func(C.cairo_pattern_create_mesh, C.cairo_pattern_destroy)
 
 patt.ref = ref_func(C.cairo_pattern_reference, C.cairo_pattern_destroy)
 patt.destroy = destroy_func(C.cairo_pattern_destroy)
@@ -548,11 +484,11 @@ map('CAIRO_REGION_OVERLAP_', {
 	'PART',
 })
 
-M.create_region = ref_func(C.cairo_region_create, C.cairo_region_destroy)
+M.region = ref_func(C.cairo_region_create, C.cairo_region_destroy)
 
-M.create_region_for_rectangle = function(x, y, w, h)
+M.region_for_rectangle = function(x, y, w, h)
 
-M.create_region_for_rectangles = ref_func(C.cairo_region_create_rectangles, C.cairo_region_destroy)
+M.region_for_rectangles = ref_func(C.cairo_region_create_rectangles, C.cairo_region_destroy)
 
 rgn.copy = ref_func(C.cairo_region_copy, C.cairo_region_destroy)
 rgn.ref = C.cairo_region_reference
@@ -633,8 +569,12 @@ function mt:scale_around(cx, cy, ...)
 function mt:copy()
 function mt:init_matrix(mt)
 
-function M.create_ft_font_face(ft_face, load_flags)
+function M.ft_font_face(ft_face, load_flags)
 face.synthesize_bold = synthesize_flag(C.CAIRO_FT_SYNTHESIZE_BOLD)
 face.synthesize_oblique = synthesize_flag(C.CAIRO_FT_SYNTHESIZE_OBLIQUE)
 sfont.lock_face = ref_func(_C.cairo_ft_scaled_font_lock_face, _C.cairo_ft_scaled_font_unlock_face)
 ]==]
+
+cr:free()
+sr:free()
+

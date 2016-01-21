@@ -1268,7 +1268,7 @@ cairo_round_glyph_positions_t _cairo_font_options_get_round_glyph_positions (con
 
 
 // cairo-ft.h
-typedef struct FT_Face* FT_Face;
+typedef struct FT_FaceRec_* FT_Face;
 
 cairo_font_face_t * cairo_ft_font_face_create_for_ft_face (FT_Face face, int load_flags);
 

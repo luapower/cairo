@@ -17,71 +17,84 @@ that `foo(val)` sets the value of foo and `foo() -> val` gets it.
 <div class="small">
 ------------------------------------------------------------------- -------------------------------------------------------------------
 __pixman surfaces__
-`cairo.image_surface_create(fmt, w, h) -> sr`                       [create a pixman surface][cairo_image_surface_create]
-`cairo.image_surface_create(bmp) -> sr`                             [create a pixman surface given a][cairo_image_surface_create_for_data][bitmap]
+`cairo.image_surface(fmt, w, h) -> sr`                              [create a pixman surface][cairo_image_surface_create]
+`cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data][bitmap]
 `sr:bitmap() -> bmp`                                                get the image surface as a bitmap
-`sr:data() -> data`                                                 [ref][cairo_surface_get_image_data]
-`sr:format() -> cairo_format_t`                                     [ref][cairo_surface_get_image_format]
-`sr:width() -> w`                                                   [ref][cairo_surface_get_image_width]
-`sr:height() -> h`                                                  [ref][cairo_surface_get_image_height]
-`sr:stride() -> stride`                                             [ref][cairo_surface_get_image_stride]
+`sr:data() -> data`                                                 [get the image surface pixel buffer][cairo_surface_get_image_data]
+`sr:format() -> format`                                             [get the image surface format][cairo_surface_get_image_format]
+`sr:bitmap_format() -> format`                                      get the image surface [bitmap] format
+`sr:width() -> w`                                                   [get the image surface ][cairo_surface_get_image_width]
+`sr:height() -> h`                                                  [get the image surface ][cairo_surface_get_image_height]
+`sr:stride() -> stride`                                             [get the image surface ][cairo_surface_get_image_stride]
 `sr:bpp() -> bpp`                                                   get the bits-per-pixel
-`sr:pixel_function() -> f(x, y) -> r, g, b, a`                      get the image's getpixel function
-`sr:pixel_function() -> f(x, y, r, g, b, a)`                        get the image's setpixel function
-__recording surfaces__
-`cairo.recording_surface_create(content[, x, y, w, h])`             [create a recording surface][cairo_recording_surface_create]
-`sr:recording_ink_extents() -> x, y, w, h`                          [get recording surface ink extents][cairo_recording_surface_ink_extents]
+`sr:getpixel_function() -> f(x, y) -> r, g, b, a`                   get a function to read pixels
+`sr:setpixel_function() -> f(x, y, r, g, b, a)`                     get a function to set pixels
 __surfaces__
-`sr:create_similar(content, w, h) -> sr`                            [create a similar surface][cairo_surface_create_similar]
-`sr:create_similar_image(format, w, h) -> sr`                       [create a similar image surface][cairo_surface_create_similar_image]
-`sr:create_for_rectangle(x, y, w, h) -> sr`                         [create a sub-surface][cairo_surface_create_for_rectangle]
-`sr:create_observer(mode) -> sr`                                    [create an observer surface][cairo_surface_create_observer]
+`sr:sub(x, y, w, h) -> sr`                                          [create a sub-surface][cairo_surface_create_for_rectangle]
+`sr:similar_surface(content, w, h) -> sr`                           [create a similar surface][cairo_surface_create_similar]
+`sr:similar_image_surface(format, w, h) -> sr`                      [create a similar image surface][cairo_surface_create_similar_image]
+`sr:type() -> type`                                                 [get surface type][cairo_surface_get_type]
+`sr:content() -> content`                                           [get surface content type][cairo_surface_get_content]
+`sr:flush()`                                                        [perform any pending drawing commands][cairo_surface_flush]
+`sr:mark_dirty([x, y, w, h])`                                       [re-read any cached areas of (parts of) the surface][cairo_surface_mark_dirty]
+`sr:fallback_resolution([xppi, yppi]) /-> xppi, yppi`               [get/set fallback resolution][cairo_surface_set_fallback_resolution]
+`sr:has_show_text_glyphs() -> t|f`                                  [check if surface supports cairo_show_text_glyphs() for realz][cairo_surface_has_show_text_glyphs]
+`sr:mime_data(type, data, len[, destroy[, arg]])`                   [assign mime data to surface][cairo_surface_set_mime_data]
+`sr:mime_data(type, data_ptr, len_ptr)`                             [get prev. assigned mime data][cairo_surface_get_mime_data]
+`sr:supports_mime_type(type) -> t|f`
 `sr:map_to_image([x, y, w, h]) -> image_sr`                         [get an image surface for modifying the backing store][cairo_surface_map_to_image]
 `sr:unmap_image(image_sr)`                                          [upload image to backing store and unmap][cairo_surface_unmap_image]
 `sr:finish()`                                                       [finish the surface][cairo_surface_finish]
-`sr:status() -> cairo_status_t`                                     [get surface status][cairo_surface_status]
-`sr:status_string() -> s`                                           [get surface status as string][cairo_surface_status]
-`sr:type() -> s`                                                    [get surface type][cairo_surface_get_type]
-`sr:content() -> s`                                                 [get surface content type][cairo_surface_get_content]
-`sr:flush()`                                                        [perform any pending drawing commands][cairo_surface_flush]
-`sr:mark_dirty()`                                                   [re-read any cached areas of the surface][cairo_surface_mark_dirty]
-`sr:mark_dirty_rectangle(x, y, w, h)`                               [re-read any cached areas of a part of the surface][cairo_surface_mark_dirty_rectangle]
-`sr:fallback_resolution([xppi, yppi]) /-> xppi, yppi`               [get/set fallback resolution][cairo_surface_set_fallback_resolution]
-`sr:has_show_text_glyphs() -> t|f`                                  [check if surface supports cairo_show_text_glyphs() for realz][cairo_surface_has_show_text_glyphs]
-`sr:apply_alpha()`                                                  [ref][cairo_surface_apply_alpha]
-`sr:set_mime_data(type, data, len[, destroy[, arg]])`               [assign mime data to surface][cairo_surface_set_mime_data]
-`sr:get_mime_data(type, data_ptr, len_ptr)`                         [get prev. assigned mime data][cairo_surface_get_mime_data]
+`sr:apply_alpha(a)`                                                 make the surface transparent
+__recording surfaces__
+`cairo.recording_surface(content[, x, y, w, h])`                    [create a recording surface][cairo_recording_surface_create]
+`sr:ink_extents() -> x, y, w, h`                                    [get recording surface ink extents][cairo_recording_surface_ink_extents]
+`sr:recording_extents() -> x, y, w, h | nil`
+__observer surfaces__
+`sr:observer_surface(mode) -> sr`                                   [create an observer surface][cairo_surface_create_observer]
+`sr:add_paint_callback(cb, p)`                                      [ref][cairo_surface_observer_add_paint_callback]
+`sr:add_mask_callback(cb, p)`                                       [ref][cairo_surface_observer_add_mask_callback]
+`sr:add_fill_callback(cb, p)`                                       [ref][cairo_surface_observer_add_fill_callback]
+`sr:add_stroke_callback(cb, p)`                                     [ref][cairo_surface_observer_add_stroke_callback]
+`sr:add_glyphs_callback(cb, p)`                                     [ref][cairo_surface_observer_add_glyphs_callback]
+`sr:add_flush_callback(cb, p)`                                      [ref][cairo_surface_observer_add_flush_callback]
+`sr:add_finish_callback(cb, p)`                                     [ref][cairo_surface_observer_add_finish_callback]
+`sr:print(cb, p)`                                                   [ref][cairo_surface_observer_print]
+`sr:elapsed() -> n`                                                 [ref][cairo_surface_observer_elapsed]
+__png support__
+`cairo.image_surface_from_png()`
+`cairo.image_surface_from_png_stream()`
+`sr:write_to_png()`
+`sr:write_to_png_stream()`
 __drawing contexts__
-`sr:create_context()`                                               [create a drawing context on a surface][cairo_create]
+`sr:context() -> cr`                                                [create a drawing context on a surface][cairo_create]
 `cr:save()`                                                         [save state (push to stack)][cairo_save]
 `cr:restore()`                                                      [restore state (pop from stack)][cairo_restore]
-__groups__
-`cr:push_group()`                                                   [redirect drawing to an intermediate surface][cairo_push_group]
-`cr:push_group_with_content(content)`                               [redirect drawing to an intermediate surface][cairo_push_group_with_content]
-`cr:pop_group() -> patt`                                            [terminate the redirection and return it as pattern][cairo_pop_group]
-`cr:pop_group_to_source()`                                          [terminate the redirection and install it as pattern][cairo_pop_group_to_source]
 __sources__
 `cr:operator([operator]) /-> operator`                              [get/set operator][cairo_set_operator]
-`cr:source([patt]) /-> patt`                                        [get/set pattern as source][cairo_set_source]
-`cr:set_source_rgb(r, g, b)`                                        [set color as source][cairo_set_source_rgb]
-`cr:set_source_rgba(r, g, b, a)`                                    [set color as source][cairo_set_source_rgba]
-`cr:set_source_surface(sr, x, y)`                                   [set surface as source][cairo_set_source_surface]
+`cr:source([patt | sr, [x, y]]) /-> patt`                           [get/set pattern or surface as source][cairo_set_source]
+`cr:rgb(r, g, b)`                                                   [set RGB color as source][cairo_set_source_rgb]
+`cr:rgba(r, g, b, a)`                                               [set RGBA color as source][cairo_set_source_rgba]
+__groups__
+`cr:push_group([content])`                                          [redirect drawing to an intermediate surface][cairo_push_group_with_content]
+`cr:pop_group() -> patt`                                            [terminate the redirection and return it as pattern][cairo_pop_group]
+`cr:pop_group_to_source()`                                          [terminate the redirection and install it as pattern][cairo_pop_group_to_source]
 __transformations__
 `cr:translate(x, y)`                                                [translate the user-space origin][cairo_translate]
 `cr:scale(sx, sy)`                                                  [scale the user-space][cairo_scale]
+`cr:scale_around(cx, cy, sx, sy)`                                   scale the user-space arount a point
 `cr:rotate(angle)`                                                  [rotate the user-space][cairo_rotate]
 `cr:rotate_around(cx, cy, angle)`                                   rotate the user-space around a point
-`cr:scale_around(cx, cy, sx, sy)`                                   scale the user-space arount a point
-`cr:skew(ax, ay)`                                                   skew the user-space
 `cr:transform(mt)`                                                  [transform the user-space][cairo_transform]
 `cr:safe_transform(mt)`                                             transform the user-space if the matrix is invertible
 `cr:matrix([mt]) /-> mt`                                            [get/set the CTM][cairo_set_matrix]
 `cr:identity_matrix()`                                              [reset the CTM][cairo_identity_matrix]
+`cr:skew(ax, ay)`                                                   skew the user-space
 __paths__
 `cr:new_path()`                                                     [create path][cairo_new_path]
 `cr:new_sub_path()`                                                 [create sub-path][cairo_new_sub_path]
 `cr:move_to(x, y)`                                                  [move the current point][cairo_move_to]
-`cr:has_current_point() -> true|false`                              [check if there's a current point][cairo_has_current_point]
+`cr:has_current_point() -> t|f`                                     [check if there's a current point][cairo_has_current_point]
 `cr:current_point() -> x, y`                                        [return the current point][cairo_get_current_point]
 `cr:line_to(x, y)`                                                  [add a line to the current path][cairo_line_to]
 `cr:curve_to(x1, y1, x2, y2, x3, y3)`                               [add a cubic bezier to the current path][cairo_curve_to]
@@ -100,7 +113,6 @@ __paths__
 `cr:copy_path() -> path`                                            [copy current path to a path object][cairo_copy_path]
 `cr:copy_path_flat() -> path`                                       [copy current path flattened][cairo_copy_path_flat]
 `cr:append_path(path)`                                              [append a path to current path][cairo_append_path]
-`path:free()`                                                       [free a path][cairo_path_destroy]
 __filling and stroking__
 `cr:paint()`                                                        [ref][cairo_paint]
 `cr:paint_with_alpha(alpha)`                                        [ref][cairo_paint_with_alpha]
@@ -120,137 +132,132 @@ __clipping__
 `cr:clip()`                                                         [ref][cairo_clip]
 `cr:clip_preserve()`                                                [ref][cairo_clip_preserve]
 `cr:clip_extents() -> x1, y1, x2, y2`                               [ref][cairo_clip_extents]
-`cr:copy_clip_rectangle_list()`                                     [ref][cairo_copy_clip_rectangle_list]
+`cr:copy_clip_rectangles() -> rlist`                                [ref][cairo_copy_clip_rectangle_list]
+__patterns__
+`patt:type() -> type`                                               [pattern type][cairo_get_type]
+`patt:matrix([mt]) /-> mt`                                          [get/set matrix][cairo_set_matrix]
+`patt:extend([extend]) /-> extend`                                  [get/set extend][cairo_set_extend]
+`patt:filter([filter]) /-> filter`                                  [get/set filter][cairo_set_filter]
+`patt:surface() -> sr | nil`                                        [get surface][cairo_get_surface]
+__color-filled patterns__
+`cairo.rgb_pattern(r, g, b) -> patt`                                [create a matte color pattern][cairo_pattern_create_rgb]
+`cairo.rgba_pattern(r, g, b, a) -> patt`                            [create a transparent color pattern][cairo_pattern_create_rgba]
+`patt:rgba() -> r, g, b, a`                                         [get RGBA color][cairo_get_rgba]
+__linear gradient patterns__
+`cairo.linear_pattern(x0, y0, x1, y1) -> patt`                      [create a linear gradient][cairo_pattern_create_linear]
+`patt:add_color_stop_rgb(offset, r, g, b)`                          [add a RGB color stop][cairo_add_color_stop_rgb]
+`patt:add_color_stop_rgba(offset, r, g, b, a)`                      [add a RGBA color stop][cairo_add_color_stop_rgba]
+`patt:linear_points() -> x0, y0, x1, y1`                            [get points of linear gradient][cairo_get_linear_points]
+`patt:color_stop_count() -> n`                                      [get the number of color stops][cairo_get_color_stop_count]
+`patt:color_stop_rgba(i) -> offset, r, g, b, a`                     [get a color stop][cairo_get_color_stop_rgba]
+__radial gradient patterns__
+`cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
+`patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_get_radial_circles]
+__raster patterns__
+`cairo.raster_source(data, content, w, h) -> patt`                  [create a pattern from a raster image][cairo_pattern_create_raster_source]
+`sr:pattern() -> patt`                                              [create a pattern from a surface][cairo_pattern_create_for_surface]
+__mesh patterns__
+`cairo.mesh_pattern() -> patt`                                      [create a mesh pattern][cairo_pattern_create_mesh]
+`patt:begin_patch()`                                                [start a patch][cairo_mesh_pattern_begin_patch]
+`patt:end_patch()`                                                  [end a patch][cairo_mesh_pattern_end_patch]
 __fonts and text__
 `cr:select_font_face(family, slant, weight)`                        [select a font face][cairo_select_font_face]
-`cr:set_font_size(size)`                                            [set font size][cairo_set_font_size]
+`cr:font_size(size)`                                                [set font size][cairo_set_font_size]
 `cr:font_matrix([mt]) /-> mt`                                       [get/set font matrix][cairo_set_font_matrix]
-`cr:scaled_font([sfont]) /-> sfont`                                 [get/set scaled font][cairo_set_scaled_font]
 `cr:show_text(s)`                                                   [show text][cairo_show_text]
 `cr:show_glyphs(glyphs, #glyphs)`                                   [show glyphs][cairo_show_glyphs]
-`cr:show_text_glyphs(s, #s, glyphs, #glyphs, clsters, #clsters, f)` [show text glyphs][cairo_show_text_glyphs]
+`cr:show_text_glyphs(s, #s, gs, #gs, cs, #cs, f)`                   [show text glyphs][cairo_show_text_glyphs]
 `cr:text_path(s)`                                                   [ref][cairo_text_path]
 `cr:glyph_path(glyphs, #glyphs)`                                    [ref][cairo_glyph_path]
 `cr:text_extents(s) -> cairo_text_extents_t`                        [get text extents][cairo_text_extents]
 `cr:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`         [ref][cairo_glyph_extents]
 `cr:font_extents() -> cairo_font_extents_t`                         [ref][cairo_font_extents]
-`cr:copy_page()`                                                    [ref][cairo_copy_page]
-`cr:show_page()`                                                    [ref][cairo_show_page]
-`cr:status()`                                                       [ref][cairo_status]
-`cr:status_string()`                                                [ref][cairo_status_string]
-__rasterization options__
-`cr:tolerance([tolerance]) /-> tolerance`                           [get/set tolerance][cairo_get_tolerance]
-`cr:set_antialias(antialias)`                                       [set the antialiasing mode][cairo_set_antialias]
-`cr:set_fill_rule(fill_rule)`                                       [set the fill rule][cairo_set_fill_rule]
-`cr:set_line_width(width)`                                          [set the current line width][cairo_set_line_width]
-`cr:set_line_cap(line_cap)`                                         [set the current line cap][cairo_set_line_cap]
-`cr:set_line_join(line_join)`                                       [set the current line join][cairo_set_line_join]
-`cr:set_dash(dashes, offset)`                                       [set the dash pattern for cairo_stroke()][cairo_set_dash]
-`cr:get_dash() -> dashes, offset`                                   [ref][cairo_get_dash]
-`cr:get_dash_count() -> n`                                          [ref][cairo_get_dash_count]
-`cr:set_miter_limit(limit)`                                         [set the current miter limit][cairo_set_miter_limit]
-`cr:target() -> sr`                                                 [get the ultimate destination surface][cairo_get_target]
-`cr:group_target() -> sr`                                           [get the current destination surface][cairo_get_group_target]
-__patterns__
-`cairo.pattern_create_raster_source(data, content, w, h) -> patt`   [create a pattern from a raster image][cairo_pattern_create_raster_source]
-`cairo.pattern_create_rgb(r, g, b) -> patt`                         [create a matte color pattern][cairo_pattern_create_rgb]
-`cairo.pattern_create_rgba(r, g, b, a) -> patt`                     [create a transparent color pattern][cairo_pattern_create_rgba]
-`sr:create_pattern() -> patt`                                       [create a pattern][cairo_surface_create_pattern]
-`cairo.pattern_create_linear(x0, y0, x1, y1) -> patt`               [create a linear gradient][cairo_pattern_create_linear]
-`cairo.pattern_create_radial(cx0, cy0, r0, cx1, cy1, r1) -> patt`   [create a radial gradient][cairo_pattern_create_linear]
-`cairo.pattern_create_mesh() -> patt`                               [create a mesh pattern][cairo_pattern_create_mesh]
-`patt:mesh_begin_patch()`                                           [ref][cairo_mesh_pattern_begin_patch]
-`patt:mesh_end_patch()`                                             [ref][cairo_mesh_pattern_end_patch]
-`patt:status() -> cairo_status_t`                                   [ref][cairo_status]
-`patt:status_string() -> s`                                         [ref][cairo_status_string]
-`patt:type() -> cairo_pattern_type_t`                           [ref][cairo_get_type]
-`patt:add_color_stop_rgb(offset, r, g, b)`                          [ref][cairo_add_color_stop_rgb]
-`patt:add_color_stop_rgba(offset, r, g, b, a)`                      [ref][cairo_add_color_stop_rgba]
-`patt:matrix()`                                                     [ref][cairo_set_matrix]
-`patt:extend()`                                                     [ref][cairo_set_extend]
-`patt:filter()`                                                     [ref][cairo_set_filter]
-`patt:rgba()`                                                       [ref][cairo_get_rgba]
-`patt:surface()`                                                    [ref][cairo_get_surface]
-`patt:color_stop_rgba()`                                            [ref][cairo_get_color_stop_rgba]
-`patt:color_stop_count()`                                           [ref][cairo_get_color_stop_count]
-`patt:linear_points()`                                              [ref][cairo_get_linear_points]
-`patt:radial_circles()`                                             [ref][cairo_get_radial_circles]
+__font faces__
+`cr:font_face([face]) /-> face`                                     [get/set font face][cairo_set_font_face]
+`face:type() -> type`                                               [ref][cairo_font_face_get_type]
+`face:family() -> s`                                                [ref][cairo_font_face_toy_get_family]
+`face:slant() -> cairo_font_slant_t`                                [ref][cairo_font_face_toy_get_slant]
+`face:weight() -> cairo_font_weight_t`                              [ref][cairo_font_face_toy_get_weight]
+__callback-based fonts__
+`cairo.user_font_face() -> face`                                    [ref][cairo_user_font_face_create]
+`face:init_func(func)`                                              [ref][cairo_font_face_user_set_init_func]
+`face:render_glyph_func(func)`                                      [ref][cairo_font_face_user_set_render_glyph_func]
+`face:text_to_glyphs_func(func)`                                    [ref][cairo_font_face_user_set_text_to_glyphs_func]
+`face:unicode_to_glyph_func(func)`                                  [ref][cairo_font_face_user_set_unicode_to_glyph_func]
+`cairo.toy_font_face(family, slant, weight) -> face`                [ref][cairo_toy_font_face_create]
+`sfont:font_face() -> face`                                         [ref][cairo_scaled_font_get_font_face]
 __scaled fonts__
-`sfont:status() -> cairo_status_t`                                  [ref][cairo_scaled_font_status]
-`sfont:status_string() -> s`                                        [ref][cairo_scaled_font_status_string]
+`face:scaled_font(mt, ctm, fopt) -> sfont`                          [create scaled font][cairo_font_face_create_scaled_font]
+`cr:scaled_font([sfont]) /-> sfont`                                 [get/set scaled font][cairo_set_scaled_font]
 `sfont:type() -> cairo_font_type_t`                                 [ref][cairo_scaled_font_get_type]
 `sfont:extents() -> cairo_text_extents_t`                           [ref][cairo_scaled_font_extents]
 `sfont:text_extents(s) -> cairo_text_extents_t`                     [ref][cairo_scaled_font_text_extents]
 `sfont:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`      [ref][cairo_scaled_font_glyph_extents]
 `sfont:text_to_glyphs(x, y, s, #s, gs, #gs, cs, #cs, cf) -> status` [ref][cairo_scaled_font_text_to_glyphs]
-`sfont:font_face() -> face`                                         [ref][cairo_scaled_font_get_font_face]
 `sfont:font_matrix() -> mt`                                         [ref][cairo_scaled_font_get_font_matrix]
 `sfont:ctm()`                                                       [ref][cairo_scaled_font_get_ctm]
 `sfont:scale_matrix()`                                              [ref][cairo_scaled_font_get_scale_matrix]
-__font faces__
-`cr:font_face([face]) /-> face`                                            [set font face][cairo_set_font_face]
-`cairo.toy_font_face_create(family, slant, weight) -> face`         [ref][cairo_toy_font_face_create]
-`cairo.user_font_face_create() -> face`                             [ref][cairo_user_font_face_create]
-`face:status()`                                                     [ref][cairo_font_face_status]
-`face:status_string()`                                              [ref][cairo_font_face_status_string]
-`face:get_type()`                                                   [ref][cairo_font_face_get_type]
-`face:create_scaled_font(font_matrix, ctm, fopt) -> sfont`          [ref][cairo_font_face_create_scaled_font]
-`face:family() -> s`                                        [ref][cairo_font_face_toy_get_family]
-`face:slant() -> cairo_font_slant_t`                        [ref][cairo_font_face_toy_get_slant]
-`face:weight() -> cairo_font_weight_t`                      [ref][cairo_font_face_toy_get_weight]
-`face:init_func(func)`                                     [ref][cairo_font_face_user_set_init_func]
-`face:render_glyph_func(func)`                             [ref][cairo_font_face_user_set_render_glyph_func]
-`face:text_to_glyphs_func(func)`                           [ref][cairo_font_face_user_set_text_to_glyphs_func]
-`face:unicode_to_glyph_func(func)`                         [ref][cairo_font_face_user_set_unicode_to_glyph_func]
+`sfont:font_options([fopt]) /-> fopt`                               [get scaled font options][cairo_scaled_font_get_font_options]
+__rasterization options__
+`cr:tolerance([tolerance]) /-> tolerance`                           [get/set tolerance][cairo_get_tolerance]
+`cr:antialias([antialias]) /-> antialias`                           [set the antialiasing mode][cairo_set_antialias]
+`cr:fill_rule([rule]) /-> rule`                                     [set the fill rule][cairo_set_fill_rule]
+`cr:line_width([width]) /-> width`                                  [set the current line width][cairo_set_line_width]
+`cr:line_cap([cap]) /-> cap`                                        [set the current line cap][cairo_set_line_cap]
+`cr:line_join([join]) /-> join`                                     [set the current line join][cairo_set_line_join]
+`cr:dash([dashes[, offset]]) /-> dashes, dash_count`                [set the dash pattern for cairo_stroke()][cairo_set_dash]
+`cr:dash_count() -> n`                                              [ref][cairo_get_dash_count]
+`cr:miter_limit([limit]) /-> limit`                                 [set the current miter limit][cairo_set_miter_limit]
+__device-space__
+`cr:user_to_device(x, y) -> x, y`                                   [user to device (point)][cairo_user_to_device]
+`cr:user_to_device_distance(x, y) -> x, y`                          [user to device (distance)][cairo_user_to_device_distance]
+`cr:device_to_user(x, y) -> x, y`                                   [device to user (point)][cairo_device_to_user]
+`cr:device_to_user_distance(x, y) -> x, y`                          [device to user (distance)][cairo_device_to_user_distance]
+__rectangle lists__
+rlist:free()
+__glyphs__
+`cairo.allocate_glyphs(num_glyphs) -> glyphs`                       [allocate an array of glyphs][cairo_glyph_allocate]
+`glyphs:free()`                                                     [free the array of glyphs][cairo_free]
+__text clusters__
+`cairo.allocate_text_clusters(num_clusters) -> clusters`            [allocate an array of text clusters][cairo_text_cluster_allocate]
+`clusters:free()`                                                   [free the array of text clusters][cairo_text_cluster_free]
 __font options__
-`cairo.font_options_create() -> fopt`                               [create a font options object][cairo_font_options_create]
-`sr:font_options([fopt]) /-> fopt`                               [get surface font options][cairo_surface_get_font_options]
-`cr:font_options([fopt]) /-> fopt`                                         [set font options][cairo_set_font_options]
-`sfont:font_options([fopt]) /-> fopt`                            [get scaled font options][cairo_scaled_font_get_font_options]
+`cairo.font_options() -> fopt`                                      [create a font options object][cairo_font_options_create]
 `fopt:free()`                                                       [free font options][cairo_font_options_free]
-`fopt:status() -> cairo_status_t`                                   [get font options status][cairo_font_options_status]
-`fopt:status_string() -> s`                                         [get font options status as string][cairo_font_options_status_string]
 `fopt:copy() -> fopt`                                               [copy font options][cairo_font_options_copy]
 `fopt:merge(fopt)`                                                  [merge options][cairo_font_options_merge]
 `fopt:equal(fopt) -> t|f`                                           [compare options (also with `==`)][cairo_font_options_equal]
 `fopt:hash() -> n`                                                  [get options hash][cairo_font_options_hash]
-`fopt:antialias(antialias)`                                     [set antialias][cairo_font_options_set_antialias]
-`fopt:subpixel_order(subpixel_order)`                           [set subpixel order][cairo_font_options_set_subpixel_order]
-`fopt:hint_style(hint_style)`                                   [set hint style][cairo_font_options_set_hint_style]
-`fopt:hint_metrics(hint_metrics)`                               [set hint metrics][cairo_font_options_set_hint_metrics]
-`fopt:lcd_filter(lcd_filter)`                                   [set lcd filter][cairo_font_options_set_lcd_filter]
-`fopt:round_glyph_positions(round_glyph_positions)`             [set round glyph positions][cairo_font_options_set_round_glyph_positions]
-__regions__
-`cairo.region_create() -> rgn`                                      [ref][cairo_region_create]
-`cairo.region_create_rectangle(x, y, w, h) -> rgn`                  [ref][cairo_region_create_rectangle]
-`cairo.region_create_rectangles(rects)`                             [ref][cairo_region_create_rectangles]
-`rgn:copy() -> rgn`                                                 [ref][cairo_region_copy]
-`rgn:equal(rgn) -> t|f`                                             [ref][cairo_region_equal]
-`rgn:status() -> cairo_status_t`                                    [ref][cairo_region_status]
-`rgn:status_string() -> s`                                          [ref][cairo_region_status_string]
-`rgn:get_extents()`                                                 [ref][cairo_region_get_extents]
-`rgn:num_rectangles() -> n`                                         [ref][cairo_region_num_rectangles]
-`rgn:get_rectangle()`                                               [ref][cairo_region_get_rectangle]
-`rgn:is_empty() -> t|f`                                             [ref][cairo_region_is_empty]
-`rgn:contains_rectangle(x, y, w, h) -> t|f | 'partial'`             [ref][cairo_region_contains_rectangle]
-`rgn:contains_point(x, y) -> t|f`                                   [ref][cairo_region_contains_point]
-`rgn:translate(x, y)`                                               [ref][cairo_region_translate]
-`rgn:subtract(rgn) -> cairo_status_t`                               [ref][cairo_region_subtract]
-`rgn:subtract_rectangle(x, y, w, h) -> cairo_status_t`              [ref][cairo_region_subtract_rectangle]
-`rgn:intersect(rgn) -> cairo_status_t`                              [ref][cairo_region_intersect]
-`rgn:intersect_rectangle(x, y, w, h) -> cairo_status_t`             [ref][cairo_region_intersect_rectangle]
-`rgn:union(rgn) -> cairo_status_t`                                  [ref][cairo_region_union]
-`rgn:union_rectangle(x, y, w, h) -> cairo_status_t`                 [ref][cairo_region_union_rectangle]
-`rgn:xor(rgn) -> cairo_status_t`                                    [ref][cairo_region_xor]
-`rgn:xor_rectangle(x, y, w, h) -> cairo_status_t`                   [ref][cairo_region_xor_rectangle]
-__rectangles__
-`rect:free()`                                                       [ref][cairo_free]
-__glyphs__
-`cairo.glyph_allocate(num_glyphs) -> glyphs`                        [allocate an array of glyphs][cairo_glyph_allocate]
-`glyphs:free()`                                                     [free the array of glyphs][cairo_free]
-__text clusters__
-`cairo.text_cluster_allocate(num_clusters) -> clusters`             [allocate an array of text clusters][cairo_text_cluster_allocate]
-`clusters:free()`                                                   [free the array of text clusters][cairo_text_cluster_free]
+`fopt:antialias([antialias]) /-> antialias`                                     [set antialias][cairo_font_options_set_antialias]
+`fopt:subpixel_order([order]) /-> order`                            [get/set subpixel order][cairo_font_options_set_subpixel_order]
+`fopt:hint_style([style]) /-> style`                                [get/set hint style][cairo_font_options_set_hint_style]
+`fopt:hint_metrics([metrics]) /-> metrics`                          [get/set hint metrics][cairo_font_options_set_hint_metrics]
+`fopt:lcd_filter([filter]) /-> filter`                              [get/set lcd filter][cairo_font_options_set_lcd_filter]
+`fopt:round_glyph_positions([pos]) /-> pos`                         [get/set round glyph positions][cairo_font_options_set_round_glyph_positions]
+`sr:font_options([fopt]) /-> fopt`                                  [get/set surface font options][cairo_surface_get_font_options]
+`cr:font_options([fopt]) /-> fopt`                                  [get/set font options][cairo_set_font_options]
+__multi-page backends__
+`sr:copy_page()`                                                    [emit the current page and retain surface contents][cairo_surface_copy_page]
+`sr:show_page()`                                                    [emit the current page and clear surface contents][cairo_surface_show_page]
+__targets__
+`cr:target() -> sr`                                                 [get the ultimate destination surface][cairo_get_target]
+`cr:group_target() -> sr`                                           [get the current destination surface][cairo_get_group_target]
+__devices__
+`sr:device() -> cairo_device_t`                                     [get the device of the surface][cairo_surface_get_device]
+`sr:device_offset([x, y]) /-> x, y`                                 [set device offset][cairo_surface_set_device_offset]
+`dev:type() -> type`                                                [ref][cairo_get_type]
+`dev:acquire() -> status`                                           [ref][cairo_acquire]
+`dev:release()`                                                     [ref][cairo_release]
+`dev:flush()`                                                       [ref][cairo_flush]
+`dev:finish()`                                                      [ref][cairo_finish]
+__observer devices__
+`dev:print()`                                                       [ref][cairo_device_observer_print]
+`dev:elapsed()`                                                     [ref][cairo_device_observer_elapsed]
+`dev:paint_elapsed()`                                               [ref][cairo_device_observer_paint_elapsed]
+`dev:mask_elapsed()`                                                [ref][cairo_device_observer_mask_elapsed]
+`dev:fill_elapsed()`                                                [ref][cairo_device_observer_fill_elapsed]
+`dev:stroke_elapsed()`                                              [ref][cairo_device_observer_stroke_elapsed]
+`dev:glyphs_elapsed()`                                              [ref][cairo_device_observer_glyphs_elapsed]
 __matrices__
 `mat:init()`                                                        [ref][cairo_init]
 `mat:init_identity()`                                               [ref][cairo_init_identity]
@@ -272,34 +279,37 @@ __matrices__
 `mat:skew(ay, ay)`
 `mat:copy() -> mat`                                                 copy matrix
 `mat:init_matrix(mat)`                                              init with a matrix
+__regions__
+`cairo.region([[x, y, w, h] | rlist]) -> rgn`                       [ref][cairo_region_create]
+`rgn:copy() -> rgn`                                                 [copy region][cairo_region_copy]
+`rgn:equal(rgn) -> t|f`                                             [compare regions][cairo_region_equal]
+`rgn:extents() -> x, y, w, h`                                       [region extents][cairo_region_get_extents]
+`rgn:num_rectangles() -> n`                                         [number of rectangles][cairo_region_num_rectangles]
+`rgn:rectangle(i) -> x, y, w, h`                                    [get a rectangle][cairo_region_get_rectangle]
+`rgn:is_empty() -> t|f`                                             [check if empty][cairo_region_is_empty]
+`rgn:contains_rectangle(x, y, w, h) -> t|f | 'partial'`             [rectangle hit test][cairo_region_contains_rectangle]
+`rgn:contains_point(x, y) -> t|f`                                   [point hit test][cairo_region_contains_point]
+`rgn:translate(x, y)`                                               [translate][cairo_region_translate]
+`rgn:subtract(rgn | x, y, w, h)`                                    [substract][cairo_region_subtract]
+`rgn:intersect(rgn | x, y, w, h)`                                   [intersect][cairo_region_intersect]
+`rgn:union(rgn | x, y, w, h)`                                       [union][cairo_region_union]
+`rgn:xor(rgn | x, y, w, h)`                                         [XOR][cairo_region_xor]
+__rectangles__
+`rect:free()`                                                       [ref][cairo_free]
 __integer rectangles__
 `irect:create_region()`                                             [ref][cairo_create_region]
-__devices__
-`sr:get_device() -> cairo_device_t`                                 [get the device of the surface][cairo_surface_get_device]
-`sr:device_offset([x, y]) /-> x, y`                                        [set device offset][cairo_surface_set_device_offset]
-`dev:type() -> type`                             [ref][cairo_get_type]
-`dev:status()`                                                      [ref][cairo_status]
-`dev:status_string()`                                               [ref][cairo_status_string]
-`dev:acquire() -> status`                                   [ref][cairo_acquire]
-`dev:release()`                                                     [ref][cairo_release]
-`dev:flush()`                                                       [ref][cairo_flush]
-`dev:finish()`                                                      [ref][cairo_finish]
-__device-space__
-`cr:user_to_device(x, y) -> x, y`                                   [user to device (point)][cairo_user_to_device]
-`cr:user_to_device_distance(x, y) -> x, y`                          [user to device (distance)][cairo_user_to_device_distance]
-`cr:device_to_user(x, y) -> x, y`                                   [device to user (point)][cairo_device_to_user]
-`cr:device_to_user_distance(x, y) -> x, y`                          [device to user (distance)][cairo_device_to_user_distance]
-__multi-page backends__
-`sr:copy_page()`                                                    [emit the current page and retain surface contents][cairo_surface_copy_page]
-`sr:show_page()`                                                    [emit the current page and clear surface contents][cairo_surface_show_page]
-__ref-counting__
-`obj:refcount() -> refcount`                             [get ref count (*)][cairo_get_reference_count]
-`obj:ref()`                                                   [increase ref count][cairo_reference]
-`obj:destroy()`                                                     [decrease ref count and free when 0][cairo_destroy]
-`obj:free()`                                                        free (error if ref count > 0)
 __utils__
-`cairo.format_stride_for_width(format, w) -> stride`                [get stride for a format and width][cairo_format_stride_for_width]
-__library__
+`cairo.stride(format, w) -> stride`                                 [get stride for a format and width][cairo_format_stride_for_width]
+__memory management__
+`obj:free()`                                                        free (error if ref count > 0 for ref-counted objects)
+`obj:refcount() -> refcount`                                        [get ref count (*)][cairo_get_reference_count]
+`obj:ref()`                                                         [increase ref count][cairo_reference]
+`obj:unref()`                                                       [decrease ref count and free when 0][cairo_destroy]
+__object status__
+`obj:status() -> cairo_status_t`                                    [get status][cairo_status_t]
+`obj:status_string() -> s`                                          [get status as string][cairo_status_string]
+`obj:check()`                                                       raise an error if the object has an error status
+__library version__
 `cairo.version() -> n`                                              [get lib version][cairo_version]
 `cairo.version_string() -> s`                                       [get lib version as X.Y.Z][cairo_version_string]
 ------------------------------------------------------------------- -------------------------------------------------------------------
@@ -662,6 +672,6 @@ Additional wrappers are provided for completeness:
 -------------------------------------------- ------------------------------------------------
 </div>
 
-Also, `cairo.image_surface_create(bmp) -> surface`
+Also, `cairo.image_surface(bmp) -> surface`
 creates a cairo image surface from a [bitmap] object if it's in one
 of the supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
