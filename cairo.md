@@ -340,7 +340,7 @@ win32 fonts and freetype fonts.
 [cairo_set_operator]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-set-operator
 [cairo_mask]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-mask
 
-[cairo_push_group]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-push-group
+[cairo_push_group_with_content]:           http://cairographics.org/manual/cairo-cairo-t.html#cairo-push-group-with-content
 [cairo_pop_group]:                         http://cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group
 [cairo_pop_group_to_source]:               http://cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group-to-source
 
