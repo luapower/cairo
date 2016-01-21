@@ -917,6 +917,7 @@ local cairo_formats = {
 	g8     = 'a8',
 	g1     = 'a1',
 	rgb565 = 'rgb16_565',
+	bgr10  = 'rgb30',
 }
 function M.cairo_format(format)
 	return cairo_formats[format]

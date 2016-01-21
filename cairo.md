@@ -297,7 +297,7 @@ __misc.__
 ------------------------------------------------------------------- -------------------------------------------------------------------
 </div>
 
-(+) supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565'.
+(+) supported formats: 'bgra8', 'bgrx8', 'g8', 'g1', 'rgb565', 'bgr10'.
 
 (*) for ref-counted objects only: `cr`, `sr`, `dev`, `patt`, `sfont`, `font` and `rgn`.
 
@@ -445,3 +445,4 @@ The binding won't break if extensions are missing in the binary.
 [cairo_mesh_pattern_get_control_point]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-get-control-point
 [cairo_mesh_pattern_set_corner_color_rgb]:   http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-set-corner-color-rgb
 [cairo_mesh_pattern_get_corner_color_rgba]:  http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-get-corner-color-rgba
+
