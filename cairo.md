@@ -21,7 +21,7 @@ __pixman surfaces__
 `cairo.image_surface(bmp) -> sr`                                    [create a pixman surface given a][cairo_image_surface_create_for_data] [bitmap]
 `sr:bitmap() -> bmp`                                                get the image surface as a [bitmap]
 `sr:data() -> data`                                                 [get the image surface pixel buffer][cairo_image_surface_get_data]
-`sr:format() -> format`                                             [get the image surface format][cairo_image_surface_get_format]
+`sr:format() -> fmt`                                                [get the image surface format][cairo_image_surface_get_format]
 `sr:bitmap_format() -> fmt`                                         get the image surface [bitmap] format
 `sr:width() -> w`                                                   [get the image surface width][cairo_image_surface_get_width]
 `sr:height() -> h`                                                  [get the image surface height][cairo_image_surface_get_height]
@@ -30,7 +30,7 @@ __pixman surfaces__
 __surfaces__
 `sr:sub(x, y, w, h) -> sr`                                          [create a sub-surface][cairo_surface_create_for_rectangle]
 `sr:similar_surface(content, w, h) -> sr`                           [create a similar surface][cairo_surface_create_similar]
-`sr:similar_image_surface(format, w, h) -> sr`                      [create a similar image surface][cairo_surface_create_similar_image]
+`sr:similar_image_surface(fmt, w, h) -> sr`                         [create a similar image surface][cairo_surface_create_similar_image]
 `sr:type() -> type`                                                 [get surface type][cairo_surface_get_type]
 `sr:content() -> content`                                           [get surface content type][cairo_surface_get_content]
 `sr:flush()`                                                        [perform any pending drawing commands][cairo_surface_flush]
@@ -276,7 +276,7 @@ __object status__
 `obj:status_message() -> s`                                         [get status message][cairo_status_to_string]
 `obj:check()`                                                       raise an error if the object has an error status
 __misc.__
-`cairo.stride(format, w) -> stride`                                 [get stride for a format and width][cairo_format_stride_for_width]
+`cairo.stride(fmt, w) -> stride`                                    [get stride for a format and width][cairo_format_stride_for_width]
 `cairo.bitmap_format(cairo_fmt) -> bmp_fmt`                         get the [bitmap] format corresponding to a cairo format
 `cairo.cairo_format(bmp_fmt) -> cairo_fmt`                          get the cairo format corresponding to a bitmap format
 `cairo.version() -> n`                                              [get lib version][cairo_version]
