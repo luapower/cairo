@@ -422,9 +422,9 @@ win32 fonts and freetype fonts.
 
 [cairo_pattern_create_for_surface]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-for-surface
 
-[cairo_pattern_create_raster_source]:             http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-create-raster-source
-[cairo_raster_source_pattern_set_callback_data]:  http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-callback-data
-[cairo_raster_source_pattern_set_acquire]:        http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-acquire
-[cairo_raster_source_pattern_set_snapshot]:       http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-snapshot
-[cairo_raster_source_pattern_set_copy]:           http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-copy
-[cairo_raster_source_pattern_set_finish]:         http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-finish
+[cairo_pattern_create_raster_source]:             http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-create-raster-source
+[cairo_raster_source_pattern_set_callback_data]:  http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-callback-data
+[cairo_raster_source_pattern_set_acquire]:        http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-acquire
+[cairo_raster_source_pattern_set_snapshot]:       http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-snapshot
+[cairo_raster_source_pattern_set_copy]:           http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-copy
+[cairo_raster_source_pattern_set_finish]:         http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-raster-source-pattern-set-finish
