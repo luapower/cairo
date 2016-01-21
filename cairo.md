@@ -447,3 +447,13 @@ The binding won't break if extensions are missing in the binary.
 [cairo_mesh_pattern_get_corner_color_rgba]:  http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-get-corner-color-rgba
 
 [cairo_select_font_face]:                  http://cairographics.org/manual/cairo-text.html#cairo-select-font-face
+[cairo_set_font_size]:                     http://cairographics.org/manual/cairo-text.html#cairo-set-font-size
+[cairo_set_font_matrix]:                   http://cairographics.org/manual/cairo-text.html#cairo-set-font-matrix
+[cairo_show_text]:                         http://cairographics.org/manual/cairo-text.html#cairo-show-text
+[cairo_show_glyphs]:                       http://cairographics.org/manual/cairo-text.html#cairo-show-glyphs
+[cairo_show_text_glyphs]:                  http://cairographics.org/manual/cairo-text.html#cairo-show-text-glyphs
+[cairo_text_path]:                         http://cairographics.org/manual/cairo-text.html#cairo-text-path
+[cairo_glyph_path]:                        http://cairographics.org/manual/cairo-text.html#cairo-glyph-path
+[cairo_text_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-text-extents
+[cairo_glyph_extents]:                     http://cairographics.org/manual/cairo-text.html#cairo-glyph-extents
+[cairo_font_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-font-extents
