@@ -115,7 +115,7 @@ __filling and stroking__
 `cr:stroke_extents() -> x1, y1, x2, y2`                             [get the bounding box of stroking the current path][cairo_stroke_extents]
 `cr:fill_extents() -> x1, y1, x2, y2`                               [get the bounding box of filling the current path][cairo_fill_extents]
 __clipping__
-`cr:clip()`                                                         [intersect the current path to the current clipping region and discard it][cairo_clip]
+`cr:clip()`                                                         [intersect the current path to the current clipping region and discard the path][cairo_clip]
 `cr:clip_preserve()`                                                [clip and keep the current path][cairo_clip_preserve]
 `cr:reset_clip()`                                                   [remove all clipping][cairo_reset_clip]
 `cr:clip_extents() -> x1, y1, x2, y2`                               [get the clip extents][cairo_clip_extents]
@@ -388,9 +388,9 @@ win32 fonts and freetype fonts.
 [cairo_stroke_extents]:                    http://cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-extents
 [cairo_fill_extents]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-fill-extents
 
-[cairo_reset_clip]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-reset-clip
 [cairo_clip]:                              http://cairographics.org/manual/cairo-cairo-t.html#cairo-clip
 [cairo_clip_preserve]:                     http://cairographics.org/manual/cairo-cairo-t.html#cairo-clip-preserve
+[cairo_reset_clip]:                        http://cairographics.org/manual/cairo-cairo-t.html#cairo-reset-clip
 [cairo_clip_extents]:                      http://cairographics.org/manual/cairo-cairo-t.html#cairo-clip-extents
 [cairo_copy_clip_rectangle_list]:          http://cairographics.org/manual/cairo-cairo-t.html#cairo-copy-clip-rectangle-list
 
