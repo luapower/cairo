@@ -140,9 +140,15 @@ __linear gradient patterns__
 __radial gradient patterns__
 `cairo.radial_pattern(cx0, cy0, r0, cx1, cy1, r1) -> patt`          [create a radial gradient][cairo_pattern_create_radial]
 `patt:radial_circles() -> cx0, cy0, r0, cx1, cy1, r1`               [get circles of radial gradient][cairo_pattern_get_radial_circles]
-__raster patterns__
-`cairo.raster_source_pattern(data, content, w, h) -> patt`          [create a raster source-type pattern][cairo_pattern_create_raster_source]
+__surface patterns__
 `cairo.surface_pattern(sr) -> patt`                                 [create a surface-type pattern][cairo_pattern_create_for_surface]
+__raster-source patterns__
+`cairo.raster_source_pattern(data, content, w, h) -> patt`          [create a raster source-type pattern][cairo_pattern_create_raster_source]
+`patt:callback_data([data]) /-> data`                               [get/set callback data][cairo_raster_source_pattern_set_callback_data]
+`patt:acquire_function([func]) /-> func`                            [get/set the acquire function][cairo_raster_source_pattern_set_acquire]
+`patt:snapshot_function([func]) /-> func`                           [get/set the snapshot function][cairo_raster_source_pattern_set_snapshot]
+`patt:copy_function([func]) /-> func`                               [get/set the copy function][cairo_raster_source_pattern_set_copy]
+`patt:finish_function([func]) /-> func`                             [get/set the finish function][cairo_raster_source_pattern_set_finish]
 __mesh patterns__
 `cairo.mesh_pattern() -> patt`                                      [create a mesh pattern][cairo_pattern_create_mesh]
 `patt:begin_patch()`                                                [start a patch][cairo_mesh_pattern_begin_patch]
@@ -414,5 +420,11 @@ win32 fonts and freetype fonts.
 [cairo_pattern_create_radial]:             http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-radial
 [cairo_pattern_get_radial_circles]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-radial-circles
 
-[cairo_pattern_create_raster_source]:      http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-raster-source
 [cairo_pattern_create_for_surface]:        http://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-for-surface
+
+[cairo_pattern_create_raster_source]:             http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-create-raster-source
+[cairo_raster_source_pattern_set_callback_data]:  http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-callback-data
+[cairo_raster_source_pattern_set_acquire]:        http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-acquire
+[cairo_raster_source_pattern_set_snapshot]:       http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-snapshot
+[cairo_raster_source_pattern_set_copy]:           http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-copy
+[cairo_raster_source_pattern_set_finish]:         http://cairographics.org/manual/cairo-Raster-Sources.html#cairo-pattern-set-finish
