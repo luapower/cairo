@@ -242,11 +242,11 @@ __targets__
 __devices__
 `sr:device() -> cairo_device_t`                                     [get the device of the surface][cairo_surface_get_device]
 `sr:device_offset([x, y]) /-> x, y`                                 [set device offset][cairo_surface_set_device_offset]
-`dev:type() -> type`                                                [get device type][cairo_get_type]
-`dev:acquire() -> true | nil,err,status`                            [acquire device][cairo_acquire]
-`dev:release()`                                                     [release acquired device][cairo_release]
-`dev:flush()`                                                       [flush pending drawing operations][cairo_flush]
-`dev:finish()`                                                      [finish device][cairo_finish]
+`dev:type() -> type`                                                [get device type][cairo_device_get_type]
+`dev:acquire() -> true | nil,err,status`                            [acquire device][cairo_device_acquire]
+`dev:release()`                                                     [release acquired device][cairo_device_release]
+`dev:flush()`                                                       [flush pending drawing operations][cairo_device_flush]
+`dev:finish()`                                                      [finish device][cairo_device_finish]
 __matrices__
 `cairo.matrix([xx, yx, xy, yy, x0, y0]) -> mt`                      create a matrix
 `mt:init(xx, yx, xy, yy, x0, y0)`                                   [set the matrix fields][cairo_matrix_init]
@@ -270,7 +270,7 @@ __matrices__
 `mt:skew(ax, ay)`                                                   skew
 `mt:copy() -> mt`                                                   copy matrix
 __regions__
-`cairo.region([[x, y, w, h] | rlist]) -> rgn`                       [ref][cairo_region_create]
+`cairo.region([[x, y, w, h] | rlist]) -> rgn`                       [create a region][cairo_region_create]
 `rgn:copy() -> rgn`                                                 [copy region][cairo_region_copy]
 `rgn:equal(rgn) -> t|f`                                             [compare regions][cairo_region_equal]
 `rgn:extents() -> x, y, w, h`                                       [region extents][cairo_region_get_extents]
@@ -536,18 +536,18 @@ The binding won't break if extensions are missing in the binary.
 [cairo_glyph_allocate]:                    http://cairographics.org/manual/cairo-text.html#cairo-glyph-allocate
 [cairo_text_cluster_allocate]:             http://cairographics.org/manual/cairo-text.html#cairo-text-cluster-allocate
 
-[cairo_surface_copy_page]:
-[cairo_surface_show_page]:
+[cairo_surface_copy_page]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-copy-page
+[cairo_surface_show_page]:                 http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-show-page
 
-[cairo_get_target]:
-[cairo_get_group_target]:
-[cairo_surface_get_device]:
-[cairo_surface_set_device_offset]:
-[cairo_get_type]:
-[cairo_acquire]:
-[cairo_release]:
-[cairo_flush]:
-[cairo_finish]:
+[cairo_get_target]:                        http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-target
+[cairo_get_group_target]:                  http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-group-target
+[cairo_surface_get_device]:                http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device
+[cairo_surface_set_device_offset]:         http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-device-offset
+[cairo_device_get_type]:                   http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-get-type
+[cairo_device_acquire]:                    http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-acquire
+[cairo_device_release]:                    http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-release
+[cairo_device_flush]:                      http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-flush
+[cairo_device_finish]:                     http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-finish
 
 [cairo_matrix_init]:                       http://cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init
 [cairo_matrix_init_identity]:              http://cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init-identity
@@ -582,9 +582,9 @@ The binding won't break if extensions are missing in the binary.
 [cairo_surface_write_to_png]:                  http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-write-to-png
 [cairo_surface_write_to_png_stream]:           http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-write-to-png-stream
 
-[cairo_status_t]:
-[cairo_status_to_string]:
-[cairo_format_stride_for_width]:
+[cairo_status_t]:                          http://cairographics.org/manual/cairo-Error-handling.html#cairo-status-t
+[cairo_status_to_string]:                  http://cairographics.org/manual/cairo-Error-handling.html#cairo-status-to-string
+[cairo_format_stride_for_width]:           http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-format-stride-for-width
 
-[cairo_version]:
-[cairo_version_string]:
+[cairo_version]:                           http://cairographics.org/manual/cairo-Version-Information.html#cairo-version
+[cairo_version_string]:                    http://cairographics.org/manual/cairo-Version-Information.html#cairo-version-string
