@@ -210,8 +210,8 @@ __rasterization options__
 `cr:dash(dashes[, offset])`                                         [set the dash pattern for stroking][cairo_set_dash]
 `cr:dash() -> dashes, dash_count`                                   [get the dash pattern for stroking][cairo_get_dash]
 `cr:dash'#' -> n`                                                   [get the dash count][cairo_get_dash_count]
-`sr:font_options(fopt) -> fopt`                                     [get the surface's font options][cairo_surface_get_font_options]
-`cr:font_options([fopt]) /-> fopt`                                  [get/set font options][cairo_set_font_options]
+`sr:font_options(fopt) -> fopt`                                     [get the default font options][cairo_surface_get_font_options]
+`cr:font_options([fopt]) /-> fopt`                                  [get/set custom font options][cairo_set_font_options]
 __font options__
 `cairo.font_options() -> fopt`                                      [create a font options object][cairo_font_options_create]
 `fopt:copy() -> fopt`                                               [copy font options][cairo_font_options_copy]
@@ -514,3 +514,15 @@ The binding won't break if extensions are missing in the binary.
 
 [cairo_surface_get_font_options]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-font-options
 [cairo_set_font_options]:                  http://cairographics.org/manual/cairo-text.html#cairo-set-font-options
+
+[cairo_font_options_create]:               http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-create
+[cairo_font_options_copy]:                 http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-copy
+[cairo_font_options_merge]:                http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-merge
+[cairo_font_options_equal]:                http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-equal
+[cairo_font_options_hash]:                 http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-hash
+[cairo_font_options_set_antialias]:        http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-antialias
+[cairo_font_options_set_subpixel_order]:   http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-subpixel-order
+[cairo_font_options_set_hint_style]:       http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-hint-style
+[cairo_font_options_set_hint_metrics]:     http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-hint-metrics
+[cairo_font_options_set_lcd_filter]:       http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-lcd-filter
+[cairo_font_options_set_round_glyph_positions]:  http://cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-round-glyph-positions
