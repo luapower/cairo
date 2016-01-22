@@ -579,8 +579,8 @@ The binding won't break if extensions are missing in the binary.
 
 [cairo_image_surface_create_from_png]:         http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png
 [cairo_image_surface_create_from_png_stream]:  http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png-stream
-[cairo_surface_write_to_png]:                  http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-write-to-png
-[cairo_surface_write_to_png_stream]:           http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-write-to-png-stream
+[cairo_surface_write_to_png]:                  http://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png
+[cairo_surface_write_to_png_stream]:           http://cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png-stream
 
 [cairo_status_t]:                          http://cairographics.org/manual/cairo-Error-handling.html#cairo-status-t
 [cairo_status_to_string]:                  http://cairographics.org/manual/cairo-Error-handling.html#cairo-status-to-string
