@@ -200,15 +200,15 @@ __scaled fonts__
 `sfont:font_options([fopt]) /-> fopt`                               [get/set the font options][cairo_scaled_font_get_font_options]
 `sfont:font_face() -> face`                                         [get the font face][cairo_scaled_font_get_font_face]
 __rasterization options__
-`cr:tolerance([tolerance]) /-> tolerance`                           [get/set tolerance][cairo_get_tolerance]
-`cr:antialias([antialias]) /-> antialias`                           [set the antialiasing mode][cairo_set_antialias]
-`cr:fill_rule([rule]) /-> rule`                                     [set the fill rule][cairo_set_fill_rule]
-`cr:line_width([width]) /-> width`                                  [set the current line width][cairo_set_line_width]
-`cr:line_cap([cap]) /-> cap`                                        [set the current line cap][cairo_set_line_cap]
-`cr:line_join([join]) /-> join`                                     [set the current line join][cairo_set_line_join]
-`cr:dash([dashes[, offset]]) /-> dashes, dash_count`                [set the dash pattern for cairo_stroke()][cairo_set_dash]
-`cr:dash_count() -> n`                                              [ref][cairo_get_dash_count]
-`cr:miter_limit([limit]) /-> limit`                                 [set the current miter limit][cairo_set_miter_limit]
+`cr:tolerance([tolerance]) /-> tolerance`                           [get/set tolerance][cairo_set_tolerance]
+`cr:antialias([antialias]) /-> antialias`                           [get/set the antialiasing mode][cairo_set_antialias]
+`cr:fill_rule([rule]) /-> rule`                                     [get/set the fill rule][cairo_set_fill_rule]
+`cr:line_width([width]) /-> width`                                  [get/set the line width][cairo_set_line_width]
+`cr:line_cap([cap]) /-> cap`                                        [get/set the line cap][cairo_set_line_cap]
+`cr:line_join([join]) /-> join`                                     [get/set the line join][cairo_set_line_join]
+`cr:miter_limit([limit]) /-> limit`                                 [get/set the miter limit][cairo_set_miter_limit]
+`cr:dash([dashes[, offset]]) /-> dashes, dash_count`                [get/set the dash pattern for stroking][cairo_set_dash]
+`cr:dash'#' -> n`                                                   [get the dash count][cairo_get_dash_count]
 __font options__
 `cairo.font_options() -> fopt`                                      [create a font options object][cairo_font_options_create]
 `fopt:copy() -> fopt`                                               [copy font options][cairo_font_options_copy]
@@ -499,3 +499,13 @@ The binding won't break if extensions are missing in the binary.
 [cairo_scaled_font_get_scale_matrix]:      http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-scale-matrix
 [cairo_scaled_font_get_font_options]:      http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-options
 [cairo_scaled_font_get_font_face]:         http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-face
+
+[cairo_set_tolerance]:                     http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-tolerance
+[cairo_set_antialias]:                     http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-antialias
+[cairo_set_fill_rule]:                     http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-fill-rule
+[cairo_set_line_width]:                    http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width
+[cairo_set_line_cap]:                      http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap
+[cairo_set_line_join]:                     http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join
+[cairo_set_miter_limit]:                   http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit
+[cairo_set_dash]:                          http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
+[cairo_get_dash_count]:                    http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count
