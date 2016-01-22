@@ -174,7 +174,7 @@ __freetype fonts__
 `sfont:lock_face() -> FT_Face`                                      [lock font face][cairo_ft_scaled_font_lock_face]
 `sfont:unlock_face()`                                               [unlock font face][cairo_ft_scaled_font_unlock_face]
 __toy fonts__
-`cairo.toy_font_face(family[, slant[, weight]]) -> face`            [ref][cairo_toy_font_face_create]
+`cairo.toy_font_face(family[, slant[, weight]]) -> face`            [select a font with the toy text API][cairo_toy_font_face_create]
 `face:family() -> family`                                           [get font family][cairo_font_face_toy_get_family]
 `face:slant() -> slant`                                             [get font slant][cairo_font_face_toy_get_slant]
 `face:weight() -> weight`                                           [get font weight][cairo_font_face_toy_get_weight]
