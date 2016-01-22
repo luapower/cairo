@@ -210,6 +210,8 @@ __rasterization options__
 `cr:dash(dashes[, offset])`                                         [set the dash pattern for stroking][cairo_set_dash]
 `cr:dash() -> dashes, dash_count`                                   [get the dash pattern for stroking][cairo_get_dash]
 `cr:dash'#' -> n`                                                   [get the dash count][cairo_get_dash_count]
+`sr:font_options(fopt) -> fopt`                                     [get the surface's font options][cairo_surface_get_font_options]
+`cr:font_options([fopt]) /-> fopt`                                  [get/set font options][cairo_set_font_options]
 __font options__
 `cairo.font_options() -> fopt`                                      [create a font options object][cairo_font_options_create]
 `fopt:copy() -> fopt`                                               [copy font options][cairo_font_options_copy]
@@ -222,8 +224,6 @@ __font options__
 `fopt:hint_metrics([metrics]) /-> metrics`                          [get/set hint metrics][cairo_font_options_set_hint_metrics]
 `fopt:lcd_filter([filter]) /-> filter`                              [get/set lcd filter][cairo_font_options_set_lcd_filter]
 `fopt:round_glyph_positions([pos]) /-> pos`                         [get/set round glyph positions][cairo_font_options_set_round_glyph_positions]
-`sr:font_options([fopt]) /-> fopt`                                  [get/set surface font options][cairo_surface_get_font_options]
-`cr:font_options([fopt]) /-> fopt`                                  [get/set font options][cairo_set_font_options]
 __device-space vs user-space__
 `cr:user_to_device(x, y) -> x, y`                                   [user to device (point)][cairo_user_to_device]
 `cr:user_to_device_distance(x, y) -> x, y`                          [user to device (distance)][cairo_user_to_device_distance]
@@ -511,3 +511,6 @@ The binding won't break if extensions are missing in the binary.
 [cairo_set_dash]:                          http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
 [cairo_get_dash]:                          http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash
 [cairo_get_dash_count]:                    http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count
+
+[cairo_surface_get_font_options]:          http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-font-options
+[cairo_set_font_options]:                  http://cairographics.org/manual/cairo-text.html#cairo-set-font-options
