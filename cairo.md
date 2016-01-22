@@ -164,9 +164,9 @@ __drawing glyphs__
 `cr:font_matrix([mt]) /-> mt`                                       [get/set the font matrix][cairo_set_font_matrix]
 `cr:show_glyphs(glyphs, #glyphs)`                                   [draw glyphs][cairo_show_glyphs]
 `cr:show_text_glyphs(s, [#s], g, #g, c, #c, f)`                     [draw glyphs with native cluster mapping][cairo_show_text_glyphs]
-`cr:glyph_path(glyphs, #glyphs)`                                    [ref][cairo_glyph_path]
-`cr:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`         [ref][cairo_glyph_extents]
-`cr:font_extents() -> cairo_font_extents_t`                         [ref][cairo_font_extents]
+`cr:glyph_path(glyphs, #glyphs)`                                    [add closed paths for the glyphs to the current path][cairo_glyph_path]
+`cr:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`         [get the text extents of an array of glyphs][cairo_glyph_extents]
+`cr:font_extents() -> cairo_font_extents_t`                         [get the font extents of the current font][cairo_font_extents]
 __freetype fonts__
 `cairo.ft_font_face(ft_face[, ft_flags]) -> face`                   [create a font face from a freetype handle][cairo_ft_font_face_create_for_ft_face]
 `face:synthesize_bold([t|f]) /-> t|f`                               [get/set synthethize bold flag][cairo_ft_font_face_set_synthesize]
@@ -464,7 +464,7 @@ The binding won't break if extensions are missing in the binary.
 [cairo_set_font_matrix]:                   http://cairographics.org/manual/cairo-text.html#cairo-set-font-matrix
 [cairo_show_glyphs]:                       http://cairographics.org/manual/cairo-text.html#cairo-show-glyphs
 [cairo_show_text_glyphs]:                  http://cairographics.org/manual/cairo-text.html#cairo-show-text-glyphs
-[cairo_glyph_path]:                        http://cairographics.org/manual/cairo-text.html#cairo-glyph-path
+[cairo_glyph_path]:                        http://cairographics.org/manual/cairo-Paths.html#cairo-glyph-path
 [cairo_glyph_extents]:                     http://cairographics.org/manual/cairo-text.html#cairo-glyph-extents
 [cairo_font_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-font-extents
 
