@@ -160,7 +160,7 @@ __drawing text (toy API)__
 `cr:text_extents(s) -> cairo_text_extents_t`                        [get text extents][cairo_text_extents]
 __drawing glyphs__
 `cr:font_face([face]) /-> face`                                     [get/set the font face][cairo_set_font_face]
-`cr:scaled_font([sfont]) /-> sfont`                                 [get/set a scaled font][cairo_set_scaled_font]
+`cr:scaled_font([sfont]) /-> sfont`                                 [get/set the scaled font][cairo_set_scaled_font]
 `cr:font_size(size)`                                                [set the font size][cairo_set_font_size]
 `cr:font_matrix([mt]) /-> mt`                                       [get/set the font matrix][cairo_set_font_matrix]
 `cr:show_glyphs(glyphs, #glyphs)`                                   [draw glyphs][cairo_show_glyphs]
