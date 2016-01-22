@@ -168,7 +168,7 @@ __drawing glyphs__
 `cr:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`         [ref][cairo_glyph_extents]
 `cr:font_extents() -> cairo_font_extents_t`                         [ref][cairo_font_extents]
 __freetype fonts__
-`cairo.ft_font_face(ft_face, ft_flags) -> face`                     [create a font face from a freetype handle][cairo_ft_font_face_create_for_ft_face]
+`cairo.ft_font_face(ft_face[, ft_flags]) -> face`                   [create a font face from a freetype handle][cairo_ft_font_face_create_for_ft_face]
 `face:synthesize_bold([t|f]) /-> t|f`                               [get/set synthethize bold flag][cairo_ft_font_face_set_synthesize]
 `face:synthesize_oblique([t|f]) /-> t|f`                            [get/set synthethize oblique flag][cairo_ft_font_face_set_synthesize]
 `sfont:lock_face() -> FT_Face`                                      [lock font face][cairo_ft_scaled_font_lock_face]
