@@ -257,9 +257,9 @@ __matrices__
 `mt:init_rotate(angle)`                                             [init with rotation][cairo_matrix_init_rotate]
 `mt:translate(x, y)`                                                [translate][cairo_matrix_translate]
 `mt:scale(sx, sy)`                                                  [scale][cairo_matrix_scale]
+`mt:scale_around(cx, cy, sx, sy)`                                   scale around a point
 `mt:rotate(angle)`                                                  [rotate][cairo_matrix_rotate]
-`mt:rotate_around(cx, cy, angle)`                                   [rotate arount a point][cairo_matrix_rotate_around]
-`mt:scale_around(cx, cy, sx, sy)`                                   [scale around a point][cairo_matrix_scale_around]
+`mt:rotate_around(cx, cy, angle)`                                   rotate arount a point
 `mt:invert()`                                                       [invert][cairo_matrix_invert]
 `mt:multiply(mt1, mt2)`                                             [multiply two matrices and store the result in mt][cairo_matrix_multiply]
 `mt:transform_point(x, y) -> x, y`                                  [transform point][cairo_matrix_transform_point]
