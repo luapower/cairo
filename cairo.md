@@ -185,7 +185,7 @@ __callback-based fonts__
 `face:text_to_glyphs_func([func]) /-> func`                         [get/set the text-to-glyphs function][cairo_user_font_face_set_text_to_glyphs_func]
 `face:unicode_to_glyph_func([func]) /-> func`                       [get/set the text-to-glyphs easy function][cairo_user_font_face_set_unicode_to_glyph_func]
 __fonts__
-`face:type() -> type`                                               [ref][cairo_font_face_get_type]
+`face:type() -> type`                                               [get font type][cairo_font_face_get_type]
 __scaled fonts__
 `face:scaled_font(mt, ctm, fopt) -> sfont`                          [create scaled font][cairo_font_face_create_scaled_font]
 `cr:scaled_font([sfont]) /-> sfont`                                 [get/set scaled font][cairo_set_scaled_font]
@@ -485,4 +485,4 @@ The binding won't break if extensions are missing in the binary.
 [cairo_user_font_face_set_text_to_glyphs_func]:    http://cairographics.org/manual/cairo-User-Fonts.html#cairo-user-font-face-set-text-to-glyphs-func
 [cairo_user_font_face_set_unicode_to_glyph_func]:  http://cairographics.org/manual/cairo-User-Fonts.html#cairo-user-font-face-set-unicode-to-glyph-func
 
-[cairo_font_face_get_type]:
+[cairo_font_face_get_type]:                http://cairographics.org/manual/cairo-cairo-font-face-t.html#cairo-font-face-get-type
