@@ -164,7 +164,7 @@ __drawing glyphs__
 `cr:font_matrix([mt]) /-> mt`                                       [get/set the font matrix][cairo_set_font_matrix]
 `cr:show_glyphs(glyphs, #glyphs)`                                   [draw glyphs][cairo_show_glyphs]
 `cr:show_text_glyphs(s, [#s], g, #g, c, #c, f)`                     [draw glyphs with native cluster mapping][cairo_show_text_glyphs]
-`cr:glyph_path(glyphs, #glyphs)`                                    [add closed paths for the glyphs to the current path][cairo_glyph_path]
+`cr:glyph_path(glyphs, #glyphs)`                                    [add paths for the glyphs to the current path][cairo_glyph_path]
 `cr:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`         [get the text extents of an array of glyphs][cairo_glyph_extents]
 `cr:font_extents() -> cairo_font_extents_t`                         [get the font extents of the current font][cairo_font_extents]
 __freetype fonts__
