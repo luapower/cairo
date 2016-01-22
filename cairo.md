@@ -160,6 +160,7 @@ __drawing text (toy API)__
 `cr:text_extents(s) -> cairo_text_extents_t`                        [get text extents][cairo_text_extents]
 __drawing glyphs__
 `cr:font_face([face]) /-> face`                                     [get/set the font face][cairo_set_font_face]
+`cr:scaled_font([sfont]) /-> sfont`                                 [get/set a scaled font][cairo_set_scaled_font]
 `cr:font_size(size)`                                                [set the font size][cairo_set_font_size]
 `cr:font_matrix([mt]) /-> mt`                                       [get/set the font matrix][cairo_set_font_matrix]
 `cr:show_glyphs(glyphs, #glyphs)`                                   [draw glyphs][cairo_show_glyphs]
@@ -188,7 +189,6 @@ __fonts__
 `face:type() -> type`                                               [get font type][cairo_font_face_get_type]
 __scaled fonts__
 `face:scaled_font(mt, ctm, fopt) -> sfont`                          [create scaled font][cairo_scaled_font_create]
-`cr:scaled_font([sfont]) /-> sfont`                                 [get/set scaled font][cairo_set_scaled_font]
 `sfont:type() -> cairo_font_type_t`                                 [get scaled font type][cairo_scaled_font_get_type]
 `sfont:extents() -> cairo_font_extents_t`                           [get font extents][cairo_scaled_font_extents]
 `sfont:text_extents(s) -> cairo_text_extents_t`                     [get text extents][cairo_scaled_font_text_extents]
@@ -460,6 +460,7 @@ The binding won't break if extensions are missing in the binary.
 [cairo_text_extents]:                      http://cairographics.org/manual/cairo-text.html#cairo-text-extents
 
 [cairo_set_font_face]:                     http://cairographics.org/manual/cairo-text.html#cairo-set-font-face
+[cairo_set_scaled_font]:                   http://cairographics.org/manual/cairo-text.html#cairo-set-scaled-font
 [cairo_set_font_size]:                     http://cairographics.org/manual/cairo-text.html#cairo-set-font-size
 [cairo_set_font_matrix]:                   http://cairographics.org/manual/cairo-text.html#cairo-set-font-matrix
 [cairo_show_glyphs]:                       http://cairographics.org/manual/cairo-text.html#cairo-show-glyphs
