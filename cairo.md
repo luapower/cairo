@@ -187,18 +187,18 @@ __callback-based fonts__
 __fonts__
 `face:type() -> type`                                               [get font type][cairo_font_face_get_type]
 __scaled fonts__
-`face:scaled_font(mt, ctm, fopt) -> sfont`                          [create scaled font][cairo_font_face_create_scaled_font]
+`face:scaled_font(mt, ctm, fopt) -> sfont`                          [create scaled font][cairo_scaled_font_create]
 `cr:scaled_font([sfont]) /-> sfont`                                 [get/set scaled font][cairo_set_scaled_font]
-`sfont:type() -> cairo_font_type_t`                                 [ref][cairo_scaled_font_get_type]
-`sfont:extents() -> cairo_text_extents_t`                           [ref][cairo_scaled_font_extents]
-`sfont:text_extents(s) -> cairo_text_extents_t`                     [ref][cairo_scaled_font_text_extents]
-`sfont:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`      [ref][cairo_scaled_font_glyph_extents]
-`sfont:text_to_glyphs(x, y, s, #s, g, #g, c, #c, cf) -> t|nil,err`  [ref][cairo_scaled_font_text_to_glyphs]
-`sfont:font_matrix() -> mt`                                         [ref][cairo_scaled_font_get_font_matrix]
-`sfont:ctm()`                                                       [ref][cairo_scaled_font_get_ctm]
-`sfont:scale_matrix()`                                              [ref][cairo_scaled_font_get_scale_matrix]
-`sfont:font_options([fopt]) /-> fopt`                               [get scaled font options][cairo_scaled_font_get_font_options]
-`sfont:font_face() -> face`                                         [ref][cairo_scaled_font_get_font_face]
+`sfont:type() -> cairo_font_type_t`                                 [get scaled font type][cairo_scaled_font_get_type]
+`sfont:extents() -> cairo_font_extents_t`                           [get font extents][cairo_scaled_font_extents]
+`sfont:text_extents(s) -> cairo_text_extents_t`                     [get text extents][cairo_scaled_font_text_extents]
+`sfont:glyph_extents(glyphs, #glyphs) -> cairo_text_extents_t`      [get the extents of an array of glyphs][cairo_scaled_font_glyph_extents]
+`sfont:text_to_glyphs(x,y, s,#s, [g,#g, [c,#c]]) -> t|nil,err`      [convert text to glyphs][cairo_scaled_font_text_to_glyphs]
+`sfont:font_matrix() -> mt`                                         [get the font matrix][cairo_scaled_font_get_font_matrix]
+`sfont:ctm() -> mt`                                                 [get the CTM][cairo_scaled_font_get_ctm]
+`sfont:scale_matrix() -> mt`                                        [get the scale matrix][cairo_scaled_font_get_scale_matrix]
+`sfont:font_options([fopt]) /-> fopt`                               [get/set the font options][cairo_scaled_font_get_font_options]
+`sfont:font_face() -> face`                                         [get the font face][cairo_scaled_font_get_font_face]
 __rasterization options__
 `cr:tolerance([tolerance]) /-> tolerance`                           [get/set tolerance][cairo_get_tolerance]
 `cr:antialias([antialias]) /-> antialias`                           [set the antialiasing mode][cairo_set_antialias]
@@ -486,3 +486,15 @@ The binding won't break if extensions are missing in the binary.
 [cairo_user_font_face_set_unicode_to_glyph_func]:  http://cairographics.org/manual/cairo-User-Fonts.html#cairo-user-font-face-set-unicode-to-glyph-func
 
 [cairo_font_face_get_type]:                http://cairographics.org/manual/cairo-cairo-font-face-t.html#cairo-font-face-get-type
+
+[cairo_scaled_font_create]:                http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-create
+[cairo_scaled_font_get_type]:              http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-type
+[cairo_scaled_font_extents]:               http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-extents
+[cairo_scaled_font_text_extents]:          http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-text-extents
+[cairo_scaled_font_glyph_extents]:         http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-glyph-extents
+[cairo_scaled_font_text_to_glyphs]:        http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-text-to-glyphs
+[cairo_scaled_font_get_font_matrix]:       http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-matrix
+[cairo_scaled_font_get_ctm]:               http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-ctm
+[cairo_scaled_font_get_scale_matrix]:      http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-scale-matrix
+[cairo_scaled_font_get_font_options]:      http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-options
+[cairo_scaled_font_get_font_face]:         http://cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-face
