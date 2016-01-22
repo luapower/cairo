@@ -300,8 +300,8 @@ __status__
 `obj:check()`                                                       raise an error if the object has an error status
 __misc.__
 `cairo.stride(fmt, w) -> stride`                                    [get stride for a format and width][cairo_format_stride_for_width]
-`cairo.bitmap_format(cairo_fmt) -> bmp_fmt`                         get the [bitmap] format which matches a cairo format
-`cairo.cairo_format(bmp_fmt) -> cairo_fmt`                          get the cairo format which matches a bitmap format
+`cairo.bitmap_format(cairo_fmt) -> bmp_fmt`                         get the [bitmap] format matching a cairo format
+`cairo.cairo_format(bmp_fmt) -> cairo_fmt`                          get the cairo format matching a bitmap format
 `cairo.version() -> n`                                              [get lib version][cairo_version]
 `cairo.version_string() -> s`                                       [get lib version as "X.Y.Z"][cairo_version_string]
 ------------------------------------------------------------------- -------------------------------------------------------------------
