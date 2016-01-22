@@ -207,7 +207,8 @@ __rasterization options__
 `cr:line_cap([cap]) /-> cap`                                        [get/set the line cap][cairo_set_line_cap]
 `cr:line_join([join]) /-> join`                                     [get/set the line join][cairo_set_line_join]
 `cr:miter_limit([limit]) /-> limit`                                 [get/set the miter limit][cairo_set_miter_limit]
-`cr:dash([dashes[, offset]]) /-> dashes, dash_count`                [get/set the dash pattern for stroking][cairo_set_dash]
+`cr:dash(dashes[, offset])`                                         [set the dash pattern for stroking][cairo_set_dash]
+`cr:dash() -> dashes, dash_count`                                   [get the dash pattern for stroking][cairo_get_dash]
 `cr:dash'#' -> n`                                                   [get the dash count][cairo_get_dash_count]
 __font options__
 `cairo.font_options() -> fopt`                                      [create a font options object][cairo_font_options_create]
@@ -508,4 +509,5 @@ The binding won't break if extensions are missing in the binary.
 [cairo_set_line_join]:                     http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join
 [cairo_set_miter_limit]:                   http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit
 [cairo_set_dash]:                          http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
+[cairo_get_dash]:                          http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash
 [cairo_get_dash_count]:                    http://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count
