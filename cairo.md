@@ -269,8 +269,8 @@ __devices__
 `dev:flush()`                                                       [flush pending drawing operations][cairo_device_flush]
 `dev:finish()`                                                      [finish device][cairo_device_finish]
 __matrices__
-`cairo.matrix([mt | xx, yx, xy, yy, x0, y0]) -> mt`                 create a matrix (init as identity by default)
-`mt:reset([mt | xx, yx, xy, yy, x0, y0]) -> mt`                     reinitialize the matrix (as identity if no args given)
+`cairo.matrix([mt | a, b, c, d, e, f]) -> mt`                       create a matrix (init as identity by default)
+`mt:reset([mt | a, b, c, d, e, f]) -> mt`                           reinitialize the matrix (as identity if no args given)
 `mt:translate(x, y) -> mt`                                          [translate][cairo_matrix_translate]
 `mt:scale(sx[, sy]) -> mt`                                          [scale][cairo_matrix_scale]
 `mt:scale_around(cx, cy, sx[, sy]) -> mt`                           scale around a point
