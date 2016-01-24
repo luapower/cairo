@@ -33,6 +33,17 @@ __recording surfaces__
 `cairo.recording_surface(content[, x, y, w, h])`                    [create a recording surface][cairo_recording_surface_create]
 `sr:ink_extents() -> x, y, w, h`                                    [get recording surface ink extents][cairo_recording_surface_ink_extents]
 `sr:recording_extents() -> x, y, w, h | nil`                        [get recording surface extents][cairo_recording_surface_get_extents]
+__PDF surfaces__
+`cairo.pdf_surface(filename, w, h) -> sr`                           [craete a PDF surface for a filename][cairo_pdf_surface_create]
+`cairo.pdf_surface(write_func, arg, w, h) -> sr`                    [create a PDF surface with a write function][cairo_pdf_surface_create_for_stream]
+`cairo.pdf_versions() -> {ver1, ...}`                               [get available spec versions][cairo_pdf_get_versions]
+`sr:pdf_version(ver)`                                               [restrict to spec version][cairo_pdf_surface_restrict_to_version]
+`sr:pdf_set_size(w, h)`                                             [set page size][cairo_pdf_surface_set_size]
+__PNG support__
+`cairo.load_png(filename) -> sr`                                    [create a pixman surface from a png file][cairo_image_surface_create_from_png]
+`cairo.load_png(read_func, arg) -> sr`                              [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
+`sr:save_png(filename) -> true | nil,err,status`                    [write surface to png file][cairo_surface_write_to_png]
+`sr:save_png(write_func, arg) -> true | nil,err,status`             [write surface to png stream][cairo_surface_write_to_png_stream]
 __all surfaces__
 `sr:sub(x, y, w, h) -> sr`                                          [create a sub-surface][cairo_surface_create_for_rectangle]
 `sr:similar_surface(content, w, h) -> sr`                           [create a similar surface][cairo_surface_create_similar]
@@ -280,11 +291,6 @@ __regions__
 `rgn:intersect(rgn | x, y, w, h)`                                   [intersect with region or rectangle][cairo_region_intersect]
 `rgn:union(rgn | x, y, w, h)`                                       [union with region or rectangle][cairo_region_union]
 `rgn:xor(rgn | x, y, w, h)`                                         [xor with region or rectangle][cairo_region_xor]
-__PNG support__
-`cairo.load_png(filename) -> sr`                                    [create a pixman surface from a png file][cairo_image_surface_create_from_png]
-`cairo.load_png(read_func, arg) -> sr`                              [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
-`sr:save_png(filename) -> true | nil,err,status`                    [write surface to png file][cairo_surface_write_to_png]
-`sr:save_png(write_func, arg) -> true | nil,err,status`             [write surface to png stream][cairo_surface_write_to_png_stream]
 __memory management__
 `obj:free()`                                                        free object
 `obj:refcount() -> refcount`                                        get ref count (*)
@@ -585,3 +591,9 @@ The binding won't break if extensions are missing in the binary.
 
 [cairo_version]:                           http://cairographics.org/manual/cairo-Version-Information.html#cairo-version
 [cairo_version_string]:                    http://cairographics.org/manual/cairo-Version-Information.html#cairo-version-string
+
+[cairo_pdf_surface_create]:                http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-surface-create
+[cairo_pdf_surface_create_for_stream]:     http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-surface-create-for-stream
+[cairo_pdf_get_versions]:                  http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-get-versions
+[cairo_pdf_surface_restrict_to_version]:   http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-surface-restrict-to-version
+[cairo_pdf_surface_set_size]:              http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-surface-set-size

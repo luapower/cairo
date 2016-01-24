@@ -1527,7 +1527,7 @@ end, C.cairo_surface_destroy)
 
 sr.pdf_version = setflag_func(_C.cairo_pdf_surface_restrict_to_version, 'CAIRO_PDF_VERSION_')
 
-M.pdf_versions = function(sr)
+M.pdf_versions = function()
 	local ibuf = ffi.new'int[1]'
 	local vbuf = ffi.new'const cairo_pdf_version_t*[1]'
 	C.cairo_pdf_get_versions(vbuf, ibuf)

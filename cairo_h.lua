@@ -1283,7 +1283,7 @@ unsigned int cairo_ft_font_face_get_synthesize (cairo_font_face_t *font_face);
 FT_Face cairo_ft_scaled_font_lock_face (cairo_scaled_font_t *scaled_font);
 void cairo_ft_scaled_font_unlock_face (cairo_scaled_font_t *scaled_font);
 
-//cairo-pdf.h
+// cairo-pdf.h
 
 typedef enum _cairo_pdf_version {
 	CAIRO_PDF_VERSION_1_4,
