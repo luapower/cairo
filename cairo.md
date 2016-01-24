@@ -30,7 +30,7 @@ __pixman surfaces__
 `sr:stride() -> stride`                                             [get the image surface stride][cairo_image_surface_get_stride]
 `sr:bpp() -> bpp`                                                   get the image surface bits-per-pixel
 __recording surfaces__
-`cairo.recording_surface(content[, x, y, w, h])`                    [create a recording surface][cairo_recording_surface_create]
+`cairo.recording_surface(content[, x, y, w, h]) -> sr`              [create a recording surface][cairo_recording_surface_create]
 `sr:ink_extents() -> x, y, w, h`                                    [get recording surface ink extents][cairo_recording_surface_ink_extents]
 `sr:recording_extents() -> x, y, w, h | nil`                        [get recording surface extents][cairo_recording_surface_get_extents]
 __PDF surfaces__
