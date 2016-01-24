@@ -312,9 +312,13 @@ __misc.__
 
 ## Binaries
 
-The included binaries are built with support for in-memory (pixman) surfaces,
-recording surfaces, ps surfaces, pdf surfaces, svg surfaces, win32 surfaces and fonts,
-quartz surfaces and fonts, freetype fonts and png support.
+The included binaries are built with support for:
+
+* surfaces: image (pixman), recording, PS, PDF, SVG, GDI, Quartz
+* font selectors: Windows native, Quartz native
+* fonts: Windows native, Quartz native, freetype
+* PNG support
+
 The build is configurable so you can add/remove these extensions as needed.
 The binding won't break if extensions are missing in the binary.
 
