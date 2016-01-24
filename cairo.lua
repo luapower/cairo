@@ -1558,11 +1558,11 @@ end, C.cairo_surface_destroy)
 
 sr.ps_level = setflag_func(_C.cairo_ps_surface_restrict_to_level, 'CAIRO_PS_LEVEL_')
 M.ps_levels = listout_func(_C.cairo_ps_get_levels, 'cairo_ps_level_t', 'CAIRO_PS_LEVEL_')
-sr.eps = getset_func(bool_func(_C.cairo_ps_surface_get_eps), _C.cairo_ps_surface_set_eps)
+sr.ps_eps = getset_func(bool_func(_C.cairo_ps_surface_get_eps), _C.cairo_ps_surface_set_eps)
 sr.ps_size = _C.cairo_ps_surface_set_size
 sr.ps_dsc_comment = _C.cairo_ps_surface_dsc_comment
 sr.ps_dsc_begin_setup = _C.cairo_ps_surface_dsc_begin_setup
-sr.ps_begin_page_setup = _C.cairo_ps_surface_dsc_begin_page_setup
+sr.ps_dsc_begin_page_setup = _C.cairo_ps_surface_dsc_begin_page_setup
 
 --metatype must come last
 
