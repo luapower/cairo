@@ -256,10 +256,11 @@ __matrices__
 `mt:rotate(angle) -> mt`                                            [rotate][cairo_matrix_rotate]
 `mt:rotate_around(cx, cy, angle) -> mt`                             rotate arount a point
 `mt:invert() -> t|f`                                                [invert if possible][cairo_matrix_invert]
-`mt:multiply(mt1, mt2) -> mt`                                       [multiply two matrices and store the result in mt][cairo_matrix_multiply]
-`mt:transform_point(x, y) -> x, y`                                  [transform point][cairo_matrix_transform_point]
-`mt:transform_distance(x, y) -> x, y`                               [transform distance][cairo_matrix_transform_distance]
+`mt:multiply(mt1[, mt2]) -> mt`                                     [multiply two matrices and store the result in mt][cairo_matrix_multiply]
+`mt(x, y) -> x, y`                                                  [transform point][cairo_matrix_transform_point]
+`mt:distance(x, y) -> x, y`                                         [transform distance][cairo_matrix_transform_distance]
 `mt:transform(mt) -> mt`                                            transform by other matrix
+`mt:determinant() -> d`                                             compute the determinant
 `mt:invertible() -> t|f`                                            check if the matrix is invertible
 `mt:safe_transform(mt) -> mt`                                       transform by matrix only if it's invertible
 `mt:skew(ax, ay) -> mt`                                             skew
