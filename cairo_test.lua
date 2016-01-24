@@ -527,6 +527,25 @@ local function ps_test()
 end
 ps_test()
 
+local function svg_test()
+	print('svg versions', table.concat(cairo.svg_versions(), ', '))
+	local sr = cairo.svg_surface('cairo_test.svg', 1000, 1000)
+	sr:check()
+	assert(sr:type() == 'svg')
+	sr:svg_version'1.2'
+	local cr = sr:context()
+	sr:check()
+	cr:rgb(1, 0, 0)
+	cr:rectangle(400, 400, 200, 200)
+	cr:fill_preserve()
+	cr:rgb(0, 1, 0)
+	cr:line_width(10)
+	cr:stroke()
+	cr:free()
+	sr:free()
+end
+svg_test()
+
 --misc.
 print('cairo version: ', cairo.version())
 print('cairo version string: ', cairo.version_string())

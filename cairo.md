@@ -49,6 +49,11 @@ __PS surfaces__
 `sr:ps_dsc_comment(s)`                                              [add comment][cairo_ps_surface_dsc_comment]
 `sr:ps_dsc_begin_setup()`                                           [comments go to Setup section][cairo_ps_surface_dsc_begin_setup]
 `sr:ps_dsc_begin_page_setup()`                                      [comments go to PageSetup section][cairo_ps_surface_dsc_begin_page_setup]
+__SVG surfaces__
+`cairo.svg_surface(filename, w, h) -> sr`                           [craete a SVG surface for a filename][cairo_svg_surface_create]
+`cairo.svg_surface(write_func, arg, w, h) -> sr`                    [create a SVG surface with a write function][cairo_svg_surface_create_for_stream]
+`cairo.svg_versions() -> {ver1, ...}`                               [get available spec versions][cairo_svg_get_versions]
+`sr:svg_version(ver)`                                               [restrict to spec version][cairo_svg_surface_restrict_to_version]
 __PNG support__
 `cairo.load_png(filename) -> sr`                                    [create a pixman surface from a png file][cairo_image_surface_create_from_png]
 `cairo.load_png(read_func, arg) -> sr`                              [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
@@ -617,3 +622,9 @@ The binding won't break if extensions are missing in the binary.
 [cairo_ps_surface_dsc_comment]:            http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-dsc-comment
 [cairo_ps_surface_dsc_begin_setup]:        http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-dsc-begin-setup
 [cairo_ps_surface_dsc_begin_page_setup]:   http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-dsc-begin-page-setup
+
+[cairo_svg_surface_create]:                http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-surface-create
+[cairo_svg_surface_create_for_stream]:     http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-surface-create-for-stream
+[cairo_svg_get_versions]:                  http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-get-versions
+[cairo_svg_surface_restrict_to_version]:   http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-surface-restrict-to-version
+[cairo_svg_surface_set_size]:              http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-surface-set-size

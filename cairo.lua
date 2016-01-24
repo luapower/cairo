@@ -1564,6 +1564,25 @@ sr.ps_dsc_comment = _C.cairo_ps_surface_dsc_comment
 sr.ps_dsc_begin_setup = _C.cairo_ps_surface_dsc_begin_setup
 sr.ps_dsc_begin_page_setup = _C.cairo_ps_surface_dsc_begin_page_setup
 
+--svg surfaces
+
+enums['CAIRO_SVG_VERSION_'] = {
+	[C.CAIRO_SVG_VERSION_1_1] = '1.1',
+	[C.CAIRO_SVG_VERSION_1_2] = '1.2',
+	['1.1'] = C.CAIRO_SVG_VERSION_1_1,
+	['1.2'] = C.CAIRO_SVG_VERSION_1_2,
+}
+M.svg_surface = ref_func(function(arg1, ...)
+	if type(arg1) == 'string' then
+		return C.cairo_svg_surface_create(arg1, ...)
+	else
+		return C.cairo_svg_surface_create_for_stream(arg1, ...)
+	end
+end, C.cairo_surface_destroy)
+
+sr.svg_version = setflag_func(_C.cairo_svg_surface_restrict_to_version, 'CAIRO_SVG_VERSION_')
+M.svg_versions = listout_func(_C.cairo_svg_get_versions, 'cairo_svg_version_t', 'CAIRO_SVG_VERSION_')
+
 --metatype must come last
 
 ffi.metatype('cairo_t', {__index = cr})
