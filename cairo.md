@@ -80,8 +80,8 @@ __sources__
 `cr:source(patt | sr, [x, y]) /-> patt`                             [get/set a pattern or surface as source][cairo_set_source]
 __compositing__
 `cr:operator(operator) /-> operator`                                [get/set the compositing operator][cairo_set_operator]
-`cr:mask(patt | sr[, x, y])`                                        [draw using a pattern's (or surface's) alpha channel as a mask][cairo_mask]
-`cr:paint()`                                                        [paint the current source within the current clipping region][cairo_paint]
+`cr:mask(patt | sr[, x, y])`                                        [draw using a pattern's (or surface's) alpha as mask][cairo_mask]
+`cr:paint()`                                                        [paint the current source][cairo_paint]
 `cr:paint_with_alpha(alpha)`                                        [paint the current source with transparency][cairo_paint_with_alpha]
 __groups__
 `cr:push_group([content])`                                          [redirect drawing to an intermediate surface][cairo_push_group]
