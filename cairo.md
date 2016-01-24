@@ -281,10 +281,10 @@ __regions__
 `rgn:union(rgn | x, y, w, h)`                                       [union with region or rectangle][cairo_region_union]
 `rgn:xor(rgn | x, y, w, h)`                                         [xor with region or rectangle][cairo_region_xor]
 __PNG support__
-`cairo.load_png(filename) -> sr`                      [create a pixman surface from a png file][cairo_image_surface_create_from_png]
-`cairo.load_png(read_func, arg) -> sr`         [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
-`sr:save_png(filename) -> true | nil,err,status`                [write surface to png file][cairo_surface_write_to_png]
-`sr:save_png(write_func, arg) -> true | nil,err,status`  [write surface to png stream][cairo_surface_write_to_png_stream]
+`cairo.load_png(filename) -> sr`                                    [create a pixman surface from a png file][cairo_image_surface_create_from_png]
+`cairo.load_png(read_func, arg) -> sr`                              [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
+`sr:save_png(filename) -> true | nil,err,status`                    [write surface to png file][cairo_surface_write_to_png]
+`sr:save_png(write_func, arg) -> true | nil,err,status`             [write surface to png stream][cairo_surface_write_to_png_stream]
 __memory management__
 `obj:free()`                                                        free object
 `obj:refcount() -> refcount`                                        get ref count (*)
