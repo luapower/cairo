@@ -38,7 +38,17 @@ __PDF surfaces__
 `cairo.pdf_surface(write_func, arg, w, h) -> sr`                    [create a PDF surface with a write function][cairo_pdf_surface_create_for_stream]
 `cairo.pdf_versions() -> {ver1, ...}`                               [get available spec versions][cairo_pdf_get_versions]
 `sr:pdf_version(ver)`                                               [restrict to spec version][cairo_pdf_surface_restrict_to_version]
-`sr:pdf_set_size(w, h)`                                             [set page size][cairo_pdf_surface_set_size]
+`sr:pdf_size(w, h)`                                                 [set page size][cairo_pdf_surface_set_size]
+__PS surfaces__
+`cairo.ps_surface(filename, w, h) -> sr`                            [craete a PS surface for a filename][cairo_ps_surface_create]
+`cairo.ps_surface(write_func, arg, w, h) -> sr`                     [create a PS surface with a write function][cairo_ps_surface_create_for_stream]
+`cairo.ps_levels() -> {level1, ...}`                                [get available levels][cairo_ps_get_levels]
+`sr:ps_level(level)`                                                [restrict to level][cairo_ps_surface_restrict_to_level]
+`sr:eps(t|f) /-> t|f`                                               [get/set eps][cairo_ps_surface_set_eps]
+`sr:ps_size(w, h)`                                                  [set page size][cairo_ps_surface_set_size]
+`sr:ps_dsc_comment(s)`                                              [add dsc comment][cairo_ps_surface_dsc_comment]
+`sr:ps_dsc_begin_setup()`                                           [begin dsc setup][cairo_ps_surface_dsc_begin_setup]
+`sr:ps_begin_page_setup()`                                          [begin dsc page setup][cairo_ps_surface_dsc_begin_page_setup]
 __PNG support__
 `cairo.load_png(filename) -> sr`                                    [create a pixman surface from a png file][cairo_image_surface_create_from_png]
 `cairo.load_png(read_func, arg) -> sr`                              [create a pixman surface from a png stream][cairo_image_surface_create_from_png_stream]
@@ -597,3 +607,13 @@ The binding won't break if extensions are missing in the binary.
 [cairo_pdf_get_versions]:                  http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-get-versions
 [cairo_pdf_surface_restrict_to_version]:   http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-surface-restrict-to-version
 [cairo_pdf_surface_set_size]:              http://cairographics.org/manual/cairo-PDF-Surfaces.html#cairo-pdf-surface-set-size
+
+[cairo_ps_surface_create]:                 http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-create
+[cairo_ps_surface_create_for_stream]:      http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-create-for-stream
+[cairo_ps_get_levels]:                     http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-get-levels
+[cairo_ps_surface_restrict_to_level]:      http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-restrict-to-level
+[cairo_ps_surface_set_eps]:                http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-set-eps
+[cairo_ps_surface_set_size]:               http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-set-size
+[cairo_ps_surface_dsc_comment]:            http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-dsc-comment
+[cairo_ps_surface_dsc_begin_setup]:        http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-dsc-begin-setup
+[cairo_ps_surface_dsc_begin_page_setup]:   http://cairographics.org/manual/cairo-PostScript-Surfaces.html#cairo-ps-surface-dsc-begin-page-setup
