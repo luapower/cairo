@@ -474,6 +474,13 @@ with_png('matrices', function(cr, sr)
 
 	assert(mt:copy():rotate_around(2, 5, 3) == mt:copy():translate(2, 5):rotate(3):translate(-2, -5))
 	assert(mt:copy():scale_around(2, 5, 3, 4) == mt:copy():translate(2, 5):scale(3, 4):translate(-2, -5))
+
+	local mt = cairo.matrix(0, 0, 0, 0, 0, 0)
+	assert(mt:determinant() == 0)
+	assert(not mt:invertible())
+	local mt1 = mt:copy()
+	assert(not mt:invert())
+	assert(mt1 == mt)
 end)
 
 

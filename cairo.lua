@@ -1425,7 +1425,7 @@ function mt:transform(mt)
 end
 
 function mt:determinant()
-	return xx * yy - yx * xy
+	return self.xx * self.yy - self.yx * self.xy
 end
 
 function mt:invertible()
