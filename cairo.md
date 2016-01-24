@@ -34,13 +34,13 @@ __recording surfaces__
 `sr:ink_extents() -> x, y, w, h`                                    [get recording surface ink extents][cairo_recording_surface_ink_extents]
 `sr:recording_extents() -> x, y, w, h | nil`                        [get recording surface extents][cairo_recording_surface_get_extents]
 __PDF surfaces__
-`cairo.pdf_surface(filename, w, h) -> sr`                           [craete a PDF surface for a filename][cairo_pdf_surface_create]
+`cairo.pdf_surface(filename, w, h) -> sr`                           [create a PDF surface for a filename][cairo_pdf_surface_create]
 `cairo.pdf_surface(write_func, arg, w, h) -> sr`                    [create a PDF surface with a write function][cairo_pdf_surface_create_for_stream]
 `cairo.pdf_versions() -> {ver1, ...}`                               [get available spec versions][cairo_pdf_get_versions]
 `sr:pdf_version(ver)`                                               [restrict to spec version][cairo_pdf_surface_restrict_to_version]
 `sr:pdf_size(w, h)`                                                 [set page size][cairo_pdf_surface_set_size]
 __PS surfaces__
-`cairo.ps_surface(filename, w, h) -> sr`                            [craete a PS surface for a filename][cairo_ps_surface_create]
+`cairo.ps_surface(filename, w, h) -> sr`                            [create a PS surface for a filename][cairo_ps_surface_create]
 `cairo.ps_surface(write_func, arg, w, h) -> sr`                     [create a PS surface with a write function][cairo_ps_surface_create_for_stream]
 `cairo.ps_levels() -> {level1, ...}`                                [get available levels][cairo_ps_get_levels]
 `sr:ps_level(level)`                                                [restrict to level][cairo_ps_surface_restrict_to_level]
@@ -50,7 +50,7 @@ __PS surfaces__
 `sr:ps_dsc_begin_setup()`                                           [comments go to Setup section][cairo_ps_surface_dsc_begin_setup]
 `sr:ps_dsc_begin_page_setup()`                                      [comments go to PageSetup section][cairo_ps_surface_dsc_begin_page_setup]
 __SVG surfaces__
-`cairo.svg_surface(filename, w, h) -> sr`                           [craete a SVG surface for a filename][cairo_svg_surface_create]
+`cairo.svg_surface(filename, w, h) -> sr`                           [create a SVG surface for a filename][cairo_svg_surface_create]
 `cairo.svg_surface(write_func, arg, w, h) -> sr`                    [create a SVG surface with a write function][cairo_svg_surface_create_for_stream]
 `cairo.svg_versions() -> {ver1, ...}`                               [get available spec versions][cairo_svg_get_versions]
 `sr:svg_version(ver)`                                               [restrict to spec version][cairo_svg_surface_restrict_to_version]
