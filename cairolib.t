@@ -336,7 +336,6 @@ s.stride = cairo_image_surface_get_stride
 extern('cairo_surface_create_from_png', {rawstring} -> {&cairo_surface_t})
 extern('cairo_surface_write_to_png', {&cairo_surface_t, rawstring} -> {cairo_status_t})
 s.save_png = cairo_surface_write_to_png
-C.load_png = cairo_image_surface_create_from_png
 
 s.apply_alpha = terra(self: &cairo_surface_t, alpha: double)
 	if alpha >= 1 then return end
